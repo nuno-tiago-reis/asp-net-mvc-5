@@ -1,0 +1,33 @@
+﻿@model Vidly.ViewModels.Movies.ListViewModel
+
+@{
+	ViewBag.Tile = "Movies";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movies</h2>
+
+@if (Model.Movies.Count == 0)
+{
+	<text>No movies have been added yet.</text>
+}
+else
+{
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>Movie</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var movie in Model.Movies)
+			{
+				<tr>
+					<td>
+						<a href="@Url.Action("Details", "Movies", new {id = movie.ID})">@movie.Name</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
