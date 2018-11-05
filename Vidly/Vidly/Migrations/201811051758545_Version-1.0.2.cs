@@ -4,30 +4,34 @@ namespace Vidly.Migrations
 
 	public partial class Version102 : DbMigration
 	{
+		/// <inheritdoc />
 		public override void Up()
 		{
-			CreateTable(
-					"dbo.MembershipTypes",
-					c => new
-					{
-						ID = c.Int(nullable: false, identity: true),
-						SignUpFee = c.Short(nullable: false),
-						DiscountRate = c.Byte(nullable: false),
-						DurationInMonths = c.Byte(nullable: false),
-					})
-				.PrimaryKey(t => t.ID);
+			this.CreateTable
+			(
+				"dbo.MembershipTypes",
+				c => new
+				{
+					ID = c.Int(nullable: false, identity: true),
+					SignUpFee = c.Short(nullable: false),
+					DiscountRate = c.Byte(nullable: false),
+					DurationInMonths = c.Byte(nullable: false),
+				}
+			)
+			.PrimaryKey(t => t.ID);
 
-			AddColumn("dbo.Customers", "MembershipTypeID", c => c.Int(nullable: false));
-			CreateIndex("dbo.Customers", "MembershipTypeID");
-			AddForeignKey("dbo.Customers", "MembershipTypeID", "dbo.MembershipTypes", "ID", cascadeDelete: true);
+			this.AddColumn("dbo.Customers", "MembershipTypeID", c => c.Int(nullable: false));
+			this.CreateIndex("dbo.Customers", "MembershipTypeID");
+			this.AddForeignKey("dbo.Customers", "MembershipTypeID", "dbo.MembershipTypes", "ID", cascadeDelete: true);
 		}
 
+		/// <inheritdoc />
 		public override void Down()
 		{
-			DropForeignKey("dbo.Customers", "MembershipTypeID", "dbo.MembershipTypes");
-			DropIndex("dbo.Customers", new[] { "MembershipTypeID" });
-			DropColumn("dbo.Customers", "MembershipTypeID");
-			DropTable("dbo.MembershipTypes");
+			this.DropForeignKey("dbo.Customers", "MembershipTypeID", "dbo.MembershipTypes");
+			this.DropIndex("dbo.Customers", new[] { "MembershipTypeID" });
+			this.DropColumn("dbo.Customers", "MembershipTypeID");
+			this.DropTable("dbo.MembershipTypes");
 		}
 	}
 }

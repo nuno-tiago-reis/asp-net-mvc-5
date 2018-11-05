@@ -4,14 +4,16 @@ namespace Vidly.Migrations
 
 	public partial class Version101 : DbMigration
 	{
+		/// <inheritdoc />
 		public override void Up()
 		{
-			AddColumn("dbo.Customers", "IsSubscribedToNewsletter", c => c.Boolean(nullable: false));
+			this.AddColumn("dbo.Customers", "IsSubscribedToNewsletter", c => c.Boolean(nullable: false));
 		}
 
+		/// <inheritdoc />
 		public override void Down()
 		{
-			DropColumn("dbo.Customers", "IsSubscribedToNewsletter");
+			this.DropColumn("dbo.Customers", "IsSubscribedToNewsletter");
 		}
 	}
 }

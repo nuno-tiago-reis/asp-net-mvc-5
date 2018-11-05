@@ -1,46 +1,55 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using System.Data.Entity;
+
 using Vidly.Models;
-using Vidly.ViewModels.Customers;
 
 namespace Vidly.Controllers
 {
 	public sealed class CustomersController : Controller
 	{
 		/// <summary>
-		/// The customers.
+		/// The context.
 		/// </summary>
-		private static readonly List<Customer> Customers = new List<Customer>
+		private readonly ApplicationDbContext context;
+
+		/// <inheritdoc />
+		/// 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:Vidly.Controllers.CustomersController" /> class.
+		/// </summary>
+		public CustomersController()
 		{
-			new Customer {ID = 1, Name = "Harry Potter"},
-			new Customer {ID = 2, Name = "Ronald Weasley"},
-			new Customer {ID = 3, Name = "Hermione Granger"},
-			new Customer {ID = 4, Name = "Albus Dumbledore"},
-			new Customer {ID = 5, Name = "Minerva McGonagall"},
-		};
+			this.context = new ApplicationDbContext();
+		}
+
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
+		{
+			this.context.Dispose();
+		}
 
 		/// <summary>
 		/// GET: Customers/List
 		/// </summary>
 		[Route("customers")]
-		public ViewResult List()
+		public ViewResult Index()
 		{
-			var viewModel = new ListViewModel
-			{
-				Customers = Customers
-			};
+			var customers = this.context.Customers.Include(c => c.MembershipType);
 
-			return this.View(viewModel);
+			return this.View(customers);
 		}
 
 		/// <summary>
 		/// GET: Customers/Details
 		/// </summary>
 		[Route("customers/details/{id:regex(\\d)}")]
-		public ViewResult Details(int id)
+		public ActionResult Details(int id)
 		{
-			var customer = Customers.FirstOrDefault(m => m.ID == id);
+			var customer = this.context.Customers.Include(c => c.MembershipType).FirstOrDefault(c => c.ID == id);
+
+			if (customer == null)
+				return this.HttpNotFound();
 
 			return this.View(customer);
 		}

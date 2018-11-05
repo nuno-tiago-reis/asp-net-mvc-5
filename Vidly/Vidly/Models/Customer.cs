@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Vidly.Models
 {
@@ -25,6 +26,14 @@ namespace Vidly.Models
 		[Required]
 		[StringLength(255)]
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets or sets the birth date.
+		/// </summary>
+		/// <value>
+		/// The birth date.
+		/// </value>
+		public DateTime? BirthDate { get; set; }
 
 		/// <summary>
 		/// Gets or sets the membership type identifier.
