@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Vidly.Models
+namespace Vidly.Dtos
 {
 	/// <summary>
-	/// The movie class.
+	/// The movie dto class.
 	/// </summary>
-	public sealed class Movie
+	public sealed class MovieDto
 	{
 		/// <summary>
 		/// Gets or sets the identifier.
@@ -14,8 +14,7 @@ namespace Vidly.Models
 		/// <value>
 		/// The identifier.
 		/// </value>
-		[Required]
-		public int ID { get; set; }
+		public int? ID { get; set; }
 
 		/// <summary>
 		/// Gets or sets the name.
@@ -23,7 +22,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The name.
 		/// </value>
-		[Required]
 		[StringLength(255)]
 		public string Name { get; set; }
 
@@ -33,8 +31,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The release date.
 		/// </value>
-		[Required]
-		[Display(Name = "Release Date")]
 		public DateTime ReleaseDate { get; set; }
 
 		/// <summary>
@@ -43,17 +39,7 @@ namespace Vidly.Models
 		/// <value>
 		/// The genre identifier.
 		/// </value>
-		[Required]
-		[Display(Name = "Genre")]
 		public int GenreID { get; set; }
-
-		/// <summary>
-		/// Gets or sets the genre.
-		/// </summary>
-		/// <value>
-		/// The genre.
-		/// </value>
-		public Genre Genre { get; set; }
 
 		/// <summary>
 		/// Gets or sets the date added.
@@ -61,8 +47,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The date added.
 		/// </value>
-		[Required]
-		[Display(Name = "Date Added")]
 		public DateTime DateAdded { get; set; }
 
 		/// <summary>
@@ -71,9 +55,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The number in stock.
 		/// </value>
-		[Required]
-		[Range(1, 50)]
-		[Display(Name = "Number in Stock")]
 		public int NumberInStock { get; set; }
 	}
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Vidly.Models
+namespace Vidly.Dtos
 {
 	/// <summary>
-	/// The customer class.
+	/// The customer dto class.
 	/// </summary>
-	public sealed class Customer
+	public sealed class CustomerDto
 	{
 		/// <summary>
 		/// Gets or sets the identifier.
@@ -14,8 +14,7 @@ namespace Vidly.Models
 		/// <value>
 		/// The identifier.
 		/// </value>
-		[Required]
-		public int ID { get; set; }
+		public int? ID { get; set; }
 
 		/// <summary>
 		/// Gets or sets the name.
@@ -23,7 +22,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The name.
 		/// </value>
-		[Required]
 		[StringLength(255)]
 		public string Name { get; set; }
 
@@ -33,9 +31,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The birth date.
 		/// </value>
-		[Required]
-		[AgeValidation]
-		[Display(Name ="Date of Birth")]
 		public DateTime? BirthDate { get; set; }
 
 		/// <summary>
@@ -44,17 +39,7 @@ namespace Vidly.Models
 		/// <value>
 		/// The membership type identifier.
 		/// </value>
-		[Required]
-		[Display(Name = "Membership Type")]
 		public int MembershipTypeID { get; set; }
-
-		/// <summary>
-		/// Gets or sets the type of the membership.
-		/// </summary>
-		/// <value>
-		/// The type of the membership.
-		/// </value>
-		public MembershipType MembershipType { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this customer is subscribed to newsletter.
@@ -62,7 +47,6 @@ namespace Vidly.Models
 		/// <value>
 		///   <c>true</c> if this customer is subscribed to newsletter; otherwise, <c>false</c>.
 		/// </value>
-		[Required]
 		public bool IsSubscribedToNewsletter { get; set; }
 	}
 }

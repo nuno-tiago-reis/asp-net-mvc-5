@@ -98,6 +98,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// <param name="id">The customer id.</param>
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id)
 		{
 			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
@@ -116,8 +117,20 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// <param name="customer">The customer.</param>
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Save(Customer customer)
 		{
+			if (ModelState.IsValid == false)
+			{
+				var viewModel = new CustomerFormViewModel
+				{
+					Customer = customer,
+					MembershipTypes = this.context.MembershipTypes
+				};
+
+				return this.View("Form", viewModel);
+			}
+
 			if (customer.ID == 0)
 			{
 				this.context.Customers.Add(customer);

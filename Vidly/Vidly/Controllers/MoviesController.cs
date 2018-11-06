@@ -96,6 +96,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// <param name="id">The movie id.</param>
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id)
 		{
 			var movie = this.context.Movies.FirstOrDefault(m => m.ID == id);
@@ -114,8 +115,20 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// <param name="movie">The movie.</param>
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Save(Movie movie)
 		{
+			if (ModelState.IsValid == false)
+			{
+				var viewModel = new MovieFormViewModel
+				{
+					Movie = movie,
+					Genres = this.context.Genres
+				};
+
+				return this.View("Form", viewModel);
+			}
+
 			if (movie.ID == 0)
 			{
 				this.context.Movies.Add(movie);

@@ -11,25 +11,29 @@
 
 @using (Html.BeginForm("Save", "Movies"))
 {
-	@Html.HiddenFor(model => model.Movie.ID)
-
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
 
 	if (Model.Movie == null)
 	{
+		@Html.Hidden(nameof(Movie.ID), 0)
 		@Html.HiddenFor(model => model.Movie.DateAdded, new { Value = DateTime.Now })
 	}
 	else
 	{
+		@Html.HiddenFor(model => model.Movie.ID)
 		@Html.HiddenFor(model => model.Movie.DateAdded)
 	}
 
 	<div class="form-group">
 		@Html.LabelFor(model => model.Movie.Name)
 		@Html.TextBoxFor(model => model.Movie.Name, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Movie.Name)
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Movie.ReleaseDate)
 		@Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Movie.ReleaseDate)
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Movie.GenreID)
@@ -37,11 +41,18 @@
 			model => model.Movie.GenreID,
 			new SelectList(Model.Genres, nameof(Genre.ID), nameof(Genre.Name)), string.Empty, new { @class = "form-control" }
 			)
+		@Html.ValidationMessageFor(model => model.Movie.GenreID)
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Movie.NumberInStock)
 		@Html.TextBoxFor(model => model.Movie.NumberInStock, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Movie.NumberInStock)
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")	
 }

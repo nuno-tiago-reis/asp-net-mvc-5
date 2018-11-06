@@ -10,15 +10,22 @@
 
 @using (Html.BeginForm("Save", "Customers"))
 {
-	@Html.HiddenFor(model => model.Customer.ID)
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
+
+	if (Model.Customer == null)
+	{
+		@Html.Hidden(nameof(Customer.ID), 0)
+	}
+	else
+	{
+		@Html.HiddenFor(model => model.Customer.ID)
+	}
 
 	<div class="form-group">
 		@Html.LabelFor(model => model.Customer.Name)
 		@Html.TextBoxFor(model => model.Customer.Name, new { @class = "form-control" })
-	</div>
-	<div class="form-group">
-		@Html.LabelFor(model => model.Customer.BirthDate)
-		@Html.TextBoxFor(model => model.Customer.BirthDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Customer.Name)
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Customer.MembershipTypeID)
@@ -26,6 +33,12 @@
 			model => model.Customer.MembershipTypeID,
 			new SelectList(Model.MembershipTypes, nameof(MembershipType.ID), nameof(MembershipType.Name)), string.Empty, new { @class = "form-control" }
 			)
+		@Html.ValidationMessageFor(model => model.Customer.MembershipTypeID)
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.Customer.BirthDate)
+		@Html.TextBoxFor(model => model.Customer.BirthDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Customer.BirthDate)
 	</div>
 	<div class="checkbox">
 		<label>
@@ -34,4 +47,9 @@
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")
 }
