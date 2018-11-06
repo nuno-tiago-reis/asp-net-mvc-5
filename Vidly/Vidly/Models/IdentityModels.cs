@@ -29,12 +29,28 @@ namespace Vidly.Models
 		public DbSet<Customer> Customers { get; set; }
 
 		/// <summary>
+		/// Gets or sets the membership types.
+		/// </summary>
+		/// <value>
+		/// The membership types.
+		/// </value>
+		public DbSet<MembershipType> MembershipTypes { get; set; }
+
+		/// <summary>
 		/// Gets or sets the movies.
 		/// </summary>
 		/// <value>
 		/// The movies.
 		/// </value>
 		public DbSet<Movie> Movies { get; set; }
+
+		/// <summary>
+		/// Gets or sets the genres.
+		/// </summary>
+		/// <value>
+		/// The genres.
+		/// </value>
+		public DbSet<Genre> Genres { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ApplicationDbContext"/> class.

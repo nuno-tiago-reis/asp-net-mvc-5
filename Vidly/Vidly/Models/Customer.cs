@@ -33,6 +33,8 @@ namespace Vidly.Models
 		/// <value>
 		/// The birth date.
 		/// </value>
+		[Required]
+		[Display(Name ="Date of Birth")]
 		public DateTime? BirthDate { get; set; }
 
 		/// <summary>
@@ -42,6 +44,7 @@ namespace Vidly.Models
 		/// The membership type identifier.
 		/// </value>
 		[Required]
+		[Display(Name = "Membership Type")]
 		public int MembershipTypeID { get; set; }
 
 		/// <summary>
@@ -50,7 +53,6 @@ namespace Vidly.Models
 		/// <value>
 		/// The type of the membership.
 		/// </value>
-		[Required]
 		public MembershipType MembershipType { get; set; }
 
 		/// <summary>

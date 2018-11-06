@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 
 using Vidly.Models;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -55,20 +56,87 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: Movies/HelloWorld
+		/// GET: Movies/Create
 		/// </summary>
-		public ContentResult HelloWorld()
+		[HttpGet]
+		[Route("movies/create")]
+		public ViewResult Create()
 		{
-			return this.Content("Hello World!");
+			var viewModel = new MovieFormViewModel
+			{
+				Genres = this.context.Genres
+			};
+
+			return this.View("Form", viewModel);
 		}
 
+		/// <summary>
+		/// GET: Movies/Edit
+		/// </summary>
+		[HttpGet]
+		[Route("movies/edit/{id:regex(\\d)}")]
+		public ActionResult Edit(int id)
+		{
+			var movie = this.context.Movies.FirstOrDefault(c => c.ID == id);
+
+			if (movie == null)
+				return this.HttpNotFound();
+
+			var viewModel = new MovieFormViewModel
+			{
+				Movie = movie,
+				Genres = this.context.Genres
+			};
+
+			return this.View("Form", viewModel);
+		}
 
 		/// <summary>
-		/// GET: Movies/Redirect
+		/// Deletes the movie with the specified ID.
 		/// </summary>
-		public RedirectToRouteResult Redirect()
+		/// <param name="id">The movie id.</param>
+		[HttpPost]
+		public ActionResult Delete(int id)
 		{
-			return this.RedirectToAction("Index", "Home", new { page = 1, sortBy ="name" });
+			var movie = this.context.Movies.FirstOrDefault(m => m.ID == id);
+
+			if (movie == null)
+				return this.HttpNotFound();
+
+			this.context.Movies.Remove(movie);
+			this.context.SaveChanges();
+
+			return this.RedirectToAction("Index", "Movies");
+		}
+
+		/// <summary>
+		/// Saves the specified movie.
+		/// </summary>
+		/// <param name="movie">The movie.</param>
+		[HttpPost]
+		public ActionResult Save(Movie movie)
+		{
+			if (movie.ID == 0)
+			{
+				this.context.Movies.Add(movie);
+			}
+			else
+			{
+				var databaseMovie = this.context.Movies.FirstOrDefault(c => c.ID == movie.ID);
+
+				this.TryUpdateModel(databaseMovie, nameof(Movie), new[]
+				{
+					nameof(Movie.Name),
+					nameof(Movie.GenreID),
+					nameof(Movie.ReleaseDate),
+					nameof(Movie.NumberInStock),
+					nameof(Movie.DateAdded)
+				});
+			}
+
+			this.context.SaveChanges();
+
+			return this.RedirectToAction("Index", "Movies");
 		}
 
 		/// <summary>

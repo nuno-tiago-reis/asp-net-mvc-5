@@ -9,29 +9,40 @@
 
 @if (Model.Any() == false)
 {
-	<text>No customers have been added yet.</text>
+	@Html.DisplayText("No customers have been added yet.")
 }
 else
 {
 	<table class="table table-bordered table-hover">
 		<thead>
-			<tr>
-				<th>Customer</th>
-				<th>Membership</th>
-				<th>Discount Rate</th>
-			</tr>
+		<tr>
+			<th>Customer</th>
+			<th>Membership</th>
+			<th>Discount Rate</th>
+		</tr>
 		</thead>
 		<tbody>
-			@foreach (var customer in Model)
-			{
+		@foreach (var customer in Model)
+		{
 			<tr>
 				<td>
 					<a href="@Url.Action("Details", "Customers", new {id = customer.ID})">@customer.Name</a>
 				</td>
 				<td>@customer.MembershipType.Name</td>
 				<td>@customer.MembershipType.DiscountRate%</td>
+				<td>
+					<input type="button" class="btn btn-primary" value="Edit" onclick="location.href = '@Url.Action("Edit", "Customers", new { id = customer.ID})'" />
+				</td>
+				<td>
+					@using (Html.BeginForm("Delete", "Customers"))
+					{
+						@Html.Hidden("id", customer.ID)
+						<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you wish to delete this customer?');">Delete</button>
+					}
+				</td>
 			</tr>
-			}
+		}
 		</tbody>
 	</table>
 }
+<input type="button" class="btn btn-primary" value="Create" onclick="location.href='@Url.Action("Create", "Customers")'" />

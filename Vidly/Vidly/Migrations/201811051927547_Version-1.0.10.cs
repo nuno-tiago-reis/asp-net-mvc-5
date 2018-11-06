@@ -4,6 +4,7 @@ namespace Vidly.Migrations
 
 	public partial class Version1010 : DbMigration
 	{
+		/// <inheritdoc />
 		public override void Up()
 		{
 			this.AddColumn("dbo.Movies", "NumberInStock", c => c.Int(nullable: false));
@@ -11,6 +12,7 @@ namespace Vidly.Migrations
 			this.AddColumn("dbo.Movies", "ReleaseDate", c => c.DateTime(nullable: false));
 		}
 
+		/// <inheritdoc />
 		public override void Down()
 		{
 			this.DropColumn("dbo.Movies", "ReleaseDate");

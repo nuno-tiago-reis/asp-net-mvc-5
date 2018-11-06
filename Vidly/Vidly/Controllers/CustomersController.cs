@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 
 using Vidly.Models;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -32,6 +33,7 @@ namespace Vidly.Controllers
 		/// <summary>
 		/// GET: Customers/List
 		/// </summary>
+		[HttpGet]
 		[Route("customers")]
 		public ViewResult Index()
 		{
@@ -43,6 +45,7 @@ namespace Vidly.Controllers
 		/// <summary>
 		/// GET: Customers/Details
 		/// </summary>
+		[HttpGet]
 		[Route("customers/details/{id:regex(\\d)}")]
 		public ActionResult Details(int id)
 		{
@@ -52,6 +55,89 @@ namespace Vidly.Controllers
 				return this.HttpNotFound();
 
 			return this.View(customer);
+		}
+
+		/// <summary>
+		/// GET: Customers/Create
+		/// </summary>
+		[HttpGet]
+		[Route("customers/create")]
+		public ViewResult Create()
+		{
+			var viewModel = new CustomerFormViewModel
+			{
+				MembershipTypes = this.context.MembershipTypes
+			};
+
+			return this.View("Form", viewModel);
+		}
+
+		/// <summary>
+		/// GET: Customers/Edit
+		/// </summary>
+		[HttpGet]
+		[Route("customers/edit/{id:regex(\\d)}")]
+		public ActionResult Edit(int id)
+		{
+			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
+
+			if (customer == null)
+				return this.HttpNotFound();
+
+			var viewModel = new CustomerFormViewModel
+			{
+				Customer = customer,
+				MembershipTypes = this.context.MembershipTypes
+			};
+
+			return this.View("Form", viewModel);
+		}
+
+		/// <summary>
+		/// Deletes the customer with the specified ID.
+		/// </summary>
+		/// <param name="id">The customer id.</param>
+		[HttpPost]
+		public ActionResult Delete(int id)
+		{
+			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
+
+			if (customer == null)
+				return this.HttpNotFound();
+
+			this.context.Customers.Remove(customer);
+			this.context.SaveChanges();
+
+			return this.RedirectToAction("Index", "Customers");
+		}
+
+		/// <summary>
+		/// Saves the specified customer.
+		/// </summary>
+		/// <param name="customer">The customer.</param>
+		[HttpPost]
+		public ActionResult Save(Customer customer)
+		{
+			if (customer.ID == 0)
+			{
+				this.context.Customers.Add(customer);
+			}
+			else
+			{
+				var databaseCustomer = this.context.Customers.FirstOrDefault(c => c.ID == customer.ID);
+
+				this.TryUpdateModel(databaseCustomer, nameof(Customer), new[]
+				{
+					nameof(Customer.Name),
+					nameof(Customer.BirthDate),
+					nameof(Customer.MembershipTypeID),
+					nameof(Customer.IsSubscribedToNewsletter)
+				});
+			}
+
+			this.context.SaveChanges();
+
+			return this.RedirectToAction("Index", "Customers");
 		}
 	}
 }
