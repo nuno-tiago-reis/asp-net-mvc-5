@@ -42,6 +42,14 @@ namespace Vidly.Dtos
 		public int MembershipTypeID { get; set; }
 
 		/// <summary>
+		/// Gets or sets the type of the membership.
+		/// </summary>
+		/// <value>
+		/// The type of the membership.
+		/// </value>
+		public MembershipTypeDto MembershipType { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this customer is subscribed to newsletter.
 		/// </summary>
 		/// <value>

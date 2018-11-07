@@ -36,9 +36,7 @@ namespace Vidly.Controllers
 		[Route("movies")]
 		public ViewResult Index()
 		{
-			var movies = this.context.Movies.Include(m => m.Genre);
-
-			return this.View(movies);
+			return this.View();
 		}
 
 		/// <summary>

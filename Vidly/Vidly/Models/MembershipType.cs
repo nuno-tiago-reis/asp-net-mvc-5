@@ -2,7 +2,7 @@
 
 namespace Vidly.Models
 {
-	public class MembershipType
+	public sealed class MembershipType
 	{
 		/// <summary>
 		/// The unknown membership type id.

@@ -42,6 +42,14 @@ namespace Vidly.Dtos
 		public int GenreID { get; set; }
 
 		/// <summary>
+		/// Gets or sets the genre.
+		/// </summary>
+		/// <value>
+		/// The genre.
+		/// </value>
+		public GenreDto Genre { get; set; }
+
+		/// <summary>
 		/// Gets or sets the date added.
 		/// </summary>
 		/// <value>

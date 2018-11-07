@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Linq;
 using System.Web.Http;
+using System.Data.Entity;
 
 using Vidly.Dtos;
 using Vidly.Models;
@@ -31,7 +32,7 @@ namespace Vidly.Controllers.API
 		[HttpGet]
 		public IHttpActionResult GetCustomers()
 		{
-			return this.Ok(this.context.Customers.Select(Mapper.Map<Customer, CustomerDto>));
+			return this.Ok(this.context.Customers.Include(customer => customer.MembershipType).AsEnumerable().Select(Mapper.Map<Customer, CustomerDto>));
 		}
 
 		/// <summary>
