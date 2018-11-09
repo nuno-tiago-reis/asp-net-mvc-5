@@ -1,4 +1,5 @@
 ﻿@using Vidly.Models
+
 @model Vidly.ViewModels.CustomerFormViewModel
 
 @{
@@ -6,7 +7,9 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@(Model.Customer == null ? "New Customer" : "Edit Customer")</h2>
+<h3>@(Model.Customer == null ? "New Customer" : "Edit Customer")</h3>
+
+<br />
 
 @using (Html.BeginForm("Save", "Customers"))
 {

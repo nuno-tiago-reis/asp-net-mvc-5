@@ -1,21 +1,22 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using System.Data.Entity;
 
 using Vidly.Models;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+	[Authorize]
 	public sealed class MoviesController : Controller
 	{
+		#region [Properties]
 		/// <summary>
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+		#endregion
 
-		/// <inheritdoc />
-		/// 
+		#region [Constructors]
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Vidly.Controllers.MoviesController" /> class.
 		/// </summary>
@@ -23,16 +24,12 @@ namespace Vidly.Controllers
 		{
 			this.context = new ApplicationDbContext();
 		}
-
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			this.context.Dispose();
-		}
+		#endregion
 
 		/// <summary>
-		/// GET: Movies/Index
+		/// GET: movies/
 		/// </summary>
+		[HttpGet]
 		[Route("movies")]
 		public ViewResult Index()
 		{
@@ -40,21 +37,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: Movies/Details
-		/// </summary>
-		[Route("movies/details/{id:regex(\\d)}")]
-		public ActionResult Details(int id)
-		{
-			var movie = this.context.Movies.Include(m => m.Genre).FirstOrDefault(c => c.ID == id);
-
-			if (movie == null)
-				return this.HttpNotFound();
-
-			return this.View(movie);
-		}
-
-		/// <summary>
-		/// GET: Movies/Create
+		/// GET: movies/create
 		/// </summary>
 		[HttpGet]
 		[Route("movies/create")]
@@ -69,14 +52,13 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: Movies/Edit
+		/// GET: movies/edit
 		/// </summary>
 		[HttpGet]
 		[Route("movies/edit/{id:regex(\\d)}")]
 		public ActionResult Edit(int id)
 		{
 			var movie = this.context.Movies.FirstOrDefault(c => c.ID == id);
-
 			if (movie == null)
 				return this.HttpNotFound();
 
@@ -98,7 +80,6 @@ namespace Vidly.Controllers
 		public ActionResult Delete(int id)
 		{
 			var movie = this.context.Movies.FirstOrDefault(m => m.ID == id);
-
 			if (movie == null)
 				return this.HttpNotFound();
 
@@ -150,16 +131,12 @@ namespace Vidly.Controllers
 			return this.RedirectToAction("Index", "Movies");
 		}
 
-		/// <summary>
-		/// GET: Movies/ByReleaseDate
-		/// </summary>
-		/// 
-		/// <param name="year">The year.</param>
-		/// <param name="month">The month.</param>
-		public ActionResult ByReleaseDate(int year, int month)
+		#region [CleanUp]
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
 		{
-			return this.Content($"Year={year} Month={month}");
+			this.context.Dispose();
 		}
-
+		#endregion
 	}
 }

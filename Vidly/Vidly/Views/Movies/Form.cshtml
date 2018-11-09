@@ -1,4 +1,5 @@
 ﻿@using Vidly.Models
+
 @model Vidly.ViewModels.MovieFormViewModel
 
 @{
@@ -6,8 +7,9 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@(Model.Movie == null ? "New Movie" : "Edit Movie")</h2>
+<h3>@(Model.Movie == null ? "New Movie" : "Edit Movie")</h3>
 
+<br />
 
 @using (Html.BeginForm("Save", "Movies"))
 {
@@ -54,5 +56,5 @@
 
 @section scripts
 {
-	@Scripts.Render("~/bundles/jqueryval")	
+	@Scripts.Render("~/bundles/jqueryval")
 }

@@ -11,13 +11,17 @@ using Vidly.Models;
 
 namespace Vidly.Controllers.API
 {
+	[Authorize]
 	public sealed class CustomersController : ApiController
 	{
+		#region [Properties]
 		/// <summary>
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+		#endregion
 
+		#region [Constructors]
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CustomersController"/> class.
 		/// </summary>
@@ -25,6 +29,7 @@ namespace Vidly.Controllers.API
 		{
 			this.context = new ApplicationDbContext();
 		}
+		#endregion
 
 		/// <summary>
 		/// GET /api/customers
@@ -54,7 +59,7 @@ namespace Vidly.Controllers.API
 		[HttpPost]
 		public IHttpActionResult CreateCustomer(CustomerDto customerDto)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				return this.BadRequest();
 
 			var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
@@ -73,7 +78,7 @@ namespace Vidly.Controllers.API
 		[HttpPut]
 		public void UpdateCustomer(int id, CustomerDto customerDto)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
 
 			var customer = this.context.Customers.SingleOrDefault(c => c.ID == id);
@@ -90,7 +95,7 @@ namespace Vidly.Controllers.API
 		[HttpDelete]
 		public void DeleteCustomer(int id)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
 
 			var customer = this.context.Customers.SingleOrDefault(c => c.ID == id);

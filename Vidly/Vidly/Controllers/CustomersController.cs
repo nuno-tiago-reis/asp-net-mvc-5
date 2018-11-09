@@ -1,21 +1,22 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using System.Data.Entity;
 
 using Vidly.Models;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+	[Authorize]
 	public sealed class CustomersController : Controller
 	{
+		#region [Properties]
 		/// <summary>
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+		#endregion
 
-		/// <inheritdoc />
-		/// 
+		#region [Constructors]
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Vidly.Controllers.CustomersController" /> class.
 		/// </summary>
@@ -23,15 +24,10 @@ namespace Vidly.Controllers
 		{
 			this.context = new ApplicationDbContext();
 		}
-
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			this.context.Dispose();
-		}
+		#endregion
 
 		/// <summary>
-		/// GET: Customers/List
+		/// GET: customers/
 		/// </summary>
 		[HttpGet]
 		[Route("customers")]
@@ -41,22 +37,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: Customers/Details
-		/// </summary>
-		[HttpGet]
-		[Route("customers/details/{id:regex(\\d)}")]
-		public ActionResult Details(int id)
-		{
-			var customer = this.context.Customers.Include(c => c.MembershipType).FirstOrDefault(c => c.ID == id);
-
-			if (customer == null)
-				return this.HttpNotFound();
-
-			return this.View(customer);
-		}
-
-		/// <summary>
-		/// GET: Customers/Create
+		/// GET: customers/create
 		/// </summary>
 		[HttpGet]
 		[Route("customers/create")]
@@ -71,14 +52,13 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: Customers/Edit
+		/// GET: customers/edit
 		/// </summary>
 		[HttpGet]
 		[Route("customers/edit/{id:regex(\\d)}")]
 		public ActionResult Edit(int id)
 		{
 			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
-
 			if (customer == null)
 				return this.HttpNotFound();
 
@@ -100,7 +80,6 @@ namespace Vidly.Controllers
 		public ActionResult Delete(int id)
 		{
 			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
-
 			if (customer == null)
 				return this.HttpNotFound();
 
@@ -150,5 +129,13 @@ namespace Vidly.Controllers
 
 			return this.RedirectToAction("Index", "Customers");
 		}
+
+		#region [CleanUp]
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
+		{
+			this.context.Dispose();
+		}
+		#endregion
 	}
 }

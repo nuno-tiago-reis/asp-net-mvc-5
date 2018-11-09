@@ -1,24 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 using Vidly.Models;
 
 namespace Vidly.ViewModels
 {
 	public sealed class CustomerFormViewModel
 	{
-		/// <summary>
-		/// Gets or sets the customer.
-		/// </summary>
-		/// <value>
-		/// The customer.
-		/// </value>
+		[Required]
 		public Customer Customer { get; set; }
 
-		/// <summary>
-		/// Gets or sets the membership types.
-		/// </summary>
-		/// <value>
-		/// The membership types.
-		/// </value>
+		[Required]
 		public IEnumerable<MembershipType> MembershipTypes { get; set; }
 
 	}

@@ -62,6 +62,7 @@ namespace Vidly.Models
 		/// The date added.
 		/// </value>
 		[Required]
+		[AddedDateValidation]
 		[Display(Name = "Date Added")]
 		public DateTime DateAdded { get; set; }
 

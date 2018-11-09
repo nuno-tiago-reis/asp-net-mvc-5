@@ -41,3 +41,13 @@ textarea
 {
 	color: red
 }
+
+.confirmed-contact
+{
+	color: green
+}
+
+.unconfirmed-contact
+{
+	color: red
+}

@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 
 namespace Vidly.Models
 {
+	// TODO
 	public class IndexViewModel
 	{
 		public bool HasPassword { get; set; }
@@ -15,17 +16,20 @@ namespace Vidly.Models
 		public bool BrowserRemembered { get; set; }
 	}
 
+	// TODO
 	public class ManageLoginsViewModel
 	{
 		public IList<UserLoginInfo> CurrentLogins { get; set; }
 		public IList<AuthenticationDescription> OtherLogins { get; set; }
 	}
 
+	// TODO
 	public class FactorViewModel
 	{
 		public string Purpose { get; set; }
 	}
 
+	// TODO
 	public class SetPasswordViewModel
 	{
 		[Required]
@@ -40,6 +44,7 @@ namespace Vidly.Models
 		public string ConfirmPassword { get; set; }
 	}
 
+	// TODO
 	public class ChangePasswordViewModel
 	{
 		[Required]
@@ -59,6 +64,7 @@ namespace Vidly.Models
 		public string ConfirmPassword { get; set; }
 	}
 
+	// TODO
 	public class AddPhoneNumberViewModel
 	{
 		[Required]
@@ -67,6 +73,7 @@ namespace Vidly.Models
 		public string Number { get; set; }
 	}
 
+	// TODO
 	public class VerifyPhoneNumberViewModel
 	{
 		[Required]
@@ -79,6 +86,7 @@ namespace Vidly.Models
 		public string PhoneNumber { get; set; }
 	}
 
+	// TODO
 	public class ConfigureTwoFactorViewModel
 	{
 		public string SelectedProvider { get; set; }

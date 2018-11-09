@@ -1,0 +1,81 @@
+﻿@model Vidly.ViewModels.UserFormViewModel
+
+@{
+	ViewBag.Title = "User Form";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>@(Model.User == null ? "New User" : "Edit User")</h3>
+
+<br />
+
+@using (Html.BeginForm("Save", "Users"))
+{
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
+
+	if (Model.User == null)
+	{
+		@Html.Hidden(nameof(Model.User.Id), null)
+		@Html.Hidden(nameof(Model.User.LockoutEnabled), false)
+		@Html.Hidden(nameof(Model.User.LockoutEndDateUtc), false)
+		@Html.Hidden(nameof(Model.User.TwoFactorEnabled), false)
+	}
+	else
+	{
+		@Html.HiddenFor(model => model.User.Id)
+		@Html.HiddenFor(model => model.User.LockoutEnabled)
+		@Html.HiddenFor(model => model.User.LockoutEndDateUtc)
+		@Html.HiddenFor(model => model.User.TwoFactorEnabled)
+	}
+
+	<h4><b>UserName</b></h4>
+
+	<div class="form-group">
+		@Html.TextBoxFor(model => model.User.UserName, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.User.UserName)
+	</div>
+
+	<h4><b>Contacts</b></h4>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.User.Email)
+		@Html.TextBoxFor(model => model.User.Email, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.User.Email)
+	</div>
+	<div class="checkbox">
+		<label>
+			@Html.CheckBoxFor(model => model.User.EmailConfirmed, new { @class = "checkbox" }) Email Confirmed?
+		</label>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.User.PhoneNumber)
+		@Html.TextBoxFor(model => model.User.PhoneNumber, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.User.PhoneNumber)
+	</div>
+	<div class="checkbox">
+		<label>
+			@Html.CheckBoxFor(model => model.User.PhoneNumberConfirmed, new { @class = "checkbox" }) Phone Confirmed?
+		</label>
+	</div>
+
+	<h4><b>Roles</b></h4>
+
+	<div class="form-group">
+		@foreach (string role in Model.Roles)
+		{
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="User.RoleNames" value="@role" checked="@(Model.User?.RoleNames.Contains(role))" /> @role
+			</label>
+		</div>
+		}
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")
+}

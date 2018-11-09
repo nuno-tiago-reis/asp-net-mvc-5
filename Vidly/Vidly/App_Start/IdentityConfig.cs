@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -8,39 +9,78 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
+using SendGrid;
+using SendGrid.Helpers.Mail;
+
 using Vidly.Models;
 
 namespace Vidly
 {
-	public class EmailService : IIdentityMessageService
+	/// <inheritdoc />
+	public sealed class DefaultEmailService : IIdentityMessageService
 	{
+		/// <inheritdoc />
 		public Task SendAsync(IdentityMessage message)
 		{
-			// Plug in your email service here to send an email.
+			return SendGridAsync(message);
+		}
+
+		/// <summary>
+		/// Sends the message through send grid asynchronously.
+		/// </summary>
+		/// 
+		/// <param name="message">The message.</param>
+		private static async Task SendGridAsync(IdentityMessage message)
+		{
+			var client = new SendGridClient(ConfigurationManager.AppSettings["sendGridKey"]);
+
+			var sendGridMessage = new SendGridMessage();
+			sendGridMessage.AddTo(message.Destination);
+			sendGridMessage.From = new EmailAddress("no-reply@vidly.com", "Vidly");
+			sendGridMessage.Subject = message.Subject;
+			sendGridMessage.HtmlContent = message.Body;
+
+			await client.SendEmailAsync(sendGridMessage);
+		}
+	}
+
+	/// <inheritdoc />
+	public sealed class DefaultSmsService : IIdentityMessageService
+	{
+		/// <inheritdoc />
+		public Task SendAsync(IdentityMessage message)
+		{
+			// TODO
 			return Task.FromResult(0);
 		}
 	}
 
-	public class SmsService : IIdentityMessageService
-	{
-		public Task SendAsync(IdentityMessage message)
-		{
-			// Plug in your SMS service here to send a text message.
-			return Task.FromResult(0);
-		}
-	}
-
-	// Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+	/// <summary>
+	/// Configure the application user manager used in this application.
+	/// UserManager is defined in ASP.NET Identity and is used by the application.
+	/// </summary>
 	public class ApplicationUserManager : UserManager<ApplicationUser>
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ApplicationUserManager"/> class.
+		/// </summary>
+		/// 
+		/// <param name="store"></param>
 		public ApplicationUserManager(IUserStore<ApplicationUser> store)
 			: base(store)
 		{
 		}
 
+		/// <summary>
+		/// Creates the application user manager.
+		/// </summary>
+		/// 
+		/// <param name="options">The options.</param>
+		/// <param name="context">The context.</param>
 		public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
 		{
 			var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+
 			// Configure validation logic for usernames
 			manager.UserValidator = new UserValidator<ApplicationUser>(manager)
 			{
@@ -69,36 +109,55 @@ namespace Vidly
 			{
 				MessageFormat = "Your security code is {0}"
 			});
+
 			manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
 			{
 				Subject = "Security Code",
 				BodyFormat = "Your security code is {0}"
 			});
-			manager.EmailService = new EmailService();
-			manager.SmsService = new SmsService();
+
+			manager.EmailService = new DefaultEmailService();
+			manager.SmsService = new DefaultSmsService();
+
 			var dataProtectionProvider = options.DataProtectionProvider;
 			if (dataProtectionProvider != null)
 			{
 				manager.UserTokenProvider =
 					new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
 			}
+
 			return manager;
 		}
 	}
 
-	// Configure the application sign-in manager which is used in this application.
+	/// <summary>
+	/// Configure the application sign-in manager which is used in this application.
+	/// </summary>
 	public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ApplicationSignInManager"/> class.
+		/// </summary>
+		/// 
+		/// <param name="userManager">The user manager.</param>
+		/// <param name="authenticationManager">The authentication manager.</param>
 		public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
 			: base(userManager, authenticationManager)
 		{
 		}
 
+		/// <inheritdoc />
 		public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
 		{
 			return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
 		}
 
+		/// <summary>
+		/// Creates the sign in manager.
+		/// </summary>
+		/// 
+		/// <param name="options">The options.</param>
+		/// <param name="context">The context.</param>
 		public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
 		{
 			return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);

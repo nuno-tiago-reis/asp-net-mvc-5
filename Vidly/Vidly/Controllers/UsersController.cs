@@ -1,0 +1,234 @@
+﻿using System;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
+using Vidly.Models;
+using Vidly.ViewModels;
+
+namespace Vidly.Controllers
+{
+	[Authorize]
+	public sealed class UsersController : Controller
+	{
+		#region [Properties]
+		/// <summary>
+		/// The context.
+		/// </summary>
+		private readonly ApplicationDbContext context;
+
+		/// <summary>
+		/// The sign in manager field.
+		/// </summary>
+		private ApplicationSignInManager signInManagerField;
+
+		/// <summary>
+		/// The user manager field.
+		/// </summary>
+		private ApplicationUserManager userManagerField;
+
+		/// <summary>
+		/// Gets the sign in manager.
+		/// </summary>
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return this.signInManagerField ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				this.signInManagerField = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the user manager.
+		/// </summary>
+		public ApplicationUserManager UserManager
+		{
+			get
+			{
+				return this.userManagerField ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			}
+			private set
+			{
+				this.userManagerField = value;
+			}
+		}
+		#endregion
+
+		#region [Constructors]
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UsersController"/> class.
+		/// </summary>
+		public UsersController()
+		{
+			this.context = new ApplicationDbContext();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UsersController" /> class.
+		/// </summary>
+		/// 
+		/// <param name="userManager">The user manager.</param>
+		/// <param name="signInManager">The sign in manager.</param>
+		public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		{
+			this.UserManager = userManager;
+			this.SignInManager = signInManager;
+		}
+		#endregion
+
+		/// <summary>
+		/// GET: users/
+		/// </summary>
+		[HttpGet]
+		[Route("users")]
+		public ViewResult Index()
+		{
+			var users = this.UserManager.Users.ToList();
+
+			foreach (var user in users)
+				user.RoleNames = this.UserManager.GetRoles(user.Id);
+
+			return this.View(users);
+		}
+
+		/// <summary>
+		/// GET: users/create
+		/// </summary>
+		[HttpGet]
+		[Route("users/create")]
+		public ViewResult Create()
+		{
+			var viewModel = new UserFormViewModel
+			{
+				User = null,
+				Roles = this.context.Roles.Select(role => role.Name)
+			};
+
+			return this.View("Form", viewModel);
+		}
+
+		/// <summary>
+		/// GET: users/edit
+		/// </summary>
+		[HttpGet]
+		[Route("users/edit/{id}")]
+		public ActionResult Edit(string id)
+		{
+			var user = this.UserManager.FindById(id);
+
+			if (user == null)
+				return this.HttpNotFound();
+
+			var viewModel = new UserFormViewModel
+			{
+				User = user,
+				Roles = this.context.Roles.Select(role => role.Name)
+			};
+			viewModel.User.RoleNames = this.UserManager.GetRoles(user.Id);
+
+			return this.View("Form", viewModel);
+		}
+
+		/// <summary>
+		/// Deletes the movie with the specified ID.
+		/// </summary>
+		/// <param name="id">The movie id.</param>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(string id)
+		{
+			var user = this.UserManager.FindById(id);
+			if (user == null)
+				return this.HttpNotFound();
+
+			this.UserManager.Delete(user);
+
+			return this.RedirectToAction("Index", "Users");
+		}
+
+		/// <summary>
+		/// Saves the specified user.
+		/// </summary>
+		/// <param name="user">The user.</param>
+		/// <param name="oldPassword">The old password.</param>
+		/// <param name="newPassword">The new password.</param>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Save(ApplicationUser user, string oldPassword, string newPassword)
+		{
+			if (ModelState.IsValid == false)
+			{
+				var viewModel = new UserFormViewModel
+				{
+					User = user,
+					Roles = this.context.Roles.Select(role => role.Name)
+				};
+
+				return this.View("Form", viewModel);
+			}
+
+			var databaseUser = this.UserManager.FindById(user.Id);
+			if (databaseUser == null)
+			{
+				// Create the user
+				var result = this.UserManager.Create(user, newPassword);
+				if (result.Succeeded == false)
+					return this.HandleError(result);
+			}
+			else
+			{
+				// Update the contacts
+				databaseUser.Email = user.Email;
+				databaseUser.EmailConfirmed = user.EmailConfirmed;
+				databaseUser.PhoneNumber = user.PhoneNumber;
+				databaseUser.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+
+				// Update the roles
+				var roles = this.UserManager.GetRoles(databaseUser.Id).ToArray();
+				this.UserManager.RemoveFromRoles(databaseUser.Id, roles);
+
+				if (user.RoleNames != null && user.RoleNames.Count > 0)
+				{
+					foreach (string roleName in user.RoleNames)
+					{
+						if (string.IsNullOrWhiteSpace(roleName))
+							continue;
+
+						this.UserManager.AddToRole(databaseUser.Id, roleName);
+					}
+				}
+
+				var result = this.UserManager.Update(databaseUser);
+				if (result.Succeeded == false)
+					return this.HandleError(result);
+			}
+
+			return this.RedirectToAction("Index", "Users");
+		}
+
+		/// <summary>
+		/// Handles the error.
+		/// </summary>
+		/// <param name="result">The result.</param>
+		private ViewResult HandleError(IdentityResult result)
+		{
+			this.ModelState.AddModelError(string.Empty, string.Join(Environment.NewLine, result.Errors));
+			return this.View("Error");
+		}
+
+		#region [CleanUp]
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
+		{
+			this.context.Dispose();
+		}
+		#endregion
+	}
+}

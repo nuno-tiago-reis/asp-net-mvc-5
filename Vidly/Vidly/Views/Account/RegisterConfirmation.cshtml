@@ -1,0 +1,13 @@
+﻿@{
+	ViewBag.Title = "Register confirmation";
+}
+
+@* ReSharper disable once UnknownCssClass *@
+<hgroup class="title">
+	<h1>@ViewBag.Title.</h1>
+</hgroup>
+<div>
+	<p>
+		Your registration has been completed and a confirmation email has been sent. Please @Html.ActionLink("click here to log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }) after receiving it.
+	</p>
+</div>

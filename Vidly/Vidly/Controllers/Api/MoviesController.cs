@@ -11,13 +11,17 @@ using Vidly.Models;
 
 namespace Vidly.Controllers.API
 {
+	[Authorize]
 	public sealed class MoviesController : ApiController
 	{
+		#region [Properties]
 		/// <summary>
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+		#endregion
 
+		#region [Constructors]
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MoviesController"/> class.
 		/// </summary>
@@ -25,6 +29,7 @@ namespace Vidly.Controllers.API
 		{
 			this.context = new ApplicationDbContext();
 		}
+		#endregion
 
 		/// <summary>
 		/// GET /api/movies
@@ -54,7 +59,7 @@ namespace Vidly.Controllers.API
 		[HttpPost]
 		public IHttpActionResult CreateMovie(MovieDto movieDto)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				return this.BadRequest();
 
 			var movie = Mapper.Map<MovieDto, Movie>(movieDto);
@@ -73,7 +78,7 @@ namespace Vidly.Controllers.API
 		[HttpPut]
 		public void UpdateMovie(int id, MovieDto movieDto)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
 
 			var movie = this.context.Movies.SingleOrDefault(m => m.ID == id);
@@ -90,7 +95,7 @@ namespace Vidly.Controllers.API
 		[HttpDelete]
 		public void DeleteMovie(int id)
 		{
-			if (ModelState.IsValid == false)
+			if (this.ModelState.IsValid == false)
 				throw new HttpResponseException(HttpStatusCode.BadRequest);
 
 			var movie = this.context.Movies.SingleOrDefault(c => c.ID == id);
