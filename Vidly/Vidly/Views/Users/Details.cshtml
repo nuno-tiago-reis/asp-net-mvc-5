@@ -1,0 +1,30 @@
+﻿@model Vidly.Models.ApplicationUser
+
+@{
+	ViewBag.Title = Model.UserName;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.UserName</h2>
+
+<br />
+
+<h4><b>Email</b></h4>
+<span class="@(Model.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The email is @(Model.EmailConfirmed ? "confirmed" : "unconfirmed").">@Model.Email</span>
+
+<h4><b>PhoneNumber </b></h4>
+<span class="@(Model.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@Model.PhoneNumber</span>
+
+<h4><b>Two Factor Authentication </b></h4>
+<span class="@(Model.TwoFactorEnabled ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="Two factor authentication is @(Model.TwoFactorEnabled ? "enabled" : "disabled").">@(Model.TwoFactorEnabled ? "Enabled" : "Disabled")</span>
+
+<h4><b>Lockout </b></h4>
+<span class="@(Model.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="@(Model.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {Model.LockoutEndDateUtc}").">@(Model.LockoutEnabled ? "Enabled" : "Disabled")</span>
+
+<h4><b>Roles</b></h4>
+<ul>
+	@foreach (var roleName in Model.RoleNames)
+	{
+		<li>@roleName</li>
+	}
+</ul>

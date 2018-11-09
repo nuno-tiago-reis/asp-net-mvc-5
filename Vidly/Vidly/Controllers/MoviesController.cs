@@ -33,7 +33,9 @@ namespace Vidly.Controllers
 		[Route("movies")]
 		public ViewResult Index()
 		{
-			return this.View();
+			return this.User.IsInRole(ApplicationRoles.CanManageMovies)
+				? this.View("List")
+				: this.View("ReadOnlyList");
 		}
 
 		/// <summary>
@@ -41,6 +43,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("movies/create")]
+		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
 		public ViewResult Create()
 		{
 			var viewModel = new MovieFormViewModel
@@ -52,10 +55,25 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
+		/// GET: movies/
+		/// </summary>
+		[HttpGet]
+		[Route("users/{id}")]
+		public ActionResult Details(int id)
+		{
+			var movie = this.context.Movies.Include(nameof(Movie.Genre)).FirstOrDefault(m => m.ID == id);
+			if (movie == null)
+				return this.HttpNotFound();
+
+			return this.View("Details", movie);
+		}
+
+		/// <summary>
 		/// GET: movies/edit
 		/// </summary>
 		[HttpGet]
 		[Route("movies/edit/{id:regex(\\d)}")]
+		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
 		public ActionResult Edit(int id)
 		{
 			var movie = this.context.Movies.FirstOrDefault(c => c.ID == id);
@@ -77,6 +95,7 @@ namespace Vidly.Controllers
 		/// <param name="id">The movie id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
 		public ActionResult Delete(int id)
 		{
 			var movie = this.context.Movies.FirstOrDefault(m => m.ID == id);
@@ -95,6 +114,7 @@ namespace Vidly.Controllers
 		/// <param name="movie">The movie.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
 		public ActionResult Save(Movie movie)
 		{
 			if (ModelState.IsValid == false)

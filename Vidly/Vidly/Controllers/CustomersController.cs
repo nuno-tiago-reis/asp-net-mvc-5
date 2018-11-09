@@ -33,7 +33,24 @@ namespace Vidly.Controllers
 		[Route("customers")]
 		public ViewResult Index()
 		{
-			return this.View();
+			return this.User.IsInRole(ApplicationRoles.CanManageCustomers)
+				? this.View("List")
+				: this.View("ReadOnlyList");
+		}
+
+		/// <summary>
+		/// GET: customers/
+		/// </summary>
+		[HttpGet]
+		[Route("users/{id}")]
+		public ActionResult Details(int id)
+		{
+			var customer = this.context.Customers.Include(nameof(Customer.MembershipType)).FirstOrDefault(c => c.ID == id);
+
+			if (customer == null)
+				return this.HttpNotFound();
+
+			return this.View("Details", customer);
 		}
 
 		/// <summary>
@@ -41,6 +58,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("customers/create")]
+		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
 		public ViewResult Create()
 		{
 			var viewModel = new CustomerFormViewModel
@@ -56,6 +74,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("customers/edit/{id:regex(\\d)}")]
+		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
 		public ActionResult Edit(int id)
 		{
 			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
@@ -77,6 +96,7 @@ namespace Vidly.Controllers
 		/// <param name="id">The customer id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
 		public ActionResult Delete(int id)
 		{
 			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
@@ -95,6 +115,7 @@ namespace Vidly.Controllers
 		/// <param name="customer">The customer.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
 		public ActionResult Save(Customer customer)
 		{
 			if (ModelState.IsValid == false)

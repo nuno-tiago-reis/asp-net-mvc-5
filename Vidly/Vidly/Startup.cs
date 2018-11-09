@@ -30,54 +30,50 @@ namespace Vidly
 		private void ConfigureUsers()
 		{
 			var context = new ApplicationDbContext();
-
-			// Roles
 			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-
-			if (!roleManager.RoleExists(ApplicationUser.CanManageUsersRole))
-			{
-				var role = new IdentityRole { Name = ApplicationUser.CanManageUsersRole };
-				roleManager.Create(role);
-			}
-			
-			if (!roleManager.RoleExists(ApplicationUser.CanManageMoviesRole))
-			{
-				var role = new IdentityRole { Name = ApplicationUser.CanManageMoviesRole };
-				roleManager.Create(role);
-			}
-			
-			if (!roleManager.RoleExists(ApplicationUser.CanManageCustomersRole))
-			{
-				var role = new IdentityRole { Name = ApplicationUser.CanManageCustomersRole };
-				roleManager.Create(role);
-			}
-
-			// Admin
 			var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-			if (!userManager.Users.Any(user => user.UserName == ApplicationUser.AdminUserName))
+			// Create the roles
+			var roleNames = new[]
 			{
-				// Create the user
-				var user = new ApplicationUser
-				{
-					UserName = ApplicationUser.AdminUserName,
+				ApplicationRoles.CanManageUsers,
+				ApplicationRoles.CanManageMovies,
+				ApplicationRoles.CanManageCustomers
+			};
 
-					Email = ApplicationUser.AdminEmail,
-					EmailConfirmed = true,
+			foreach (string roleName in roleNames)
+			{
+				if (roleManager.RoleExists(roleName))
+					continue;
 
-					PhoneNumber = ApplicationUser.AdminPhoneNumber,
-					PhoneNumberConfirmed =  true
-				};
+				var role = new IdentityRole { Name = roleName };
+				roleManager.Create(role);
+			}
 
-				var result = userManager.Create(user, ApplicationUser.AdminPassword);
+			// Create the admin
+			if (userManager.Users.Any(user => user.UserName == ApplicationUser.AdminUserName))
+				return;
 
-				// Add the roles to the user
-				if (result.Succeeded)
-				{
-					userManager.AddToRole(user.Id, ApplicationUser.CanManageUsersRole);
-					userManager.AddToRole(user.Id, ApplicationUser.CanManageMoviesRole);
-					userManager.AddToRole(user.Id, ApplicationUser.CanManageCustomersRole);
-				}
+			// Create the user
+			var admin = new ApplicationUser
+			{
+				UserName = ApplicationUser.AdminUserName,
+
+				Email = ApplicationUser.AdminEmail,
+				EmailConfirmed = true,
+
+				PhoneNumber = ApplicationUser.AdminPhoneNumber,
+				PhoneNumberConfirmed =  true
+			};
+
+			var result = userManager.Create(admin, ApplicationUser.AdminPassword);
+
+			// Add the roles to the user
+			if (result.Succeeded)
+			{
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageUsers);
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageMovies);
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageCustomers);
 			}
 		}
 	}

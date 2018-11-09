@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Vidly.Models.ApplicationUser>
+
+@{
+	ViewBag.Tile = "Users";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+<table id="users" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>User</th>
+			<th>Email</th>
+			<th>Phone Number</th>
+			<th>Two Factor?</th>
+			<th>Lockout Enabled?</th>
+			<th>Roles</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model)
+		{
+			<tr>
+				<td>
+					<a href="@Url.Action("Details", "Users", new {id = user.Id})">@user.UserName</a>
+				</td>
+				<td class="@(user.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="The email is @(user.EmailConfirmed ? "confirmed" : "unconfirmed").">@user.Email</span>
+				</td>
+				<td class="@(user.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="The phone number is @(user.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@user.PhoneNumber</span>
+				</td>
+				<td>@(user.TwoFactorEnabled ? "Enabled" : "Disabled")</td>
+				<td class="@(user.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="@(user.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {user.LockoutEndDateUtc}").">@(user.TwoFactorEnabled ? "Enabled" : "Disabled")</span>
+				</td>
+				<td>
+					@string.Join(", ", user.RoleNames)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@section scripts
+{
+	<script>
+		$(document).ready(function () {
+
+			$("#users").DataTable();
+
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+
+	</script>
+}

@@ -32,21 +32,6 @@ namespace Vidly.Models
 		/// The admin phone number.
 		/// </summary>
 		public const string AdminPhoneNumber = "+351 934323293";
-
-		/// <summary>
-		/// The can manage users role.
-		/// </summary>
-		public const string CanManageUsersRole = "CanManagerUsers";
-
-		/// <summary>
-		/// The can manage movies role.
-		/// </summary>
-		public const string CanManageMoviesRole = "CanManageMovies";
-
-		/// <summary>
-		/// The can manage customers role.
-		/// </summary>
-		public const string CanManageCustomersRole = "CanManagerCustomers";
 		#endregion
 
 		#region [Properties]

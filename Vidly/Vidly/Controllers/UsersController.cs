@@ -91,11 +91,28 @@ namespace Vidly.Controllers
 		public ViewResult Index()
 		{
 			var users = this.UserManager.Users.ToList();
-
 			foreach (var user in users)
 				user.RoleNames = this.UserManager.GetRoles(user.Id);
 
-			return this.View(users);
+			return this.User.IsInRole(ApplicationRoles.CanManageUsers)
+				? this.View("List", users)
+				: this.View("ReadOnlyList", users);
+		}
+
+		/// <summary>
+		/// GET: users/
+		/// </summary>
+		[HttpGet]
+		[Route("users/{id}")]
+		public ActionResult Details(string id)
+		{
+			var user = this.UserManager.FindById(id);
+			if (user == null)
+				return this.HttpNotFound();
+
+			user.RoleNames = this.UserManager.GetRoles(user.Id);
+
+			return this.View("Details", user);
 		}
 
 		/// <summary>
@@ -103,6 +120,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("users/create")]
+		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ViewResult Create()
 		{
 			var viewModel = new UserFormViewModel
@@ -119,10 +137,10 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("users/edit/{id}")]
+		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ActionResult Edit(string id)
 		{
 			var user = this.UserManager.FindById(id);
-
 			if (user == null)
 				return this.HttpNotFound();
 
@@ -142,6 +160,7 @@ namespace Vidly.Controllers
 		/// <param name="id">The movie id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ActionResult Delete(string id)
 		{
 			var user = this.UserManager.FindById(id);
@@ -157,11 +176,11 @@ namespace Vidly.Controllers
 		/// Saves the specified user.
 		/// </summary>
 		/// <param name="user">The user.</param>
-		/// <param name="oldPassword">The old password.</param>
-		/// <param name="newPassword">The new password.</param>
+		/// <param name="password">The new password.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Save(ApplicationUser user, string oldPassword, string newPassword)
+		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
+		public ActionResult Save(ApplicationUser user, string password)
 		{
 			if (ModelState.IsValid == false)
 			{
@@ -178,36 +197,38 @@ namespace Vidly.Controllers
 			if (databaseUser == null)
 			{
 				// Create the user
-				var result = this.UserManager.Create(user, newPassword);
+				var result = this.UserManager.Create(user, password);
 				if (result.Succeeded == false)
 					return this.HandleError(result);
+
+				databaseUser = this.UserManager.FindById(user.Id);
 			}
 			else
 			{
-				// Update the contacts
+				// Update the user
 				databaseUser.Email = user.Email;
 				databaseUser.EmailConfirmed = user.EmailConfirmed;
 				databaseUser.PhoneNumber = user.PhoneNumber;
 				databaseUser.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
 
-				// Update the roles
-				var roles = this.UserManager.GetRoles(databaseUser.Id).ToArray();
-				this.UserManager.RemoveFromRoles(databaseUser.Id, roles);
-
-				if (user.RoleNames != null && user.RoleNames.Count > 0)
-				{
-					foreach (string roleName in user.RoleNames)
-					{
-						if (string.IsNullOrWhiteSpace(roleName))
-							continue;
-
-						this.UserManager.AddToRole(databaseUser.Id, roleName);
-					}
-				}
-
 				var result = this.UserManager.Update(databaseUser);
 				if (result.Succeeded == false)
 					return this.HandleError(result);
+			}
+
+			// Update the roles
+			var roles = this.UserManager.GetRoles(databaseUser.Id).ToArray();
+			this.UserManager.RemoveFromRoles(databaseUser.Id, roles);
+
+			if (user.RoleNames != null && user.RoleNames.Count > 0)
+			{
+				foreach (string roleName in user.RoleNames)
+				{
+					if (string.IsNullOrWhiteSpace(roleName))
+						continue;
+
+					this.UserManager.AddToRole(databaseUser.Id, roleName);
+				}
 			}
 
 			return this.RedirectToAction("Index", "Users");
