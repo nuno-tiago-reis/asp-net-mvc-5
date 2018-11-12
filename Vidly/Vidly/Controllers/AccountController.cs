@@ -78,6 +78,7 @@ namespace Vidly.Controllers
 		}
 		#endregion
 
+		#region [Login]
 		/// <summary>
 		/// GET: /account/login
 		/// </summary>
@@ -85,93 +86,15 @@ namespace Vidly.Controllers
 		[AllowAnonymous]
 		public ActionResult Login(string returnUrl)
 		{
-			this.ViewBag.ReturnUrl = returnUrl;
-
-			return this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/register
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult Register()
-		{
-			return this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/registerconfirmation
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult RegisterConfirmation()
-		{
-			return this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/resetpassword
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult ResetPassword(string token)
-		{
-			return string.IsNullOrWhiteSpace(token) ? this.View("Error") : this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/resetpasswordconfirmation
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult ResetPasswordConfirmation()
-		{
-			return this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/forgotpassword
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult ForgotPassword()
-		{
-			return this.View();
-		}
-
-		/// <summary>
-		/// GET: /account/forgotpasswordconfirmation
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult ForgotPasswordConfirmation()
-		{
-			return this.View();
-		}
-
-
-		/// <summary>
-		/// GET: /account/confirmemail
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public async Task<ActionResult> ConfirmEmail(string userId, string code)
-		{
-			if (userId == null || code == null)
+			if (this.User.Identity.IsAuthenticated)
 			{
-				return this.View("Error");
-			}
-
-			var result = await this.UserManager.ConfirmEmailAsync(userId, code);
-			if (result.Succeeded)
-			{
-				return this.View("ConfirmEmail");
+				return string.IsNullOrWhiteSpace(returnUrl) == false
+					? this.RedirectToLocal(returnUrl) : this.RedirectToAction("Index", "Home");
 			}
 			else
 			{
-
-				return this.View("Error");
+				this.ViewBag.ReturnUrl = returnUrl;
+				return this.View();
 			}
 		}
 
@@ -232,6 +155,147 @@ namespace Vidly.Controllers
 					throw new ArgumentOutOfRangeException(nameof(result), result, null);
 			}
 		}
+		#endregion
+
+		#region [External Login]
+		/// <summary>
+		/// POST: /Account/ExternalLogin
+		/// </summary>
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public ActionResult ExternalLogin(string provider, string returnUrl)
+		{
+			// Request a redirect to the external login provider
+			return new ChallengeResult(provider, this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+		}
+
+		/// <summary>
+		/// GET: /account/externallogincallback
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+		{
+			var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
+			if (loginInfo == null)
+			{
+				return this.RedirectToAction("Login");
+			}
+
+			// Check if the email is already registered
+			var user = string.IsNullOrWhiteSpace(loginInfo.Email) == false ? this.UserManager.FindByEmail(loginInfo.Email) : null;
+			if (user != null)
+			{
+				await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+				await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+				return this.RedirectToLocal(returnUrl);
+			}
+
+			// Sign in the user with this external login provider if the user already has a login
+			var result = await this.SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+			switch (result)
+			{
+				case SignInStatus.Success:
+					return this.RedirectToLocal(returnUrl);
+
+				case SignInStatus.LockedOut:
+					return this.View("Lockout");
+
+				case SignInStatus.RequiresVerification:
+					return this.RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
+				case SignInStatus.Failure:
+					this.ViewBag.ReturnUrl = returnUrl;
+					this.ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+					return this.View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+
+				default:
+					throw new ArgumentOutOfRangeException(nameof(result), result, null);
+			}
+		}
+
+		/// <summary>
+		/// POST: /Account/ExternalLoginConfirmation
+		/// </summary>
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+		{
+			if (this.User.Identity.IsAuthenticated)
+			{
+				return this.RedirectToAction("Index", "Manage");
+			}
+
+			if (this.ModelState.IsValid)
+			{
+				// Get the information about the user from the external login provider
+				var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+				if (info == null)
+				{
+					return View("ExternalLoginFailure");
+				}
+
+				var user = new ApplicationUser
+				{
+					UserName = model.UserName,
+					Email = model.Email,
+					PhoneNumber = model.PhoneNumber,
+					FiscalNumber = model.FiscalNumber
+				};
+
+				var result = await UserManager.CreateAsync(user);
+				if (result.Succeeded)
+				{
+					result = await UserManager.AddLoginAsync(user.Id, info.Login);
+					if (result.Succeeded)
+					{
+						await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+						return RedirectToLocal(returnUrl);
+					}
+				}
+
+				this.AddErrors(result);
+			}
+
+			this.ViewBag.ReturnUrl = returnUrl;
+
+			return this.View(model);
+		}
+
+		/// <summary>
+		/// GET: /account/externalloginfailure
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult ExternalLoginFailure()
+		{
+			return this.View();
+		}
+		#endregion
+
+		#region [Register]
+		/// <summary>
+		/// GET: /account/register
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult Register()
+		{
+			return this.View();
+		}
+
+		/// <summary>
+		/// GET: /account/registerconfirmation
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult RegisterConfirmation()
+		{
+			return this.View();
+		}
 
 		/// <summary>
 		/// POST: /account/register
@@ -246,7 +310,7 @@ namespace Vidly.Controllers
 				return this.View(model);
 			}
 
-			var user = new ApplicationUser { UserName = model.User, Email = model.Email };
+			var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, FiscalNumber = model.FiscalNumber };
 
 			// Create the user
 			var result = await this.UserManager.CreateAsync(user, model.Password);
@@ -268,35 +332,49 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// POST: /account/forgotpassword
+		/// GET: /account/confirmemail
 		/// </summary>
-		[HttpPost]
+		[HttpGet]
 		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		public async Task<ActionResult> ConfirmEmail(string userId, string token)
 		{
-			if (!this.ModelState.IsValid)
+			if (userId == null || token == null)
 			{
-				return this.View(model);
+				return this.View("Error");
 			}
 
-			// Check if the user exists and is confirmed
-			var user = await this.UserManager.FindByNameAsync(model.UserOrEmail) ?? await this.UserManager.FindByEmailAsync(model.UserOrEmail);
-			if (user == null || await this.UserManager.IsEmailConfirmedAsync(user.Id) == false)
+			var result = await this.UserManager.ConfirmEmailAsync(userId, token);
+			if (result.Succeeded)
 			{
-				// Don't reveal that the user does not exist
-				return this.View("ForgotPasswordConfirmation");
+				return this.View("ConfirmEmail");
 			}
+			else
+			{
 
-			// Create the confirmation token
-			string token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-			string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token }, protocol: Request.Url?.Scheme);
+				return this.View("Error");
+			}
+		}
+		#endregion
 
-			// Send the confirmation email
-			await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+		#region [Reset Password]
+		/// <summary>
+		/// GET: /account/resetpassword
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult ResetPassword(string token)
+		{
+			return string.IsNullOrWhiteSpace(token) ? this.View("Error") : this.View();
+		}
 
-			// Redirect to forgot password confirmation
-			return this.RedirectToAction("ForgotPasswordConfirmation", "Account");
+		/// <summary>
+		/// GET: /account/resetpasswordconfirmation
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult ResetPasswordConfirmation()
+		{
+			return this.View();
 		}
 
 		/// <summary>
@@ -331,22 +409,64 @@ namespace Vidly.Controllers
 			// Redirect to reset password confirmation
 			return this.RedirectToAction("ResetPasswordConfirmation", "Account");
 		}
+		#endregion
 
+		#region [Forgot Password]
 		/// <summary>
-		/// POST: /account/logoff
+		/// GET: /account/forgotpassword
 		/// </summary>
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult LogOff()
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult ForgotPassword()
 		{
-			this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-
-			return this.RedirectToAction("Index", "Home");
+			return this.View();
 		}
 
-		#region [LATER]
 		/// <summary>
-		/// GET: /Account/SendCode
+		/// GET: /account/forgotpasswordconfirmation
+		/// </summary>
+		[HttpGet]
+		[AllowAnonymous]
+		public ActionResult ForgotPasswordConfirmation()
+		{
+			return this.View();
+		}
+
+		/// <summary>
+		/// POST: /account/forgotpassword
+		/// </summary>
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			// Check if the user exists and is confirmed
+			var user = await this.UserManager.FindByNameAsync(model.UserOrEmail) ?? await this.UserManager.FindByEmailAsync(model.UserOrEmail);
+			if (user == null || await this.UserManager.IsEmailConfirmedAsync(user.Id) == false)
+			{
+				// Don't reveal that the user does not exist
+				return this.View("ForgotPasswordConfirmation");
+			}
+
+			// Create the confirmation token
+			string token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+			string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token }, protocol: Request.Url?.Scheme);
+
+			// Send the confirmation email
+			await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+			// Redirect to forgot password confirmation
+			return this.RedirectToAction("ForgotPasswordConfirmation", "Account");
+		}
+		#endregion
+
+		/// <summary>
+		/// GET: /account/sendcode TODO
 		/// </summary>
 		[HttpGet]
 		[AllowAnonymous]
@@ -366,7 +486,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Account/SendCode
+		/// POST: /account/sendcode TODO
 		/// </summary>
 		[HttpPost]
 		[AllowAnonymous]
@@ -387,7 +507,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/VerifyCode
+		/// GET: /account/verifycode TODO
 		/// </summary>
 		[HttpGet]
 		[AllowAnonymous]
@@ -398,11 +518,12 @@ namespace Vidly.Controllers
 			{
 				return this.View("Error");
 			}
+
 			return this.View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
 		}
 
 		/// <summary>
-		/// POST: /Account/VerifyCode
+		/// POST: /account/verifycode TODO
 		/// </summary>
 		[HttpPost]
 		[AllowAnonymous]
@@ -438,106 +559,17 @@ namespace Vidly.Controllers
 			}
 		}
 
-
+		#region [Log Out]
 		/// <summary>
-		/// POST: /Account/ExternalLogin
+		/// POST: /account/logoff
 		/// </summary>
 		[HttpPost]
-		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public ActionResult ExternalLogin(string provider, string returnUrl)
+		public ActionResult LogOff()
 		{
-			// Request a redirect to the external login provider
-			return new ChallengeResult(provider, this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
-		}
+			this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-		/// <summary>
-		/// GET: /Account/ExternalLoginCallback
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-		{
-			var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync();
-			if (loginInfo == null)
-			{
-				return this.RedirectToAction("Login");
-			}
-
-			// Sign in the user with this external login provider if the user already has a login
-			var result = await this.SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-			switch (result)
-			{
-				case SignInStatus.Success:
-					return this.RedirectToLocal(returnUrl);
-
-				case SignInStatus.LockedOut:
-					return this.View("Lockout");
-
-				case SignInStatus.RequiresVerification:
-					return this.RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-
-				case SignInStatus.Failure:
-					// If the user does not have an account, then prompt the user to create an account
-					this.ViewBag.ReturnUrl = returnUrl;
-					this.ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-					return this.View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(result), result, null);
-			}
-		}
-
-		/// <summary>
-		/// POST: /Account/ExternalLoginConfirmation
-		/// </summary>
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-		{
-			if (this.User.Identity.IsAuthenticated)
-			{
-				return this.RedirectToAction("Index", "Manage");
-			}
-
-			if (this.ModelState.IsValid)
-			{
-				// Get the information about the user from the external login provider
-				var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-				if (info == null)
-				{
-					return View("ExternalLoginFailure");
-				}
-
-				var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-				var result = await UserManager.CreateAsync(user);
-				if (result.Succeeded)
-				{
-					result = await UserManager.AddLoginAsync(user.Id, info.Login);
-					if (result.Succeeded)
-					{
-						await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-						return RedirectToLocal(returnUrl);
-					}
-				}
-
-				this.AddErrors(result);
-			}
-
-			this.ViewBag.ReturnUrl = returnUrl;
-
-			return this.View(model);
-		}
-
-		/// <summary>
-		/// GET: /Account/ExternalLoginFailure
-		/// </summary>
-		[HttpGet]
-		[AllowAnonymous]
-		public ActionResult ExternalLoginFailure()
-		{
-			return this.View();
+			return this.RedirectToAction("Index", "Home");
 		}
 		#endregion
 

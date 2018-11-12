@@ -1,11 +1,11 @@
 ﻿@{
-	ViewBag.Tile = "Customers";
+	ViewBag.Title = "Customers";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Customers</h2>
-
-<br />
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
 
 <input type="button" class="btn btn-primary" value="Create" onclick="location.href='@Url.Action("Create", "Customers")'" />
 

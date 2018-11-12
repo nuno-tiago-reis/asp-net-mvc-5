@@ -1,9 +1,11 @@
 ﻿@{
-	ViewBag.Tile = "Customers";
+	ViewBag.Title = "Customers";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Customers</h2>
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
 
 <table id="customers" class="table table-bordered table-hover">
 	<thead>
@@ -13,13 +15,13 @@
 			<th>Discount Rate</th>
 		</tr>
 	</thead>
-	<tbody/>
+	<tbody />
 </table>
 
 @section scripts
 {
 	<script>
-		$(document).ready(function() {
+		$(document).ready(function () {
 
 			$("#customers").DataTable({
 				ajax: {
@@ -29,7 +31,7 @@
 				columns: [
 					{
 						data: "name",
-						render: function(data, type, customer) {
+						render: function (data, type, customer) {
 							return "<a href='/customers/details/" + customer.id + "'>" + customer.name + "</a>";
 						}
 					},

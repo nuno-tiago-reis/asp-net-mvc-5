@@ -13,7 +13,7 @@ namespace Vidly
 			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-			// Map the routes define in annotations
+			// Map the routes defined in annotations
 			config.MapHttpAttributeRoutes();
 
 			// Map the default route

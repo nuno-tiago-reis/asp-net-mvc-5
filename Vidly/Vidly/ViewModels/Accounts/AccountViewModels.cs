@@ -30,7 +30,7 @@ namespace Vidly.Models
 		[Required]
 		[DataType(DataType.Text)]
 		[Display(Name = "User")]
-		public string User { get; set; }
+		public string UserName { get; set; }
 
 		[Required]
 		[EmailAddress]
@@ -42,21 +42,20 @@ namespace Vidly.Models
 		[Display(Name = "Password")]
 		public string Password { get; set; }
 
+		[Phone]
+		[Display(Name = "Phone Number (Optional)")]
+		public string PhoneNumber { get; set; }
+
+		[Required]
+		[DataType(DataType.Text)]
+		[Display(Name = "FiscalNumber")]
+		public string FiscalNumber { get; set; }
+
 		[Required]
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
 		[Compare(nameof(Password), ErrorMessage = "The password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
-	}
-
-	/// <summary>
-	/// The forgot password view model.
-	/// </summary>
-	public sealed class ForgotPasswordViewModel
-	{
-		[Required]
-		[Display(Name = "User or Email")]
-		public string UserOrEmail { get; set; }
 	}
 
 	/// <summary>
@@ -83,7 +82,19 @@ namespace Vidly.Models
 		public string Token { get; set; }
 	}
 
-	// TODO
+	/// <summary>
+	/// The forgot password view model.
+	/// </summary>
+	public sealed class ForgotPasswordViewModel
+	{
+		[Required]
+		[Display(Name = "User or Email")]
+		public string UserOrEmail { get; set; }
+	}
+
+	/// <summary>
+	/// The send two factor authentication code view model. TODO
+	/// </summary>
 	public class SendCodeViewModel
 	{
 		[Display(Name = "Provider")]
@@ -98,7 +109,9 @@ namespace Vidly.Models
 		public string ReturnUrl { get; set; }
 	}
 
-	// TODO
+	/// <summary>
+	/// The verify two factor authentication code view model. TODO
+	/// </summary>
 	public class VerifyCodeViewModel
 	{
 		[Required]
@@ -120,18 +133,36 @@ namespace Vidly.Models
 		public string ReturnUrl { get; set; }
 	}
 
-	// TODO
-	public class ExternalLoginListViewModel
+	/// <summary>
+	/// The external login list view model.
+	/// </summary>
+	public sealed class ExternalLoginListViewModel
 	{
 		public string ReturnUrl { get; set; }
 	}
 
-	// TODO
-	public class ExternalLoginConfirmationViewModel
+	/// <summary>
+	/// The external login confirmation view model.
+	/// </summary>
+	public sealed class ExternalLoginConfirmationViewModel
 	{
 		[Required]
+		[DataType(DataType.Text)]
+		[Display(Name = "User Name")]
+		public string UserName { get; set; }
+
+		[Required]
+		[EmailAddress]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
-	}
 
+		[Phone]
+		[Display(Name = "Phone Number (Optional)")]
+		public string PhoneNumber { get; set; }
+
+		[Required]
+		[DataType(DataType.Text)]
+		[Display(Name = "Fiscal Number")]
+		public string FiscalNumber { get; set; }
+	}
 }

@@ -3,13 +3,13 @@
 @model Vidly.ViewModels.MovieFormViewModel
 
 @{
-	ViewBag.Title = "Movie Form";
+	ViewBag.Title = Model.Movie == null ? "New Movie" : $"Edit {Model.Movie.Name}";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>@(Model.Movie == null ? "New Movie" : "Edit Movie")</h3>
-
-<br />
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
 
 @using (Html.BeginForm("Save", "Movies"))
 {

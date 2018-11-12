@@ -1,13 +1,15 @@
-﻿@model IEnumerable<Vidly.Models.ApplicationUser>
+﻿@using Vidly.ViewModels
+
+@model IEnumerable<UserViewModel>
 
 @{
-	ViewBag.Tile = "Users";
+	ViewBag.Title = "Users";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Users</h2>
-
-<br />
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
 
 <input type="button" class="btn btn-primary" value="Create" onclick="location.href='@Url.Action("Create", "Users")'" />
 
@@ -18,39 +20,41 @@
 	<thead>
 		<tr>
 			<th>User</th>
+			<th>Fiscal Number</th>
 			<th>Email</th>
 			<th>Phone Number</th>
-			<th>Two Factor?</th>
 			<th>Lockout Enabled?</th>
 			<th>Roles</th>
 			<th>Delete?</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var user in Model)
+		@foreach (var viewModel in Model)
 		{
 			<tr>
 				<td>
-					<a href="@Url.Action("Edit", "Users", new {id = user.Id})">@user.UserName</a>
-				</td>
-				<td class="@(user.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
-					<span data-toggle="tooltip" title="The email is @(user.EmailConfirmed ? "confirmed" : "unconfirmed").">@user.Email</span>
-				</td>
-				<td class="@(user.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
-					<span data-toggle="tooltip" title="The phone number is @(user.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@user.PhoneNumber</span>
-				</td>
-				<td>@(user.TwoFactorEnabled ? "Enabled" : "Disabled")</td>
-				<td class="@(user.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")">
-					<span data-toggle="tooltip" title="@(user.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {user.LockoutEndDateUtc}").">@(user.TwoFactorEnabled ? "Enabled" : "Disabled")</span>
+					<a href="@Url.Action("Edit", "Users", new {id = viewModel.User.Id})">@viewModel.User.UserName</a>
 				</td>
 				<td>
-					@string.Join(", ", user.RoleNames)
+					@viewModel.User.FiscalNumber
+				</td>
+				<td class="@(viewModel.User.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="The email is @(viewModel.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@viewModel.User.Email</span>
+				</td>
+				<td class="@(viewModel.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="The phone number is @(viewModel.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@viewModel.User.PhoneNumber</span>
+				</td>
+				<td class="@(viewModel.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")">
+					<span data-toggle="tooltip" title="@(viewModel.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {viewModel.User.LockoutEndDateUtc}").">@(viewModel.User.TwoFactorEnabled ? "Enabled" : "Disabled")</span>
+				</td>
+				<td>
+					@string.Join(", ", viewModel.UserRoles)
 				</td>
 				<td>
 					@* ReSharper disable once UnknownCssClass *@
 					@using (Html.BeginForm("Delete", "Users"))
 					{
-						@Html.Hidden("id", user.Id)
+						@Html.Hidden("id", viewModel.User.Id)
 						@Html.AntiForgeryToken()
 						<button type="button" class="btn btn-danger js-delete">Delete</button>
 					}

@@ -1,87 +1,37 @@
 ﻿@model Vidly.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+	ViewBag.Title = "Manage";
 }
 
-<h2>@ViewBag.Title.</h2>
-
+<h2>@ViewBag.Title</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
+
 <div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
+	<h4><b>Fiscal Number</b></h4>
+	@Model.User.FiscalNumber
+
+	<h4><b>Email</b></h4>
+	<span class="@(Model.User.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The email is @(Model.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@Model.User.Email</span>
+
+	<h4><b>PhoneNumber </b></h4>
+	<span class="@(Model.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@Model.User.PhoneNumber</span>
+
+	<h4><b>Lockout </b></h4>
+	<span class="@(Model.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="@(Model.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {Model.User.LockoutEndDateUtc}").">@(Model.User.LockoutEnabled ? "Enabled" : "Disabled")</span>
+
+	<h4><b>Roles</b></h4>
+	<ul>
+		@foreach (string role in Model.UserRoles)
+		{
+			<li>@role</li>
+		}
+	</ul>
+
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="Password" onclick="location.href = '@Url.Action("ChangePassword", "Manage")'"/>
+	</div>
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="External Logins (@Model.UserExternalLogins.Count)" onclick="location.href = '@Url.Action("ExternalLogins", "Manage")'"/>
+	</div>
 </div>

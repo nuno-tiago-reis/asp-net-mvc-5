@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -90,13 +91,19 @@ namespace Vidly.Controllers
 		[Route("users")]
 		public ViewResult Index()
 		{
-			var users = this.UserManager.Users.ToList();
-			foreach (var user in users)
-				user.RoleNames = this.UserManager.GetRoles(user.Id);
+			var viewModels = new List<UserViewModel>();
+			foreach (var user in this.UserManager.Users.ToList())
+			{
+				viewModels.Add(new UserViewModel
+				{
+					User = user,
+					UserRoles = this.UserManager.GetRoles(user.Id)
+				});
+			}
 
 			return this.User.IsInRole(ApplicationRoles.CanManageUsers)
-				? this.View("List", users)
-				: this.View("ReadOnlyList", users);
+				? this.View("List", viewModels)
+				: this.View("ReadOnlyList", viewModels);
 		}
 
 		/// <summary>
@@ -110,9 +117,13 @@ namespace Vidly.Controllers
 			if (user == null)
 				return this.HttpNotFound();
 
-			user.RoleNames = this.UserManager.GetRoles(user.Id);
+			var viewModel = new UserViewModel
+			{
+				User = user,
+				UserRoles = this.UserManager.GetRoles(user.Id)
+			};
 
-			return this.View("Details", user);
+			return this.View("Details", viewModel);
 		}
 
 		/// <summary>
@@ -126,7 +137,7 @@ namespace Vidly.Controllers
 			var viewModel = new UserFormViewModel
 			{
 				User = null,
-				Roles = this.context.Roles.Select(role => role.Name)
+				AvailableRoles = this.context.Roles.Select(role => role.Name)
 			};
 
 			return this.View("Form", viewModel);
@@ -147,9 +158,9 @@ namespace Vidly.Controllers
 			var viewModel = new UserFormViewModel
 			{
 				User = user,
-				Roles = this.context.Roles.Select(role => role.Name)
+				UserRoles = this.UserManager.GetRoles(user.Id),
+				AvailableRoles = this.context.Roles.Select(role => role.Name)
 			};
-			viewModel.User.RoleNames = this.UserManager.GetRoles(user.Id);
 
 			return this.View("Form", viewModel);
 		}
@@ -177,17 +188,19 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// <param name="user">The user.</param>
 		/// <param name="password">The new password.</param>
+		/// <param name="userRoles">The role names.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
-		public ActionResult Save(ApplicationUser user, string password)
+		public ActionResult Save(ApplicationUser user, string password, List<string> userRoles)
 		{
 			if (ModelState.IsValid == false)
 			{
 				var viewModel = new UserFormViewModel
 				{
 					User = user,
-					Roles = this.context.Roles.Select(role => role.Name)
+					UserRoles = userRoles,
+					AvailableRoles = this.context.Roles.Select(role => role.Name)
 				};
 
 				return this.View("Form", viewModel);
@@ -206,6 +219,7 @@ namespace Vidly.Controllers
 			else
 			{
 				// Update the user
+				databaseUser.FiscalNumber = user.FiscalNumber;
 				databaseUser.Email = user.Email;
 				databaseUser.EmailConfirmed = user.EmailConfirmed;
 				databaseUser.PhoneNumber = user.PhoneNumber;
@@ -220,9 +234,9 @@ namespace Vidly.Controllers
 			var roles = this.UserManager.GetRoles(databaseUser.Id).ToArray();
 			this.UserManager.RemoveFromRoles(databaseUser.Id, roles);
 
-			if (user.RoleNames != null && user.RoleNames.Count > 0)
+			if (userRoles != null && userRoles.Count > 0)
 			{
-				foreach (string roleName in user.RoleNames)
+				foreach (string roleName in userRoles)
 				{
 					if (string.IsNullOrWhiteSpace(roleName))
 						continue;

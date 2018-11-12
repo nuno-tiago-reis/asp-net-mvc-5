@@ -3,13 +3,13 @@
 @model Vidly.ViewModels.CustomerFormViewModel
 
 @{
-	ViewBag.Title = "Customer Form";
+	ViewBag.Title = Model.Customer == null ? "New Customer" : $"Edit {Model.Customer.Name}";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>@(Model.Customer == null ? "New Customer" : "Edit Customer")</h3>
-
-<br />
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
 
 @using (Html.BeginForm("Save", "Customers"))
 {

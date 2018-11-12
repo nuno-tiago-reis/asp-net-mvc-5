@@ -6,90 +6,57 @@ using Microsoft.Owin.Security;
 
 namespace Vidly.Models
 {
-	// TODO
-	public class IndexViewModel
+	/// <summary>
+	/// The manage view model.
+	/// </summary>
+	public sealed class IndexViewModel
 	{
-		public bool HasPassword { get; set; }
-		public IList<UserLoginInfo> Logins { get; set; }
-		public string PhoneNumber { get; set; }
-		public bool TwoFactor { get; set; }
+		[Required]
+		public ApplicationUser User { get; set; }
+
+		[Required]
+		public IEnumerable<string> UserRoles { get; set; }
+
+		[Required]
+		public IList<UserLoginInfo> UserExternalLogins { get; set; }
+
+		[Required]
 		public bool BrowserRemembered { get; set; }
 	}
 
-	// TODO
-	public class ManageLoginsViewModel
-	{
-		public IList<UserLoginInfo> CurrentLogins { get; set; }
-		public IList<AuthenticationDescription> OtherLogins { get; set; }
-	}
-
-	// TODO
-	public class FactorViewModel
-	{
-		public string Purpose { get; set; }
-	}
-
-	// TODO
-	public class SetPasswordViewModel
+	/// <summary>
+	/// The change password view model.
+	/// </summary>
+	public sealed class ChangePasswordViewModel
 	{
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-		[DataType(DataType.Password)]
-		[Display(Name = "New password")]
-		public string NewPassword { get; set; }
+		public bool HasPassword { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm new password")]
-		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-		public string ConfirmPassword { get; set; }
-	}
-
-	// TODO
-	public class ChangePasswordViewModel
-	{
-		[Required]
-		[DataType(DataType.Password)]
-		[Display(Name = "Current password")]
+		[Display(Name = "Old Password")]
 		public string OldPassword { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
 		[DataType(DataType.Password)]
-		[Display(Name = "New password")]
+		[Display(Name = "New Password")]
 		public string NewPassword { get; set; }
 
+		[Required]
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm new password")]
-		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+		[Compare(nameof(NewPassword))]
+		[Display(Name = "Confirm Password")]
 		public string ConfirmPassword { get; set; }
 	}
 
-	// TODO
-	public class AddPhoneNumberViewModel
+	/// <summary>
+	/// The external logins view model.
+	/// </summary>
+	public sealed class ExternalLoginsViewModel
 	{
 		[Required]
-		[Phone]
-		[Display(Name = "Phone Number")]
-		public string Number { get; set; }
-	}
-
-	// TODO
-	public class VerifyPhoneNumberViewModel
-	{
-		[Required]
-		[Display(Name = "Code")]
-		public string Code { get; set; }
+		public IList<UserLoginInfo> RegisteredLogins { get; set; }
 
 		[Required]
-		[Phone]
-		[Display(Name = "Phone Number")]
-		public string PhoneNumber { get; set; }
-	}
-
-	// TODO
-	public class ConfigureTwoFactorViewModel
-	{
-		public string SelectedProvider { get; set; }
-		public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+		public IList<AuthenticationDescription> UnregisteredLogins { get; set; }
 	}
 }

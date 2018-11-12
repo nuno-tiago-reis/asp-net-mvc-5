@@ -5,7 +5,7 @@ using Vidly.Models;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers
-{
+{	
 	[Authorize]
 	public sealed class CustomersController : Controller
 	{

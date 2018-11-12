@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,6 +39,7 @@ namespace Vidly.Models
 		public override string Id { get; set; }
 
 		[Required]
+		[StringLength(255)]
 		[DisplayName("User Name")]
 		public override string UserName { get; set; }
 
@@ -61,8 +61,8 @@ namespace Vidly.Models
 		public override bool PhoneNumberConfirmed { get; set; }
 
 		[Required]
-		[DisplayName("Two Factor Enabled?")]
-		public override bool TwoFactorEnabled { get; set; }
+		[DisplayName("Fiscal Number")]
+		public string FiscalNumber { get; set; }
 
 		[Required]
 		[DisplayName("Lockout Enabled?")]
@@ -70,18 +70,6 @@ namespace Vidly.Models
 
 		[DisplayName("Lockout End Date")]
 		public override DateTime? LockoutEndDateUtc { get; set; }
-
-		[DisplayName("Roles")]
-		public override ICollection<IdentityUserRole> Roles
-		{
-			get
-			{
-				return base.Roles;
-			}
-		}
-
-		[DisplayName("Roles")]
-		public ICollection<string> RoleNames { get; set; }
 		#endregion
 
 		#region [Methods]

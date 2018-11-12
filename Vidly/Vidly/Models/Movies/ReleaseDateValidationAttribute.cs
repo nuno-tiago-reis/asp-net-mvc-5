@@ -2,7 +2,7 @@
 
 namespace Vidly.Models
 {
-	public sealed class AddedDateValidationAttribute : ValidationAttribute
+	public sealed class ReleaseDateValidationAttribute : ValidationAttribute
 	{
 		/// <inheritdoc /> 
 		/// <summary>
@@ -15,7 +15,7 @@ namespace Vidly.Models
 		{
 			var movie = (Movie)context.ObjectInstance;
 
-			return movie.DateAdded > movie.ReleaseDate
+			return movie.DateAdded < movie.ReleaseDate
 				? new ValidationResult("The movie can't be added before it is released.") : ValidationResult.Success;
 		}
 	}

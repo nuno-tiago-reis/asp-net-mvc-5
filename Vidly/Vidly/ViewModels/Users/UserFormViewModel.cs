@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using Vidly.Models;
-
 namespace Vidly.ViewModels
 {
-	public sealed class UserFormViewModel
+	public sealed class UserFormViewModel : UserViewModel
 	{
-		[Required]
-		public ApplicationUser User { get; set; }
-
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
@@ -20,6 +15,6 @@ namespace Vidly.ViewModels
 		public string ConfirmedPassword { get; set; }
 
 		[Required]
-		public IEnumerable<string> Roles { get; set; }
+		public IEnumerable<string> AvailableRoles { get; set; }
 	}
 }

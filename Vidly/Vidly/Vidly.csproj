@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44391</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -300,10 +300,14 @@
     <Compile Include="Migrations\201811081222112_Version-1.0.13.Designer.cs">
       <DependentUpon>201811081222112_Version-1.0.13.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811091520261_Version-1.0.14.cs" />
+    <Compile Include="Migrations\201811091520261_Version-1.0.14.Designer.cs">
+      <DependentUpon>201811091520261_Version-1.0.14.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationRoles.cs" />
-    <Compile Include="Models\Movies\AddedDateValidationAttribute.cs" />
+    <Compile Include="Models\Movies\ReleaseDateValidationAttribute.cs" />
     <Compile Include="ViewModels\Accounts\AccountViewModels.cs" />
     <Compile Include="Models\Customers\AgeValidationAttribute.cs" />
     <Compile Include="Models\Customers\Customer.cs" />
@@ -316,6 +320,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Movies\MovieFormViewModel.cs" />
     <Compile Include="ViewModels\Customers\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\Users\UserViewModel.cs" />
     <Compile Include="ViewModels\Users\UserFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -549,12 +554,9 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ExternalLogins.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Customers\List.cshtml" />
@@ -571,7 +573,9 @@
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
-    <None Include="Web.Secrets.config" />
+    <None Include="Web.Secrets.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -634,6 +638,9 @@
     <EmbeddedResource Include="Migrations\201811081222112_Version-1.0.13.resx">
       <DependentUpon>201811081222112_Version-1.0.13.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811091520261_Version-1.0.14.resx">
+      <DependentUpon>201811091520261_Version-1.0.14.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -653,7 +660,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56136</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56136/</IISUrl>
+          <IISUrl>https://127.0.0.1:44391</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

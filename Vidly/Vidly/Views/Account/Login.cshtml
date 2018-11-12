@@ -6,7 +6,8 @@
 	ViewBag.Title = "Log in";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
+<hr />
 
 <div class="row">
 	<div class="col-md-8">
@@ -14,9 +15,7 @@
 			@using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 			{
 				@Html.AntiForgeryToken()
-				<h4>Use a local account to log in.</h4>
-				<hr />
-				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+				@Html.ValidationSummary(true, "Please fix the following errors")
 				<div class="form-group">
 					@Html.LabelFor(m => m.UserOrEmail, new { @class = "col-md-2 control-label" })
 					<div class="col-md-10">
@@ -45,14 +44,18 @@
 						<input type="submit" value="Log in" class="btn btn-default" />
 					</div>
 				</div>
-				<p>
-					@Html.ActionLink("Register as a new user?", "Register")
-				</p>
-				<p>
-					@Html.ActionLink("Forgot your password?", "ForgotPassword")
-				</p>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<p>
+							@Html.ActionLink("Register as a new user?", "Register")
+						</p>
+						<p>
+							@Html.ActionLink("Forgot your password?", "ForgotPassword")
+						</p>
+					</div>
+				</div>
 			}
-		</section>
+			</section>
 	</div>
 	<div class="col-md-4">
 		<section id="socialLoginForm">
