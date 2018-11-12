@@ -320,9 +320,9 @@ namespace Vidly.Controllers
 				return this.View(model);
 			}
 
-			// Create the confirmation code
-			string code = await this.UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = code }, protocol: Request.Url?.Scheme);
+			// Create the confirmation token
+			string token = await this.UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, protocol: Request.Url?.Scheme);
 
 			// Send the confirmation email
 			await this.UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");

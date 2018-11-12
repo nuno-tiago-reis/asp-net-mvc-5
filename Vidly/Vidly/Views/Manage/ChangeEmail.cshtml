@@ -1,0 +1,27 @@
+﻿@model Vidly.Models.ChangeEmailViewModel
+
+@{
+	ViewBag.Title = "Change Email";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("ChangeEmail", "Manage", FormMethod.Post))
+{
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Email)
+		@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Email)
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section Scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")
+}

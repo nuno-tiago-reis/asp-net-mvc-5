@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -89,10 +90,37 @@ namespace Vidly.Controllers
 		/// </summary>
 		public async Task<ActionResult> Index(ManageMessageId? message)
 		{
-			this.ViewBag.StatusMessage =
-				  message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-				: message == ManageMessageId.Error ? "An error has occurred."
-				: string.Empty;
+			// ReSharper disable once SwitchStatementMissingSomeCases
+			switch (message)
+			{
+				case ManageMessageId.ChangeEmailSuccess:
+					this.ViewBag.StatusMessage = "Your email has been changed.";
+					break;
+				case ManageMessageId.ConfirmEmailSuccess:
+					this.ViewBag.StatusMessage = "A confirmation email has been sent.";
+					break;
+				case ManageMessageId.ChangePasswordSuccess:
+					this.ViewBag.StatusMessage = "Your password has been changed.";
+					break;
+				case ManageMessageId.ChangePhoneNumberSuccess:
+					this.ViewBag.StatusMessage = "Your phone number has been changed.";
+					break;
+				case ManageMessageId.ConfirmPhoneNumberSuccess:
+					this.ViewBag.StatusMessage = "A confirmation message has been sent.";
+					break;
+				case ManageMessageId.AddExternalLoginSuccess:
+					this.ViewBag.StatusMessage = "The external login has been added.";
+					break;
+				case ManageMessageId.RemoveExternalLoginSuccess:
+					this.ViewBag.StatusMessage = "The external login has been removed.";
+					break;
+				case ManageMessageId.Error:
+				case null:
+					break;
+
+				default:
+					throw new ArgumentOutOfRangeException(nameof(message), message, null);
+			}
 
 			string userId = User.Identity.GetUserId();
 
@@ -105,6 +133,135 @@ namespace Vidly.Controllers
 			};
 
 			return this.View(model);
+		}
+		#endregion
+
+		#region [Email]
+		/// <summary>
+		/// GET: /manage/changeemail
+		/// </summary>
+		[HttpGet]
+		public ActionResult ChangeEmail()
+		{
+			string userId = this.User.Identity.GetUserId();
+
+			var viewModel = new ChangeEmailViewModel
+			{
+				Email = this.UserManager.Users.First(user => user.Id == userId).Email
+			};
+
+			return this.View(viewModel);
+		}
+
+		/// <summary>
+		/// POST: /manage/changeemail
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			string userId = User.Identity.GetUserId();
+
+			var result = await this.UserManager.SetEmailAsync(userId, model.Email);
+			if (result.Succeeded == false)
+			{
+				this.AddErrors(result);
+				return this.View(model);
+			}
+
+			return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
+		}
+
+		/// <summary>
+		/// POST: /manage/confirmemail
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ConfirmEmail(string email)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View("Index");
+			}
+
+			string userId = User.Identity.GetUserId();
+
+			string token = await this.UserManager.GenerateEmailConfirmationTokenAsync(userId);
+			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId, token }, protocol: Request.Url?.Scheme);
+
+			await this.UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmEmailSuccess });
+		}
+		#endregion
+
+		#region [Phone Number]
+		/// <summary>
+		/// GET: /manage/changephonenumber
+		/// </summary>
+		[HttpGet]
+		public ActionResult ChangePhoneNumber()
+		{
+			string userId = this.User.Identity.GetUserId();
+
+			var viewModel = new ChangePhoneNumberViewModel
+			{
+				PhoneNumber = this.UserManager.Users.First(user => user.Id == userId).PhoneNumber
+			};
+
+			return this.View(viewModel);
+		}
+
+		/// <summary>
+		/// POST: /manage/changephonenumber
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ChangePhoneNumber(ChangePhoneNumberViewModel model)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View(model);
+			}
+
+			var result = await this.UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber);
+			if (result.Succeeded == false)
+			{
+				this.AddErrors(result);
+				return this.View(model);
+			}
+
+			return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangePhoneNumberSuccess });
+		}
+
+		/// <summary>
+		/// POST: /manage/confirmphonenumber
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ConfirmPhoneNumber(string phoneNumber)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return this.View("Index");
+			}
+
+			string userId = this.User.Identity.GetUserId();
+			string token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(userId, phoneNumber);
+
+			var result = await this.UserManager.ChangePhoneNumberAsync(userId, phoneNumber, token);
+			if (result.Succeeded == false)
+			{
+				this.AddErrors(result);
+				return this.View("Index");
+			}
+
+			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmPhoneNumberSuccess });
 		}
 		#endregion
 
@@ -170,7 +327,7 @@ namespace Vidly.Controllers
 		}
 		#endregion
 
-		#region [Manage Logins]
+		#region [Manage External Logins]
 		/// <summary>
 		/// GET: /manage/logins
 		/// </summary>
@@ -264,7 +421,11 @@ namespace Vidly.Controllers
 		/// </summary>
 		public enum ManageMessageId
 		{
+			ChangeEmailSuccess,
+			ConfirmEmailSuccess,
 			ChangePasswordSuccess,
+			ChangePhoneNumberSuccess,
+			ConfirmPhoneNumberSuccess,
 
 			AddExternalLoginSuccess,
 			RemoveExternalLoginSuccess,

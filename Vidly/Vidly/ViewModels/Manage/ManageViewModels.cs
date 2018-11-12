@@ -25,6 +25,17 @@ namespace Vidly.Models
 	}
 
 	/// <summary>
+	/// The change email view model.
+	/// </summary>
+	public sealed class ChangeEmailViewModel
+	{
+		[Required]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+	}
+
+	/// <summary>
 	/// The change password view model.
 	/// </summary>
 	public sealed class ChangePasswordViewModel
@@ -46,6 +57,17 @@ namespace Vidly.Models
 		[Compare(nameof(NewPassword))]
 		[Display(Name = "Confirm Password")]
 		public string ConfirmPassword { get; set; }
+	}
+
+	/// <summary>
+	/// The change phone number view model.
+	/// </summary>
+	public sealed class ChangePhoneNumberViewModel
+	{
+		[Required]
+		[Phone]
+		[Display(Name = "Phone Number")]
+		public string PhoneNumber { get; set; }
 	}
 
 	/// <summary>

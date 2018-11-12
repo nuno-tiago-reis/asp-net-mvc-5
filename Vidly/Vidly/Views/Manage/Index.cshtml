@@ -4,34 +4,94 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
 <hr />
 
 <div>
-	<h4><b>Fiscal Number</b></h4>
-	@Model.User.FiscalNumber
-
-	<h4><b>Email</b></h4>
-	<span class="@(Model.User.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The email is @(Model.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@Model.User.Email</span>
-
-	<h4><b>PhoneNumber </b></h4>
-	<span class="@(Model.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@Model.User.PhoneNumber</span>
-
-	<h4><b>Lockout </b></h4>
-	<span class="@(Model.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="@(Model.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {Model.User.LockoutEndDateUtc}").">@(Model.User.LockoutEnabled ? "Enabled" : "Disabled")</span>
-
-	<h4><b>Roles</b></h4>
-	<ul>
-		@foreach (string role in Model.UserRoles)
-		{
-			<li>@role</li>
-		}
-	</ul>
-
 	<div class="form-group">
-		<input type="button" class="btn btn-primary" value="Password" onclick="location.href = '@Url.Action("ChangePassword", "Manage")'"/>
+		<h4><b>Fiscal Number</b></h4>
+		@Model.User.FiscalNumber
 	</div>
+
 	<div class="form-group">
-		<input type="button" class="btn btn-primary" value="External Logins (@Model.UserExternalLogins.Count)" onclick="location.href = '@Url.Action("ExternalLogins", "Manage")'"/>
+		<h4><b>Email</b></h4>
+		<span class="@(Model.User.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The email is @(Model.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@Model.User.Email</span>
+		<br />
+		<br />
+		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangeEmail", "Manage")'" />
+		<br />
+		<br />
+		@if (Model.User.EmailConfirmed == false)
+		{
+			using (Html.BeginForm("ConfirmEmail", "Manage"))
+			{
+				@Html.AntiForgeryToken()
+				<div>
+					@Html.Hidden("Email", Model.User.Email, new { @class = "form-control" })
+					<input type="submit" class="btn btn-primary" value="Confirm" />
+				</div>
+			}
+		}
+	</div>
+
+	<div class="form-group">
+		<h4><b>PhoneNumber </b></h4>
+		<span class="@(Model.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@Model.User.PhoneNumber</span>
+		<br />
+		<br />
+		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangePhoneNumber", "Manage")'" />
+		<br />
+		<br />
+		@if (Model.User.PhoneNumberConfirmed == false)
+		{
+			using (Html.BeginForm("ConfirmPhoneNumber", "Manage"))
+			{
+				@Html.AntiForgeryToken()
+				<div>
+					@Html.Hidden("PhoneNumber", Model.User.PhoneNumber, new { @class = "form-control" })
+					<input type="submit" class="btn btn-primary" value="Confirm" />
+				</div>
+			}
+		}
+	</div>
+
+	<div class="form-group">
+		<h4><b>Lockout </b></h4>
+		<span class="@(Model.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="@(Model.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {Model.User.LockoutEndDateUtc}").">@(Model.User.LockoutEnabled ? "Enabled" : "Disabled")</span>
+	</div>
+
+	@if (Model.UserRoles.Any())
+	{
+		<div class="form-group">
+			<h4><b>Roles</b></h4>
+			<ul>
+				@foreach (string role in Model.UserRoles)
+				{
+					<li>@role</li>
+				}
+			</ul>
+		</div>
+	}
+
+	<h4><b>Password</b></h4>
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangePassword", "Manage")'" />
+	</div>
+	<h4><b>External Logins (@Model.UserExternalLogins.Count)</b></h4>
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="Manage" onclick="location.href = '@Url.Action("ExternalLogins", "Manage")'" />
 	</div>
 </div>
+
+@if (ViewBag.StatusMessage != null)
+{
+	<script>
+
+		$(document).ready(function(){
+
+			alert('@ViewBag.StatusMessage');
+
+		});
+
+	</script>
+
+}

@@ -573,6 +573,8 @@
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Manage\ChangePhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangeEmail.cshtml" />
     <None Include="Web.Secrets.config">
       <SubType>Designer</SubType>
     </None>

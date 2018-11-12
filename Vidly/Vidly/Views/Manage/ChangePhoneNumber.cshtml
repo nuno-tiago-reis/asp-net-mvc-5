@@ -1,0 +1,27 @@
+﻿@model Vidly.Models.ChangePhoneNumberViewModel
+
+@{
+	ViewBag.Title = "Change Phone Number";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("ChangePhoneNumber", "Manage", FormMethod.Post))
+{
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.PhoneNumber)
+		@Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.PhoneNumber)
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section Scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")
+}
