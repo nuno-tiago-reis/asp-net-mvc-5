@@ -9,13 +9,13 @@ using Microsoft.AspNet.Identity.Owin;
 
 using Owin;
 
+using Vidly.Identity;
 using Vidly.Models;
 
 namespace Vidly
 {
 	public partial class Startup
 	{
-		// For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
 		public void ConfigureAuth(IAppBuilder app)
 		{
 			app.CreatePerOwinContext(ApplicationDbContext.Create);

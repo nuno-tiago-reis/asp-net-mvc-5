@@ -2,7 +2,7 @@
 
 namespace Vidly
 {
-	public class FilterConfig
+	public sealed class FilterConfig
 	{
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{

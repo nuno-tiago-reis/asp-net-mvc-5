@@ -2,7 +2,7 @@
 
 namespace Vidly
 {
-	public class BundleConfig
+	public sealed class BundleConfig
 	{
 		public static void RegisterBundles(BundleCollection bundles)
 		{
@@ -24,11 +24,12 @@ namespace Vidly
 			(
 				"~/Scripts/modernizr-*"
 			));
+
 			bundles.Add(new StyleBundle("~/Content/css").Include
 			(
-				"~/Content/bootstrap-lumen.css",
-				"~/Content/datatables/css/datatables.bootstrap.css",
-				"~/Content/site.css"
+				"~/Content/Styles/bootstrap-lumen.css",
+				"~/Content/DataTables/css/datatables.bootstrap.css",
+				"~/Content/Styles/Site.css"
 			));
 
 		}

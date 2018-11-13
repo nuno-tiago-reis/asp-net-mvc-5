@@ -3,7 +3,7 @@ using System.Web.Routing;
 
 namespace Vidly
 {
-	public class RouteConfig
+	public sealed class RouteConfig
 	{
 		public static void RegisterRoutes(RouteCollection routes)
 		{

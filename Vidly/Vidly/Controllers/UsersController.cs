@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 using Vidly.Models;
+using Vidly.Identity;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers

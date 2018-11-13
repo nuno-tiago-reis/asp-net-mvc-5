@@ -82,16 +82,16 @@
 	</div>
 </div>
 
-@if (ViewBag.StatusMessage != null)
+@section scripts
 {
-	<script>
+<script>
 
-		$(document).ready(function(){
+	$(document).ready(function () {
+			
+		//alert('@ViewBag.StatusMessage');
 
-			alert('@ViewBag.StatusMessage');
+		$('[data-toggle="tooltip"]').tooltip();
+	});
 
-		});
-
-	</script>
-
+</script>
 }

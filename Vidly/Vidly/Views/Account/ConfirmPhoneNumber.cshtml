@@ -1,0 +1,12 @@
+﻿@{
+	ViewBag.Title = "Confirm Phone Number";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr/>
+
+<div>
+	<p>
+		Thank you for confirming your phone number. Please @Html.ActionLink("click here to be redirected", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+	</p>
+</div>

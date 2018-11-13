@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
+using Vidly.Identity;
 using Vidly.Models;
 
 namespace Vidly.Controllers
@@ -191,9 +192,11 @@ namespace Vidly.Controllers
 
 			string userId = User.Identity.GetUserId();
 
+			// Create the confirmation token
 			string token = await this.UserManager.GenerateEmailConfirmationTokenAsync(userId);
 			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId, token }, protocol: Request.Url?.Scheme);
 
+			// Send the confirmation email
 			await this.UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmEmailSuccess });
@@ -252,14 +255,15 @@ namespace Vidly.Controllers
 			}
 
 			string userId = this.User.Identity.GetUserId();
-			string token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(userId, phoneNumber);
 
-			var result = await this.UserManager.ChangePhoneNumberAsync(userId, phoneNumber, token);
-			if (result.Succeeded == false)
-			{
-				this.AddErrors(result);
-				return this.View("Index");
-			}
+			var user = this.UserManager.Users.First(u => u.Id == userId);
+
+			// Create the confirmation token
+			string token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);
+			string callbackUrl = this.Url.Action("ConfirmPhoneNumber", "Account", new { userId = user.Id, phoneNumber = user.PhoneNumber, token }, protocol: Request.Url?.Scheme);
+
+			// Send the confirmation sms
+			await this.UserManager.SendSmsAsync(user.Id, "Please confirm your phone number by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmPhoneNumberSuccess });
 		}
