@@ -55,8 +55,33 @@
 	</div>
 
 	<div class="form-group">
-		<h4><b>Lockout </b></h4>
-		<span class="@(Model.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="@(Model.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {Model.User.LockoutEndDateUtc}").">@(Model.User.LockoutEnabled ? "Enabled" : "Disabled")</span>
+		<h4><b>Two Factor Authentication</b></h4>
+		@if (Model.User.TwoFactorEnabled)
+		{
+			using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+			{
+				@Html.AntiForgeryToken()
+				<input type="submit" value="Disable" class="btn btn-danger" />
+			}
+		}
+		else
+		{
+			using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+			{
+				@Html.AntiForgeryToken()
+				<input type="submit" value="Enable" class="btn btn-success" />
+			}
+		}
+	</div>
+
+	<h4><b>Password</b></h4>
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangePassword", "Manage")'" />
+	</div>
+
+	<h4><b>External Logins (@Model.UserExternalLogins.Count)</b></h4>
+	<div class="form-group">
+		<input type="button" class="btn btn-primary" value="Manage" onclick="location.href = '@Url.Action("ExternalLogins", "Manage")'" />
 	</div>
 
 	@if (Model.UserRoles.Any())
@@ -71,15 +96,6 @@
 			</ul>
 		</div>
 	}
-
-	<h4><b>Password</b></h4>
-	<div class="form-group">
-		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangePassword", "Manage")'" />
-	</div>
-	<h4><b>External Logins (@Model.UserExternalLogins.Count)</b></h4>
-	<div class="form-group">
-		<input type="button" class="btn btn-primary" value="Manage" onclick="location.href = '@Url.Action("ExternalLogins", "Manage")'" />
-	</div>
 </div>
 
 @section scripts

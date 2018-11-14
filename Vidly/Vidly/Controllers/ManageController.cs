@@ -419,6 +419,44 @@ namespace Vidly.Controllers
 		}
 		#endregion
 
+		#region [Two Factor Authentication]
+		/// <summary>
+		/// POST: /manage/enabletwofactorauthentication
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> EnableTwoFactorAuthentication()
+		{
+			await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
+
+			var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			if (user != null)
+			{
+				await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+			}
+
+			return this.RedirectToAction("Index", "Manage");
+		}
+
+		/// <summary>
+		/// POST: /manage/disabletwofactorauthentication
+		/// </summary>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> DisableTwoFactorAuthentication()
+		{
+			await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
+
+			var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			if (user != null)
+			{
+				await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+			}
+
+			return this.RedirectToAction("Index", "Manage");
+		}
+		#endregion
+
 		#region [Helpers]
 		/// <summary>
 		/// Enumerates the manage message ids.

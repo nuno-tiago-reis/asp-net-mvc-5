@@ -89,8 +89,7 @@ namespace Vidly.Controllers
 		{
 			if (this.User.Identity.IsAuthenticated)
 			{
-				return string.IsNullOrWhiteSpace(returnUrl) == false
-					? this.RedirectToLocal(returnUrl) : this.RedirectToAction("Index", "Home");
+				return string.IsNullOrWhiteSpace(returnUrl) == false ? this.RedirectToLocal(returnUrl) : this.RedirectToAction("Index", "Home");
 			}
 			else
 			{
@@ -497,8 +496,9 @@ namespace Vidly.Controllers
 		}
 		#endregion
 
+		#region [Two Factor Authentication]
 		/// <summary>
-		/// GET: /account/sendcode TODO
+		/// GET: /account/sendcodeODO
 		/// </summary>
 		[HttpGet]
 		[AllowAnonymous]
@@ -518,7 +518,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// POST: /account/sendcode TODO
+		/// POST: /account/sendcode
 		/// </summary>
 		[HttpPost]
 		[AllowAnonymous]
@@ -527,7 +527,7 @@ namespace Vidly.Controllers
 		{
 			if (!this.ModelState.IsValid)
 			{
-				return this.View();
+				return await this.SendCode(model.ReturnUrl, model.RememberMe);
 			}
 
 			// Generate the token and send it
@@ -535,11 +535,12 @@ namespace Vidly.Controllers
 			{
 				return this.View("Error");
 			}
+
 			return this.RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
 		}
 
 		/// <summary>
-		/// GET: /account/verifycode TODO
+		/// GET: /account/verifycode
 		/// </summary>
 		[HttpGet]
 		[AllowAnonymous]
@@ -555,7 +556,7 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// POST: /account/verifycode TODO
+		/// POST: /account/verifycode
 		/// </summary>
 		[HttpPost]
 		[AllowAnonymous]
@@ -564,7 +565,7 @@ namespace Vidly.Controllers
 		{
 			if (!this.ModelState.IsValid)
 			{
-				return this.View(model);
+				return await this.VerifyCode(model.Provider, model.ReturnUrl, model.RememberMe);
 			}
 
 			// The following code protects for brute force attacks against the two factor codes. 
@@ -590,6 +591,7 @@ namespace Vidly.Controllers
 					throw new ArgumentOutOfRangeException(nameof(result), result, null);
 			}
 		}
+		#endregion
 
 		#region [Log Out]
 		/// <summary>

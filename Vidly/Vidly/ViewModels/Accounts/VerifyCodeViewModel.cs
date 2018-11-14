@@ -3,7 +3,7 @@
 namespace Vidly.Models
 {
 	/// <summary>
-	/// The verify two factor authentication code view model. TODO
+	/// The verify two factor authentication code view model.
 	/// </summary>
 	public class VerifyCodeViewModel
 	{
@@ -23,6 +23,7 @@ namespace Vidly.Models
 		[Display(Name = "Remember me?")]
 		public bool RememberMe { get; set; }
 
+		[Display(Name = "Return URL")]
 		public string ReturnUrl { get; set; }
 	}
 }
