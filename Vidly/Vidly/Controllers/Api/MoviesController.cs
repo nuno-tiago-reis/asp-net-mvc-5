@@ -35,9 +35,14 @@ namespace Vidly.Controllers.API
 		/// GET /api/movies
 		/// </summary>
 		[HttpGet]
-		public IHttpActionResult GetMovies()
+		public IHttpActionResult GetMovies(string query = null)
 		{
-			return this.Ok(this.context.Movies.Include(movie => movie.Genre).AsEnumerable().Select(Mapper.Map<Movie, MovieDto>));
+			var movies = this.context.Movies.Include(m => m.Genre);
+
+			if (string.IsNullOrWhiteSpace(query) == false)
+				movies = movies.Where(m => m.Name.Contains(query));
+
+			return this.Ok(movies.AsEnumerable().Select(Mapper.Map<Movie, MovieDto>));
 		}
 
 		/// <summary>
@@ -46,7 +51,7 @@ namespace Vidly.Controllers.API
 		[HttpGet]
 		public IHttpActionResult GetMovie(int id)
 		{
-			var movie = this.context.Movies.SingleOrDefault(m => m.ID == id);
+			var movie = this.context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.ID == id);
 			if (movie == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 

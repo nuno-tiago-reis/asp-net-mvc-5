@@ -4,9 +4,6 @@
 	ViewBag.Title = "Change Email";
 }
 
-<h2>@ViewBag.Title</h2>
-<hr />
-
 @using (Html.BeginForm("ChangeEmail", "Manage", FormMethod.Post))
 {
 	@Html.ValidationSummary(true, "Please fix the following errors")

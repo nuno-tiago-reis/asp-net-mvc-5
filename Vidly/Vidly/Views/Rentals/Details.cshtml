@@ -1,0 +1,18 @@
+﻿@model Vidly.Models.Rental
+
+@{
+	ViewBag.Title = $"Rental {Model.ID}";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4><b>Movie</b></h4>
+@Model.Movie.Name
+
+<h4><b>Customer</b></h4>
+@Model.Customer.Name
+
+<h4><b>Date Rented</b></h4>
+@Model.DateRented.ToLongDateString()
+
+<h4><b>Date Returned</b></h4>
+@(Model.DateReturned.HasValue == false ? "The movie hasn't been returned yet." : Model.DateReturned.Value.ToLongDateString()) 

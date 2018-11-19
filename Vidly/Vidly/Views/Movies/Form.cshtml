@@ -3,13 +3,9 @@
 @model Vidly.ViewModels.MovieFormViewModel
 
 @{
-	ViewBag.Title = Model.Movie == null ? "New Movie" : $"Edit {Model.Movie.Name}";
+	ViewBag.Title = Model.Movie?.ID == 0 || Model.Movie == null ? "New Movie" : $"Edit {Model.Movie?.Name}";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
 
 @using (Html.BeginForm("Save", "Movies"))
 {
@@ -18,13 +14,15 @@
 
 	if (Model.Movie == null)
 	{
-		@Html.Hidden(nameof(Movie.ID), 0)
-		@Html.HiddenFor(model => model.Movie.DateAdded, new { Value = DateTime.Now })
+		@Html.HiddenFor(model => model.Movie.ID, new { Value = 0 })
+		@Html.HiddenFor(model => model.Movie.DateAdded, new { Value = DateTime.Now.ToShortDateString()})
+		@Html.HiddenFor(model => model.Movie.NumberRented, new { Value = 0 })
 	}
 	else
 	{
 		@Html.HiddenFor(model => model.Movie.ID)
 		@Html.HiddenFor(model => model.Movie.DateAdded)
+		@Html.HiddenFor(model => model.Movie.NumberRented)
 	}
 
 	<div class="form-group">
@@ -39,10 +37,8 @@
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Movie.GenreID)
-		@Html.DropDownListFor(
-			model => model.Movie.GenreID,
-			new SelectList(Model.Genres, nameof(Genre.ID), nameof(Genre.Name)), string.Empty, new { @class = "form-control" }
-			)
+		@Html.DropDownListFor(model => model.Movie.GenreID,
+			new SelectList(Model.Genres, nameof(Genre.ID), nameof(Genre.Name)), string.Empty, new { @class = "form-control" })
 		@Html.ValidationMessageFor(model => model.Movie.GenreID)
 	</div>
 	<div class="form-group">

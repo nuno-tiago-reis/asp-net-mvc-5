@@ -14,7 +14,7 @@ using Vidly.Models;
 namespace Vidly.Controllers
 {
 	[Authorize]
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		#region [Properties]
 		/// <summary>

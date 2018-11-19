@@ -91,6 +91,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\Packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
     </Reference>
@@ -111,6 +112,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
@@ -258,21 +262,28 @@
     <Compile Include="App_Start\Identity\ApplicationSignInManager.cs" />
     <Compile Include="App_Start\Mapping\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Session\CookieTempDataProvider.cs" />
     <Compile Include="App_Start\StartupConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\RentalsController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
+    <Compile Include="Controllers\Api\UsersController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RentalsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Dtos\Customers\CustomerDto.cs" />
     <Compile Include="Dtos\Movies\GenreDto.cs" />
     <Compile Include="Dtos\Customers\MembershipTypeDTo.cs" />
     <Compile Include="Dtos\Movies\MovieDto.cs" />
-    <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Dtos\Rentals\RentalDto.cs" />
+    <Compile Include="App_Start\Glimpse\GlimpseSecurityPolicy.cs" />
+    <Compile Include="Dtos\Users\UserDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -336,10 +347,29 @@
     <Compile Include="Migrations\201811091520261_Version-1.0.14.Designer.cs">
       <DependentUpon>201811091520261_Version-1.0.14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811141411521_Version-1.0.15.cs" />
+    <Compile Include="Migrations\201811141411521_Version-1.0.15.Designer.cs">
+      <DependentUpon>201811141411521_Version-1.0.15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141415181_Version-1.0.16.cs" />
+    <Compile Include="Migrations\201811141415181_Version-1.0.16.Designer.cs">
+      <DependentUpon>201811141415181_Version-1.0.16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141546076_Version-1.0.17.cs" />
+    <Compile Include="Migrations\201811141546076_Version-1.0.17.Designer.cs">
+      <DependentUpon>201811141546076_Version-1.0.17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141557346_Version-1.0.18.cs" />
+    <Compile Include="Migrations\201811141557346_Version-1.0.18.Designer.cs">
+      <DependentUpon>201811141557346_Version-1.0.18.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationRoles.cs" />
+    <Compile Include="Models\Movies\NumberRentedValidationAttribute.cs" />
     <Compile Include="Models\Movies\ReleaseDateValidationAttribute.cs" />
+    <Compile Include="Models\Rentals\ReturnedDateValidationAttribute.cs" />
+    <Compile Include="Models\Rentals\Rental.cs" />
     <Compile Include="ViewModels\Accounts\SendCodeViewModel.cs" />
     <Compile Include="ViewModels\Accounts\VerifyCodeViewModel.cs" />
     <Compile Include="ViewModels\Accounts\ExternalLoginConfirmationViewModel.cs" />
@@ -363,6 +393,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Movies\MovieFormViewModel.cs" />
     <Compile Include="ViewModels\Customers\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\Rentals\RentalFormViewModel.cs" />
     <Compile Include="ViewModels\Users\UserViewModel.cs" />
     <Compile Include="ViewModels\Users\UserFormViewModel.cs" />
   </ItemGroup>
@@ -484,10 +515,15 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\Styles\typeahead.css" />
+    <Content Include="Content\Styles\toastr.css" />
+    <Content Include="Content\Styles\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Styles\Site.css" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -498,6 +534,8 @@
     <Content Include="Content\Styles\bootstrap-reboot.min.css.map" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Content\Styles\toastr.scss" />
+    <Content Include="Content\Styles\toastr.less" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -573,6 +611,16 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\typeahead.jquery.js" />
+    <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -621,6 +669,10 @@
     <Content Include="Views\Manage\ChangePhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangeEmail.cshtml" />
     <Content Include="Views\Account\ConfirmPhoneNumber.cshtml" />
+    <Content Include="Views\Rentals\Details.cshtml" />
+    <Content Include="Views\Rentals\Form.cshtml" />
+    <Content Include="Views\Rentals\List.cshtml" />
+    <Content Include="Views\Rentals\ReadOnlyList.cshtml" />
     <None Include="Web.Secrets.config">
       <SubType>Designer</SubType>
     </None>
@@ -688,6 +740,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811091520261_Version-1.0.14.resx">
       <DependentUpon>201811091520261_Version-1.0.14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141411521_Version-1.0.15.resx">
+      <DependentUpon>201811141411521_Version-1.0.15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141415181_Version-1.0.16.resx">
+      <DependentUpon>201811141415181_Version-1.0.16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141546076_Version-1.0.17.resx">
+      <DependentUpon>201811141546076_Version-1.0.17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141557346_Version-1.0.18.resx">
+      <DependentUpon>201811141557346_Version-1.0.18.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

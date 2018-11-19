@@ -1,13 +1,9 @@
 ﻿@model Vidly.ViewModels.UserFormViewModel
 
 @{
-	ViewBag.Title = Model.User == null ? "New User" : $"Edit {Model.User.UserName}";
+	ViewBag.Title = string.IsNullOrWhiteSpace(Model.User?.Id) ? "New User" : $"Edit {Model.User?.UserName}";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
 
 @using (Html.BeginForm("Save", "Users"))
 {
@@ -71,10 +67,10 @@
 		</label>
 	</div>
 
-	<h4><b>Lock Account</b></h4>
+	<h4><b>Authentication</b></h4>
 	<div class="checkbox">
 		<label>
-			@Html.CheckBoxFor(model => model.User.PhoneNumberConfirmed, new { @class = "checkbox" }) Phone Confirmed?
+			@Html.CheckBoxFor(model => model.User.TwoFactorEnabled, new { @class = "checkbox" }) Two Factor Enabled?
 		</label>
 	</div>
 
@@ -84,7 +80,7 @@
 		{
 			<div class="checkbox">
 				<label>
-					<input type="checkbox" name="@nameof(Model.UserRoles)" value="@role" checked="@(Model.UserRoles?.Contains(role))" /> @role
+					<input type="checkbox" name="@nameof(Model.UserRoles)" value="@role" @(Model.UserRoles != null && Model.UserRoles.Contains(role) ? "checked" : string.Empty)/> @role
 				</label>
 			</div>
 		}

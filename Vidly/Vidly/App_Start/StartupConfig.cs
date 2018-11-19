@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 
 using Owin;
@@ -16,6 +18,10 @@ namespace Vidly
 {
 	public partial class Startup
 	{
+		/// <summary>
+		/// Configures the authentication.
+		/// </summary>
+		/// <param name="app">The application.</param>
 		public void ConfigureAuth(IAppBuilder app)
 		{
 			app.CreatePerOwinContext(ApplicationDbContext.Create);
@@ -31,7 +37,7 @@ namespace Vidly
 				Provider = new CookieAuthenticationProvider
 				{
 					// Enables the application to validate the security stamp when the user logs in.
-					// This is a security feature which is used when you change a password or add an external login to your account.  
+					// This is a security feature which is used when you change a password or add an external login to your account.
 					OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>
 					(
 						validateInterval: TimeSpan.FromMinutes(30),
@@ -75,6 +81,61 @@ namespace Vidly
 				clientId: ConfigurationManager.AppSettings["microsoftAppID"],
 				clientSecret: ConfigurationManager.AppSettings["microsoftAppSecret"]
 			);
+		}
+
+		/// <summary>
+		/// Configures the users.
+		/// </summary>
+		private void ConfigureUsers()
+		{
+			var context = new ApplicationDbContext();
+			var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+			var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+			// Create the roles
+			var roleNames = new[]
+			{
+				ApplicationRoles.CanManageUsers,
+				ApplicationRoles.CanManageMovies,
+				ApplicationRoles.CanManageRentals,
+				ApplicationRoles.CanManageCustomers
+			};
+
+			foreach (string roleName in roleNames)
+			{
+				if (roleManager.RoleExists(roleName))
+					continue;
+
+				var role = new IdentityRole { Name = roleName };
+				roleManager.Create(role);
+			}
+
+			// Create the admin
+			if (userManager.Users.Any(user => user.UserName == ApplicationUser.AdminUserName))
+				return;
+
+			// Create the user
+			var admin = new ApplicationUser
+			{
+				UserName = ApplicationUser.AdminUserName,
+
+				Email = ApplicationUser.AdminEmail,
+				EmailConfirmed = true,
+
+				PhoneNumber = ApplicationUser.AdminPhoneNumber,
+				PhoneNumberConfirmed = true
+			};
+
+			var result = userManager.Create(admin, ApplicationUser.AdminPassword);
+
+			// Add the roles to the user
+			if (result.Succeeded)
+			{
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageUsers);
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageMovies);
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageRentals);
+				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageCustomers);
+			}
 		}
 	}
 }

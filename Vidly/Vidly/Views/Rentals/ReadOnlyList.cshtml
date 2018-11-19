@@ -1,0 +1,69 @@
+﻿@{
+	ViewBag.Title = "Rentals";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="rentals" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>Rental</th>
+			<th>Movie</th>
+			<th>Customer</th>
+			<th>Date Rented</th>
+			<th>Date Returned</th>
+		</tr>
+	</thead>
+	<tbody />
+</table>
+
+@section scripts
+{
+	<script>
+
+		$(document).ready(function()
+		{
+			$("#rentals").DataTable
+			({
+				ajax:
+				{
+					url: "/api/rentals",
+					dataSrc: ""
+				},
+				columns:
+				[
+					{
+						render: function(data, type, rental)
+						{
+							return "<a href='/rentals/details/" + rental.id + "'>" + rental.name + "</a>";
+						}
+					},
+					{
+						data: "movie.name"
+					},
+					{
+						data: "customer.name"
+					},
+					{
+						render: function(data, type, rental)
+						{
+							return new Date(rental.dateRented).toLocaleDateString();
+						}
+					},
+					{
+						render: function(data, type, rental)
+						{
+							if (rental.dateReturned != null)
+								return new Date(rental.dateReturned).toLocaleDateString();
+
+							return null;
+						}
+					}
+				],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
+				}
+			});
+		});
+	</script>
+}

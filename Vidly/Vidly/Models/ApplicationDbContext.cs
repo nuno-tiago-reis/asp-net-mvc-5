@@ -26,6 +26,11 @@ namespace Vidly.Models
 		/// Gets or sets the genres.
 		/// </summary>
 		public DbSet<Genre> Genres { get; set; }
+
+		/// <summary>
+		/// Gets or sets the rentals.
+		/// </summary>
+		public DbSet<Rental> Rentals { get; set; }
 		#endregion
 
 		#region [Constructors]

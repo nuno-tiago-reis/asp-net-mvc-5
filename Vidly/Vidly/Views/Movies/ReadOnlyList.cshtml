@@ -3,16 +3,14 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
-
 <table id="movies" class="table table-bordered table-hover">
 	<thead>
 		<tr>
 			<th>Movie</th>
 			<th>Genre</th>
 			<th>Release Date</th>
+			<th>Date Added</th>
+			<th>Number Rented</th>
 			<th>Number in Stock</th>
 		</tr>
 	</thead>
@@ -22,17 +20,20 @@
 @section scripts
 {
 	<script>
-		$(document).ready(function () {
-
-			$("#movies").DataTable({
-				ajax: {
+		$(document).ready(function ()
+		{
+			$("#movies").DataTable
+			({
+				ajax:
+				{
 					url: "/api/movies",
 					dataSrc: ""
 				},
-				columns: [
+				columns:
+				[
 					{
-						data: "name",
-						render: function (data, type, movie) {
+						render: function (data, type, movie)
+						{
 							return "<a href='/movies/details/" + movie.id + "'>" + movie.name + "</a>";
 						}
 					},
@@ -43,9 +44,19 @@
 						data: "releaseDate"
 					},
 					{
+						data: "dateAdded"
+					},
+					{
+						data: "numberRented"
+					},
+					{
 						data: "numberInStock"
 					}
-				]
+				],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
+				}
 			});
 		});
 	</script>

@@ -35,9 +35,14 @@ namespace Vidly.Controllers.API
 		/// GET /api/customers
 		/// </summary>
 		[HttpGet]
-		public IHttpActionResult GetCustomers()
+		public IHttpActionResult GetCustomers(string query = null)
 		{
-			return this.Ok(this.context.Customers.Include(customer => customer.MembershipType).AsEnumerable().Select(Mapper.Map<Customer, CustomerDto>));
+			var customers = this.context.Customers.Include(c => c.MembershipType);
+
+			if (string.IsNullOrWhiteSpace(query) == false)
+				customers = customers.Where(c => c.Name.Contains(query));
+
+			return this.Ok(customers.AsEnumerable().Select(Mapper.Map<Customer, CustomerDto>));
 		}
 
 		/// <summary>
@@ -46,7 +51,7 @@ namespace Vidly.Controllers.API
 		[HttpGet]
 		public IHttpActionResult GetCustomer(int id)
 		{
-			var customer = this.context.Customers.SingleOrDefault(c => c.ID == id);
+			var customer = this.context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.ID == id);
 			if (customer == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 

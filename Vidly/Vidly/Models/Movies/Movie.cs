@@ -11,18 +11,12 @@ namespace Vidly.Models
 		/// <summary>
 		/// Gets or sets the identifier.
 		/// </summary>
-		/// <value>
-		/// The identifier.
-		/// </value>
 		[Required]
 		public int ID { get; set; }
 
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
 		[Required]
 		[StringLength(255)]
 		public string Name { get; set; }
@@ -30,9 +24,6 @@ namespace Vidly.Models
 		/// <summary>
 		/// Gets or sets the release date.
 		/// </summary>
-		/// <value>
-		/// The release date.
-		/// </value>
 		[Required]
 		[ReleaseDateValidation]
 		[Display(Name = "Release Date")]
@@ -41,9 +32,6 @@ namespace Vidly.Models
 		/// <summary>
 		/// Gets or sets the genre identifier.
 		/// </summary>
-		/// <value>
-		/// The genre identifier.
-		/// </value>
 		[Required]
 		[Display(Name = "Genre")]
 		public int GenreID { get; set; }
@@ -51,30 +39,28 @@ namespace Vidly.Models
 		/// <summary>
 		/// Gets or sets the genre.
 		/// </summary>
-		/// <value>
-		/// The genre.
-		/// </value>
 		public Genre Genre { get; set; }
 
 		/// <summary>
 		/// Gets or sets the date added.
 		/// </summary>
-		/// <value>
-		/// The date added.
-		/// </value>
 		[Required]
 		[Display(Name = "Date Added")]
 		public DateTime DateAdded { get; set; }
 
 		/// <summary>
+		/// Gets or sets the number rented.
+		/// </summary>
+		[Required]
+		[NumberRentedValidation]
+		[Display(Name = "Number Rented")]
+		public int NumberRented { get; set; }
+
+		/// <summary>
 		/// Gets or sets the number in stock.
 		/// </summary>
-		/// <value>
-		/// The number in stock.
-		/// </value>
 		[Required]
-		[Range(1, 50)]
-		[Display(Name = "Number in Stock")]
+		[Display(Name = "Number In Stock")]
 		public int NumberInStock { get; set; }
 	}
 }

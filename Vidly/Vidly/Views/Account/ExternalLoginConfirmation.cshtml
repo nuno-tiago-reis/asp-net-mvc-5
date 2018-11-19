@@ -1,11 +1,8 @@
 ﻿@model Vidly.Models.ExternalLoginConfirmationViewModel
 
 @{
-	ViewBag.Title = "Register";
+	ViewBag.Title = $"Associate your {ViewBag.LoginProvider} account";
 }
-
-<h2>Associate your @ViewBag.LoginProvider account</h2>
-<hr />
 
 @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post))
 {

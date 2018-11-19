@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Vidly.Controllers
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title</title>
 
-	@Styles.Render("~/Content/css")
+	@Styles.Render("~/content/css")
 	@Scripts.Render("~/bundles/lib")
 	@Scripts.Render("~/bundles/modernizr")
 </head>
@@ -13,7 +15,11 @@
 	@Html.Partial("_NavBar")
 
 	<div class="container body-content">
+		<h2>@ViewBag.Title</h2>
+		<hr />
+
 		@RenderBody()
+
 		<hr/>
 		<footer>
 			<p>&copy; @DateTime.Now.Year - Vidly</p>
@@ -21,5 +27,32 @@
 	</div>
 
 	@RenderSection("scripts", required: false)
+
+	<script>
+
+		$(document).ready(function()
+		{
+			@{
+				this.TempData.TryGetValue(BaseController.MessageKey, out var message);
+				this.TempData.TryGetValue(BaseController.MessageTypeKey, out var messageType);
+
+				if (string.IsNullOrWhiteSpace(message as string) == false && string.IsNullOrWhiteSpace(messageType as string) == false)
+				{
+					if ((string)messageType == BaseController.MessageTypeSuccess)
+					{
+						<text>toastr.success('@message');</text>
+					}
+					if ((string)messageType == BaseController.MessageTypeWarning)
+					{
+						<text>toastr.warning('@message');</text>
+					}
+					if ((string)messageType == BaseController.MessageTypeError)
+					{	
+						<text>toastr.error('@message');</text>
+					}
+				}
+			}
+		});
+	</script>
 </body>
 </html>

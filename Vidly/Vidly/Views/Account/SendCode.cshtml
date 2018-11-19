@@ -4,9 +4,6 @@
 	ViewBag.Title = "Send Code";
 }
 
-<h2>@ViewBag.Title</h2>
-<hr />
-
 @using (Html.BeginForm("SendCode", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 	@Html.AntiForgeryToken()

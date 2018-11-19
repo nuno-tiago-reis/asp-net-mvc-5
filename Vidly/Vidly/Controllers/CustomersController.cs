@@ -7,7 +7,7 @@ using Vidly.ViewModels;
 namespace Vidly.Controllers
 {	
 	[Authorize]
-	public sealed class CustomersController : Controller
+	public sealed class CustomersController : BaseController
 	{
 		#region [Properties]
 		/// <summary>
@@ -18,7 +18,7 @@ namespace Vidly.Controllers
 
 		#region [Constructors]
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Vidly.Controllers.CustomersController" /> class.
+		/// Initializes a new instance of the <see cref="CustomersController" /> class.
 		/// </summary>
 		public CustomersController()
 		{
@@ -39,10 +39,11 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: customers/
+		/// GET: customers/details/id
 		/// </summary>
+		/// <param name="id">The customer id.</param>
 		[HttpGet]
-		[Route("users/{id}")]
+		[Route("customers/{id}")]
 		public ActionResult Details(int id)
 		{
 			var customer = this.context.Customers.Include(nameof(Customer.MembershipType)).FirstOrDefault(c => c.ID == id);
@@ -66,12 +67,16 @@ namespace Vidly.Controllers
 				MembershipTypes = this.context.MembershipTypes
 			};
 
+			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] == null)
+			//	System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] = this.context.MembershipTypes;
+
 			return this.View("Form", viewModel);
 		}
 
 		/// <summary>
-		/// GET: customers/edit
+		/// GET: customers/edit/id
 		/// </summary>
+		/// <param name="id">The customer id.</param>
 		[HttpGet]
 		[Route("customers/edit/{id:regex(\\d)}")]
 		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
@@ -87,11 +92,14 @@ namespace Vidly.Controllers
 				MembershipTypes = this.context.MembershipTypes
 			};
 
+			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] == null)
+			//	System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] = this.context.MembershipTypes;
+
 			return this.View("Form", viewModel);
 		}
 
 		/// <summary>
-		/// Deletes the customer with the specified ID.
+		/// POST: customers/delete/id
 		/// </summary>
 		/// <param name="id">The customer id.</param>
 		[HttpPost]
@@ -105,6 +113,9 @@ namespace Vidly.Controllers
 
 			this.context.Customers.Remove(customer);
 			this.context.SaveChanges();
+
+			this.TempData[MessageKey] = "Customer deleted successfully.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
 
 			return this.RedirectToAction("Index", "Customers");
 		}
@@ -132,10 +143,15 @@ namespace Vidly.Controllers
 			if (customer.ID == 0)
 			{
 				this.context.Customers.Add(customer);
+
+				this.TempData[MessageKey] = "Customer created successfully.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 			else
 			{
 				var databaseCustomer = this.context.Customers.FirstOrDefault(c => c.ID == customer.ID);
+				if (databaseCustomer == null)
+					return this.HttpNotFound();
 
 				this.TryUpdateModel(databaseCustomer, nameof(Customer), new[]
 				{
@@ -144,6 +160,9 @@ namespace Vidly.Controllers
 					nameof(Customer.MembershipTypeID),
 					nameof(Customer.IsSubscribedToNewsletter)
 				});
+
+				this.TempData[MessageKey] = "Customer updated successfully.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 
 			this.context.SaveChanges();

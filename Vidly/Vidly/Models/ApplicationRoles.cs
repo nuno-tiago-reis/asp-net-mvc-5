@@ -13,6 +13,11 @@
 		public const string CanManageMovies = "CanManageMovies";
 
 		/// <summary>
+		/// The role name for managing rentals.
+		/// </summary>
+		public const string CanManageRentals = "CanManageRentals";
+
+		/// <summary>
 		/// The role name for managing customers.
 		/// </summary>
 		public const string CanManageCustomers = "CanManageCustomers";

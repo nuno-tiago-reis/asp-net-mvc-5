@@ -3,13 +3,9 @@
 @model Vidly.ViewModels.CustomerFormViewModel
 
 @{
-	ViewBag.Title = Model.Customer == null ? "New Customer" : $"Edit {Model.Customer.Name}";
+	ViewBag.Title = Model.Customer?.ID == 0 || Model.Customer == null ? "New Customer" : $"Edit {Model.Customer?.Name}";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
 
 @using (Html.BeginForm("Save", "Customers"))
 {
@@ -18,7 +14,7 @@
 
 	if (Model.Customer == null)
 	{
-		@Html.Hidden(nameof(Customer.ID), 0)
+		@Html.HiddenFor(model => model.Customer.ID, new { Value = 0 })
 	}
 	else
 	{
@@ -32,10 +28,8 @@
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.Customer.MembershipTypeID)
-		@Html.DropDownListFor(
-			model => model.Customer.MembershipTypeID,
-			new SelectList(Model.MembershipTypes, nameof(MembershipType.ID), nameof(MembershipType.Name)), string.Empty, new { @class = "form-control" }
-			)
+		@Html.DropDownListFor(model => model.Customer.MembershipTypeID,
+			new SelectList(Model.MembershipTypes, nameof(MembershipType.ID), nameof(MembershipType.Name)), string.Empty, new { @class = "form-control" })
 		@Html.ValidationMessageFor(model => model.Customer.MembershipTypeID)
 	</div>
 	<div class="form-group">

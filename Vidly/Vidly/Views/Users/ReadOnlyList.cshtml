@@ -7,10 +7,6 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
-
 <table id="users" class="table table-bordered table-hover">
 	<thead>
 		<tr>
@@ -18,7 +14,7 @@
 			<th>Fiscal Number</th>
 			<th>Email</th>
 			<th>Phone Number</th>
-			<th>Lockout Enabled?</th>
+			<th>Two Factor?</th>
 			<th>Roles</th>
 		</tr>
 	</thead>
@@ -52,12 +48,74 @@
 @section scripts
 {
 	<script>
-		$(document).ready(function () {
-
-			$("#users").DataTable();
-
-			$('[data-toggle="tooltip"]').tooltip();
+		$(document).ready(function ()
+		{
+			$("#users").DataTable
+			({
+				ajax:
+				{
+					url: "/api/users",
+					dataSrc: ""
+				},
+				columns:
+				[
+					{
+						render: function (data, type, user)
+						{
+							return "<a href='/users/details/" + user.id + "'>" + user.userName + "</a>";
+						}
+					},
+					{
+						data: "fiscalNumber"
+					},
+					{
+						render: function (data, type, user)
+						{
+							if (user.emailConfirmed)
+							{
+								return "<span class='confirmed-contact' data-toggle='tooltip' title='The email is confirmed').>" + user.email + "</span>";
+							}
+							else
+							{
+								return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The email is unconfirmed').>" + user.email + "</span>";
+							}
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							if (user.phoneNumberConfirmed)
+							{
+								return "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is confirmed'>" + user.phoneNumber + "</span>";
+							}
+							else
+							{
+								return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The phone number is unconfirmed'>" + user.phoneNumber + "</span>";
+							}
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							if (user.twoFactorEnabled)
+							{
+								return "<span class='confirmed-contact'>Enabled</span>";
+							}
+							else
+							{
+								return "<span class='unconfirmed-contact'>Disabled</span>";
+							}
+						}
+					},
+					{
+						data: "roles"
+					}
+			],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
+				}
+			});
 		});
-
 	</script>
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Vidly.Dtos
+﻿namespace Vidly.Dtos
 {
 	public sealed class GenreDto
 	{
@@ -12,7 +10,6 @@ namespace Vidly.Dtos
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
-		[StringLength(255)]
 		public string Name { get; set; }
 	}
 }

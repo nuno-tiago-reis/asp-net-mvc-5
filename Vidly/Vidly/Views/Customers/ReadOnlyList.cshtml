@@ -3,10 +3,6 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
-
 <table id="customers" class="table table-bordered table-hover">
 	<thead>
 		<tr>
@@ -21,17 +17,20 @@
 @section scripts
 {
 	<script>
-		$(document).ready(function () {
-
-			$("#customers").DataTable({
-				ajax: {
+		$(document).ready(function ()
+		{
+			$("#customers").DataTable
+			({
+				ajax:
+				{
 					url: "/api/customers",
 					dataSrc: ""
 				},
-				columns: [
+				columns:
+				[
 					{
-						data: "name",
-						render: function (data, type, customer) {
+						render: function (data, type, customer)
+						{
 							return "<a href='/customers/details/" + customer.id + "'>" + customer.name + "</a>";
 						}
 					},
@@ -41,7 +40,11 @@
 					{
 						data: "membershipType.discountRate"
 					}
-				]
+				],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
+				}
 			});
 		});
 	</script>

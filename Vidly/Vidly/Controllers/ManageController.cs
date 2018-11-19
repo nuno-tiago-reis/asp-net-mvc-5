@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,7 +14,7 @@ using Vidly.Models;
 namespace Vidly.Controllers
 {
 	[Authorize]
-	public class ManageController : Controller
+	public class ManageController : BaseController
 	{
 		#region [Properties]
 		/// <summary>
@@ -89,40 +88,8 @@ namespace Vidly.Controllers
 		/// <summary>
 		/// GET: /manage/
 		/// </summary>
-		public async Task<ActionResult> Index(ManageMessageId? message)
+		public async Task<ActionResult> Index()
 		{
-			// ReSharper disable once SwitchStatementMissingSomeCases
-			switch (message)
-			{
-				case ManageMessageId.ChangeEmailSuccess:
-					this.ViewBag.StatusMessage = "Your email has been changed.";
-					break;
-				case ManageMessageId.ConfirmEmailSuccess:
-					this.ViewBag.StatusMessage = "A confirmation email has been sent.";
-					break;
-				case ManageMessageId.ChangePasswordSuccess:
-					this.ViewBag.StatusMessage = "Your password has been changed.";
-					break;
-				case ManageMessageId.ChangePhoneNumberSuccess:
-					this.ViewBag.StatusMessage = "Your phone number has been changed.";
-					break;
-				case ManageMessageId.ConfirmPhoneNumberSuccess:
-					this.ViewBag.StatusMessage = "A confirmation message has been sent.";
-					break;
-				case ManageMessageId.AddExternalLoginSuccess:
-					this.ViewBag.StatusMessage = "The external login has been added.";
-					break;
-				case ManageMessageId.RemoveExternalLoginSuccess:
-					this.ViewBag.StatusMessage = "The external login has been removed.";
-					break;
-				case ManageMessageId.Error:
-				case null:
-					break;
-
-				default:
-					throw new ArgumentOutOfRangeException(nameof(message), message, null);
-			}
-
 			string userId = User.Identity.GetUserId();
 
 			var model = new IndexViewModel
@@ -175,7 +142,10 @@ namespace Vidly.Controllers
 				return this.View(model);
 			}
 
-			return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
+			this.TempData[MessageKey] = "Your email has been changed.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+			return this.RedirectToAction("Index");
 		}
 
 		/// <summary>
@@ -199,7 +169,10 @@ namespace Vidly.Controllers
 			// Send the confirmation email
 			await this.UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmEmailSuccess });
+			this.TempData[MessageKey] = "A confirmation email has been sent.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+			return this.RedirectToAction("Index");
 		}
 		#endregion
 
@@ -239,7 +212,10 @@ namespace Vidly.Controllers
 				return this.View(model);
 			}
 
-			return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangePhoneNumberSuccess });
+			this.TempData[MessageKey] = "Your phone number has been changed.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+			return this.RedirectToAction("Index");
 		}
 
 		/// <summary>
@@ -265,7 +241,10 @@ namespace Vidly.Controllers
 			// Send the confirmation sms
 			await this.UserManager.SendSmsAsync(user.Id, "Please confirm your phone number by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-			return this.RedirectToAction("Index", new { Message = ManageMessageId.ConfirmPhoneNumberSuccess });
+			this.TempData[MessageKey] = "A confirmation message has been sent.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+			return this.RedirectToAction("Index");
 		}
 		#endregion
 
@@ -306,7 +285,11 @@ namespace Vidly.Controllers
 					{
 						await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 					}
-					return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+
+					this.TempData[MessageKey] = "Your password has been changed.";
+					this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+					return this.RedirectToAction("Index");
 				}
 
 				this.AddErrors(result);
@@ -321,7 +304,11 @@ namespace Vidly.Controllers
 					{
 						await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 					}
-					return this.RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+
+					this.TempData[MessageKey] = "Your password has been changed.";
+					this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
+					return this.RedirectToAction("Index");
 				}
 
 				this.AddErrors(result);
@@ -336,14 +323,8 @@ namespace Vidly.Controllers
 		/// GET: /manage/logins
 		/// </summary>
 		[HttpGet]
-		public async Task<ActionResult> ExternalLogins(ManageMessageId? message)
+		public async Task<ActionResult> ExternalLogins()
 		{
-			this.ViewBag.StatusMessage =
-				  message == ManageMessageId.AddExternalLoginSuccess ? "The external login was added."
-				: message == ManageMessageId.RemoveExternalLoginSuccess ? "The external login was removed."
-				: message == ManageMessageId.Error ? "An error has occurred."
-				: string.Empty;
-
 			var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 			if (user == null)
 			{
@@ -380,8 +361,6 @@ namespace Vidly.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
 		{
-			ManageMessageId? message;
-
 			var result = await this.UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
 			if (result.Succeeded)
 			{
@@ -391,14 +370,16 @@ namespace Vidly.Controllers
 					await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 				}
 
-				message = ManageMessageId.RemoveExternalLoginSuccess;
+				this.TempData[MessageKey] = "The external login was removed.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 			else
 			{
-				message = ManageMessageId.Error;
+				this.TempData[MessageKey] = "An error has occured.";
+				this.TempData[MessageTypeKey] = MessageTypeError;
 			}
 
-			return this.RedirectToAction("ExternalLogins", new { Message = message });
+			return this.RedirectToAction("ExternalLogins");
 		}
 
 		/// <summary>
@@ -410,12 +391,25 @@ namespace Vidly.Controllers
 			var loginInfo = await this.AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, this.User.Identity.GetUserId());
 			if (loginInfo == null)
 			{
-				return RedirectToAction("ExternalLogins", new { Message = ManageMessageId.Error });
+				this.TempData[MessageKey] = "An error has occured.";
+				this.TempData[MessageTypeKey] = MessageTypeError;
+
+				return RedirectToAction("ExternalLogins");
 			}
 
 			var result = await this.UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+			if (result.Succeeded)
+			{
+				this.TempData[MessageKey] = "The external login was added.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
+			}
+			else
+			{
+				this.TempData[MessageKey] = "An error has occured.";
+				this.TempData[MessageTypeKey] = MessageTypeError;
+			}
 
-			return this.RedirectToAction("ExternalLogins", new { Message = result.Succeeded ? ManageMessageId.AddExternalLoginSuccess : ManageMessageId.Error });
+			return this.RedirectToAction("ExternalLogins");
 		}
 		#endregion
 
@@ -435,6 +429,9 @@ namespace Vidly.Controllers
 				await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 			}
 
+			this.TempData[MessageKey] = "Two factor authentication has been enabled.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
 			return this.RedirectToAction("Index", "Manage");
 		}
 
@@ -453,28 +450,14 @@ namespace Vidly.Controllers
 				await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 			}
 
+			this.TempData[MessageKey] = "Two factor authentication has been disabled.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
+
 			return this.RedirectToAction("Index", "Manage");
 		}
 		#endregion
 
 		#region [Helpers]
-		/// <summary>
-		/// Enumerates the manage message ids.
-		/// </summary>
-		public enum ManageMessageId
-		{
-			ChangeEmailSuccess,
-			ConfirmEmailSuccess,
-			ChangePasswordSuccess,
-			ChangePhoneNumberSuccess,
-			ConfirmPhoneNumberSuccess,
-
-			AddExternalLoginSuccess,
-			RemoveExternalLoginSuccess,
-
-			Error
-		}
-
 		/// <summary>
 		/// The XSRF key.
 		/// Used for XSRF protection when adding external logins

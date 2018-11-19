@@ -14,7 +14,7 @@ using Vidly.ViewModels;
 namespace Vidly.Controllers
 {
 	[Authorize]
-	public sealed class UsersController : Controller
+	public sealed class UsersController : BaseController
 	{
 		#region [Properties]
 		/// <summary>
@@ -108,8 +108,9 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: users/
+		/// GET: users/details/id
 		/// </summary>
+		/// <param name="id">The user id.</param>
 		[HttpGet]
 		[Route("users/{id}")]
 		public ActionResult Details(string id)
@@ -145,8 +146,9 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// GET: users/edit
+		/// GET: users/edit/id
 		/// </summary>
+		/// <param name="id">The user id.</param>
 		[HttpGet]
 		[Route("users/edit/{id}")]
 		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
@@ -167,9 +169,9 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
-		/// Deletes the movie with the specified ID.
+		/// POST: users/delete/id
 		/// </summary>
-		/// <param name="id">The movie id.</param>
+		/// <param name="id">The user id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
@@ -180,6 +182,9 @@ namespace Vidly.Controllers
 				return this.HttpNotFound();
 
 			this.UserManager.Delete(user);
+
+			this.TempData[MessageKey] = "User deleted successfully.";
+			this.TempData[MessageTypeKey] = MessageTypeSuccess;
 
 			return this.RedirectToAction("Index", "Users");
 		}
@@ -216,6 +221,9 @@ namespace Vidly.Controllers
 					return this.HandleError(result);
 
 				databaseUser = this.UserManager.FindById(user.Id);
+
+				this.TempData[MessageKey] = "User created successfully.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 			else
 			{
@@ -225,10 +233,14 @@ namespace Vidly.Controllers
 				databaseUser.EmailConfirmed = user.EmailConfirmed;
 				databaseUser.PhoneNumber = user.PhoneNumber;
 				databaseUser.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+				databaseUser.TwoFactorEnabled = user.TwoFactorEnabled;
 
 				var result = this.UserManager.Update(databaseUser);
 				if (result.Succeeded == false)
 					return this.HandleError(result);
+
+				this.TempData[MessageKey] = "User updated successfully.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 
 			// Update the roles

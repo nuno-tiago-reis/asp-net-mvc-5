@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Vidly.Dtos
 {
@@ -16,7 +15,6 @@ namespace Vidly.Dtos
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
-		[StringLength(255)]
 		public string Name { get; set; }
 
 		/// <summary>
@@ -38,6 +36,11 @@ namespace Vidly.Dtos
 		/// Gets or sets the date added.
 		/// </summary>
 		public DateTime DateAdded { get; set; }
+
+		/// <summary>
+		/// Gets or sets the number rented.
+		/// </summary>
+		public int NumberRented { get; set; }
 
 		/// <summary>
 		/// Gets or sets the number in stock.

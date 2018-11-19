@@ -3,10 +3,6 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<hr />
-
 <input type="button" class="btn btn-primary" value="Create" onclick="location.href='@Url.Action("Create", "Movies")'" />
 
 <br />
@@ -18,6 +14,8 @@
 			<th>Movie</th>
 			<th>Genre</th>
 			<th>Release Date</th>
+			<th>Date Added</th>
+			<th>Number Rented</th>
 			<th>Number in Stock</th>
 			<th>Delete?</th>
 		</tr>
@@ -27,56 +25,86 @@
 
 @section scripts
 {
-	<script>
-		$(document).ready(function () {
-
-			var table = $("#movies").DataTable({
-				ajax: {
-					url: "/api/movies",
-					dataSrc: ""
+<script>
+	$(document).ready(function ()
+	{
+		var table = $("#movies").DataTable
+		({
+			ajax:
+			{
+				url: "/api/movies",
+				dataSrc: ""
+			},
+			columns:
+			[
+				{
+					render: function (data, type, movie)
+					{
+						return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+					}
 				},
-				columns: [
+				{
+					data: "genre.name"
+				},
+				{
+					render: function (data, type, movie)
 					{
-						data: "name",
-						render: function (data, type, movie) {
-							return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+						return new Date(movie.releaseDate).toLocaleDateString();
+					}
+					},
+					{
+						render: function (data, type, movie)
+						{
+							return new Date(movie.dateAdded).toLocaleDateString();
 						}
 					},
+				{
+					data: "numberRented"
+				},
+				{
+					data: "numberInStock"
+				},
+				{
+					render: function (data, type, movie)
 					{
-						data: "genre.name"
-					},
-					{
-						data: "releaseDate"
-					},
-					{
-						data: "numberInStock"
-					},
-					{
-						data: "id",
-						render: function (data) {
-							return "<button class='btn btn-danger js-delete' data-movie-id='" + data + "'>Delete</button>";
+						return "<button class='btn btn-danger js-delete' data-movie-id='" + movie.id + "'>Delete</button>";
+					}
+				}
+			],
+			"drawCallback": function ()
+			{
+				$('[data-toggle="tooltip"]').tooltip();
+			}
+		});
+
+		$("#movies").on("click", ".js-delete", function ()
+		{
+			var button = $(this);
+
+			bootbox.confirm("Are you sure you want to delete this movie?", function (result)
+			{
+				if (result)
+				{
+					$.ajax
+					({
+						url: "/api/movies/" + button.attr("data-movie-id"),
+						method: "DELETE",
+
+						success: function ()
+						{
+							table.row(button.parents("tr")).remove().draw();
+							toastr.success("Movie successfully deleted.");
+						},
+
+						error: function (xhr)
+						{
+							var error = JSON.parse(xhr.responseText);
+							toastr.error("An error occurred:" + error.message);
 						}
-					}
-				]
-			});
-
-			$("#movies").on("click", ".js-delete", function () {
-
-				var button = $(this);
-
-				bootbox.confirm("Are you sure you want to delete this movie?", function (result) {
-
-					if (result) {
-						$.ajax({
-							url: "/api/movies/" + button.attr("data-movie-id"),
-							method: "DELETE",
-							success: function () {
-								table.row(button.parents("tr")).remove().draw();
-							}
-						});
-					}
-				});
+					});
+				}
 			});
 		});
-	</script>
+	});
+</script>
 }
