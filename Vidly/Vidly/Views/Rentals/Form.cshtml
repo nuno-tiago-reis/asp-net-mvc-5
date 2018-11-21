@@ -10,22 +10,22 @@
 	@Html.ValidationSummary(true, "Please fix the following errors")
 	@Html.AntiForgeryToken()
 
-	@Html.HiddenFor(model => model.MovieID, new { id = "movie-id", @class = "form-control" })
 	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control" })
+	@Html.HiddenFor(model => model.MovieID, new { id = "movie-id", @class = "form-control" })
 
-	<div class="form-group">
-		@Html.LabelFor(model => model.MovieName)
-		<div class="tt-container">
-			@Html.TextBoxFor(model => model.MovieName, new { id = "movie", @class = "form-control" })
-		</div>
-		@Html.ValidationMessageFor(model => model.MovieName)
-	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.CustomerName)
 		<div class="tt-container">
 			@Html.TextBoxFor(model => model.CustomerName, new { id = "customer", @class = "form-control" })
 		</div>
 		@Html.ValidationMessageFor(model => model.CustomerName)
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.MovieName)
+		<div class="tt-container">
+			@Html.TextBoxFor(model => model.MovieName, new { id = "movie", @class = "form-control" })
+		</div>
+		@Html.ValidationMessageFor(model => model.MovieName)
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
@@ -39,56 +39,56 @@
 		$(document).ready(function ()
 		{
 			var customers = new Bloodhound
-			({
-				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-				queryTokenizer: Bloodhound.tokenizers.whitespace,
-				remote:
-				{
-					url: '/api/customers?query=%QUERY',
-					wildcard: '%QUERY'
-				}
-			});
+				({
+					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+					queryTokenizer: Bloodhound.tokenizers.whitespace,
+					remote:
+					{
+						url: '/api/customers?query=%QUERY',
+						wildcard: '%QUERY'
+					}
+				});
 
 			$('#customer').typeahead
-			({
-				minLength: 3,
-				highlight: true
-			},
-			{
-				name: 'customers',
-				display: 'name',
-				source: customers
-			}
-			).on("typeahead:select", function (event, customer)
-			{
-				$('#customer-id').val(customer.id);
-			});
+				({
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'customers',
+					display: 'name',
+					source: customers
+				}
+				).on("typeahead:select", function (event, customer)
+				{
+					$('#customer-id').val(customer.id);
+				});
 
 			var movies = new Bloodhound
-			({
-				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-				queryTokenizer: Bloodhound.tokenizers.whitespace,
-				remote:
-				{
-					url: '/api/movies?query=%QUERY',
-					wildcard: '%QUERY'
-				}
-			});
+				({
+					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+					queryTokenizer: Bloodhound.tokenizers.whitespace,
+					remote:
+					{
+						url: '/api/movies?query=%QUERY',
+						wildcard: '%QUERY'
+					}
+				});
 
 			$('#movie').typeahead
-			({
-				minLength: 3,
-				highlight: true
-			},
-			{
-				name: 'movies',
-				display: 'name',
-				source: movies
-			}
-			).on("typeahead:select", function (event, movie)
-			{
-				$('#movie-id').val(movie.id);
-			});
+				({
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'movies',
+					display: 'name',
+					source: movies
+				}
+				).on("typeahead:select", function (event, movie)
+				{
+					$('#movie-id').val(movie.id);
+				});
 		});
 	</script>
 }

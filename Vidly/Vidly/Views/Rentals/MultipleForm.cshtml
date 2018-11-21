@@ -1,0 +1,160 @@
+﻿@model Vidly.ViewModels.MultipleRentalFormViewModel
+
+@{
+	ViewBag.Title = "New Rental";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveMultiple", "Rentals"))
+{
+	@Html.ValidationSummary(true, "Please fix the following errors")
+	@Html.AntiForgeryToken()
+
+	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control" })
+	@Html.HiddenFor(model => model.MovieIDs, new { id = "movie-id-x", @class = "form-control" })
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.CustomerName)
+		<div class="tt-container">
+			@Html.TextBoxFor(model => model.CustomerName, new { id = "customer", @class = "form-control" })
+		</div>
+		@Html.ValidationMessageFor(model => model.CustomerName)
+	</div>
+	<div class="form-group">
+		@Html.Label("Movie Name")
+		<div class="tt-container">
+			@Html.TextBox("Movie Name", string.Empty, new { id = "movie", @class = "form-control" })
+		</div>
+		@Html.ValidationMessageFor(model => model.MovieIDs)
+	</div>
+	<div>
+		<h5><strong>Selected Movies</strong></h5>
+		<h6 id="movie-list-empty">Empty</h6>
+		<ul id="movie-list" class="list-group"></ul>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+	@Scripts.Render("~/bundles/jqueryval")
+
+	<script>
+		$.validator.setDefaults
+		({
+			ignore: []
+		});
+
+		$(document).ready(function()
+		{
+			var movieIDs = [];
+
+			var customers = new Bloodhound
+			({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				remote:
+				{
+					url: '/api/customers?query=%QUERY',
+					wildcard: '%QUERY'
+				}
+			});
+
+			$('#customer').typeahead
+			({
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'customers',
+					display: 'name',
+					source: customers
+				}
+			).on("typeahead:select", function(event, customer)
+			{
+				$('#customer-id').val(customer.id);
+			});
+
+			var movies = new Bloodhound
+			({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				remote:
+				{
+					url: '/api/movies?query=%QUERY',
+					wildcard: '%QUERY'
+				}
+			});
+
+			$('#movie').typeahead
+			({
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'movies',
+					display: 'name',
+					source: movies
+				}
+			).on("typeahead:select", function(event, movie)
+			{
+				if ($.inArray(movie.id, movieIDs) === -1)
+				{
+					movieIDs.push(movie.id);
+
+					var ul = $("#movie-list");
+
+					var li = document.createElement("li");
+					li.setAttribute("class", "list-group-item");
+
+					var button = document.createElement("button");
+					button.setAttribute("id", "movie-list-remove");
+					button.setAttribute("type", "button");
+					button.setAttribute("class", "close");
+					button.innerHTML = "&times;";
+					button.onclick = function()
+					{
+						for (var i = 0; i < movieIDs.length; i++)
+						{
+							if (i > movieIDs.indexOf(movie.id))
+								$("#movie-id-" + i).attr("id", "movie-id-" + (i - 1));
+						}
+
+						movieIDs.splice(movieIDs.indexOf(movie.id), 1);
+
+						if (movieIDs.length === 0)
+						{
+							$("#movie-id-x").prop("disabled", false);
+							$('#movie-list-empty').show();
+						}
+
+						li.remove();
+					};
+
+
+					var input = $("#movie-id-x").clone();
+					input.attr("id", "movie-id-" + (movieIDs.length - 1));
+					input.prop("disabled", false);
+					input.val(movie.id);
+
+					for (var i = 0; i < movieIDs.length; i++)
+					{
+						$("#movie-id-" + i).val(movieIDs[i]);
+					}
+
+					li.appendChild(input[0]);
+					li.append(movie.name);
+					li.append(button);
+
+					ul.append(li);
+
+					$("#movie-id-x").prop("disabled", true);
+					$('#movie-list-empty').hide();
+				}
+
+				$('#movie').typeahead('val', '');
+			});
+		});
+	</script>
+}

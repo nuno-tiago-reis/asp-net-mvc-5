@@ -29,25 +29,36 @@ textarea
 
 .field-validation-error
 {
-	color:  red
+	color: red;
+	text-transform: lowercase;
+}
+
+.field-validation-error span
+{
+	display: block
+}
+
+.field-validation-error span::first-letter
+{
+	text-transform: uppercase;
 }
 
 .input-validation-error
 {
-	border: 2px solid red
+	border: 2px solid red;
 }
 
 .validation-summary-errors
 {
-	color: red
+	color: red;
 }
 
 .confirmed-contact
 {
-	color: green
+	color: green;
 }
 
 .unconfirmed-contact
 {
-	color: red
+	color: red;
 }

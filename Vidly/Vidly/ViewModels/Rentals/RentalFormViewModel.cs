@@ -10,14 +10,14 @@ namespace Vidly.ViewModels
 		[Required]
 		public int MovieID { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "No movie was selected.")]
 		[Display(Name = "Movie Name")]
 		public string MovieName { get; set; }
 
 		[Required]
 		public int CustomerID { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "No customer was selected.")]
 		[Display(Name = "Customer Name")]
 		public string CustomerName { get; set; }
 

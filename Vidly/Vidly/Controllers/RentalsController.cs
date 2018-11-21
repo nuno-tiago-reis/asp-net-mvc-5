@@ -67,6 +67,17 @@ namespace Vidly.Controllers
 		}
 
 		/// <summary>
+		/// GET: rentals/createmultiple
+		/// </summary>
+		[HttpGet]
+		[Route("rentals/createmultiple")]
+		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
+		public ViewResult CreateMultiple()
+		{
+			return this.View("MultipleForm", new MultipleRentalFormViewModel());
+		}
+
+		/// <summary>
 		/// GET: rentals/edit/id
 		/// </summary>
 		/// <param name="id">The rental id.</param>
@@ -143,10 +154,18 @@ namespace Vidly.Controllers
 			{
 				rental.DateRented = DateTime.Now;
 
-				this.context.Rentals.Add(rental);
-
 				var databaseMovie = this.context.Movies.First(m => m.ID == rental.MovieID);
+				if (databaseMovie.NumberInStock == databaseMovie.NumberRented)
+				{
+					this.TempData[MessageKey] = $"The movie {databaseMovie.Name} is out of stock.";
+					this.TempData[MessageTypeKey] = MessageTypeError;
+
+					return this.RedirectToAction("Index", "Rentals");
+				}
+
 				databaseMovie.NumberRented++;
+
+				this.context.Rentals.Add(rental);
 
 				this.TempData[MessageKey] = "Rental created successfully.";
 				this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -178,6 +197,60 @@ namespace Vidly.Controllers
 			}
 
 			this.context.SaveChanges();
+
+			return this.RedirectToAction("Index", "Rentals");
+		}
+
+		/// <summary>
+		/// Saves the specified rentals.
+		/// </summary>
+		/// <param name="viewModel">The view model.</param>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
+		public ActionResult SaveMultiple(MultipleRentalFormViewModel viewModel)
+		{
+			if (ModelState.IsValid == false)
+			{
+				return this.View("MultipleForm", viewModel);
+			}
+
+			string warningMessage = string.Empty;
+
+			foreach(int movieID in viewModel.MovieIDs)
+			{
+				var rental = new Rental
+				{
+					CustomerID = viewModel.CustomerID,
+					MovieID = movieID,
+					DateRented = DateTime.Now
+				};
+
+				var databaseMovie = this.context.Movies.First(m => m.ID == rental.MovieID);
+				if (databaseMovie.NumberInStock == databaseMovie.NumberRented)
+				{
+					warningMessage += $"<br>&bull; The movie {databaseMovie.Name} is out of stock.";
+				}
+				else
+				{
+					databaseMovie.NumberRented++;
+
+					this.context.Rentals.Add(rental);
+				}
+			}
+
+			this.context.SaveChanges();
+
+			if (string.IsNullOrWhiteSpace(warningMessage))
+			{
+				this.TempData[MessageKey] = "Rentals created successfully.";
+				this.TempData[MessageTypeKey] = MessageTypeSuccess;
+			}
+			else
+			{
+				this.TempData[MessageKey] = "Rentals created successfully with exceptions:" + warningMessage;
+				this.TempData[MessageTypeKey] = MessageTypeWarning;
+			}
 
 			return this.RedirectToAction("Index", "Rentals");
 		}

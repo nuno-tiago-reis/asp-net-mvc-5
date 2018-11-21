@@ -393,6 +393,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Movies\MovieFormViewModel.cs" />
     <Compile Include="ViewModels\Customers\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\Rentals\MultipleRentalFormViewModel.cs" />
     <Compile Include="ViewModels\Rentals\RentalFormViewModel.cs" />
     <Compile Include="ViewModels\Users\UserViewModel.cs" />
     <Compile Include="ViewModels\Users\UserFormViewModel.cs" />
@@ -673,6 +674,7 @@
     <Content Include="Views\Rentals\Form.cshtml" />
     <Content Include="Views\Rentals\List.cshtml" />
     <Content Include="Views\Rentals\ReadOnlyList.cshtml" />
+    <Content Include="Views\Rentals\MultipleForm.cshtml" />
     <None Include="Web.Secrets.config">
       <SubType>Designer</SubType>
     </None>
