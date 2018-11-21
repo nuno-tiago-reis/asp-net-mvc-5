@@ -110,10 +110,12 @@
 							button.attr('title', 'The rental has been returned.');
 
 							var row = table.row(button.parents("tr"));
-							var data = row.data()["dateReturned"] = dateReturned;
+
+							var data = row.data();
+							data["dateReturned"] = dateReturned;
 
 							toastr.success("Rental successfully returned.");
-							table.fnUpdate(data, row, undefined, false);
+							table.row(row).data(data).draw();
 						},
 
 						error: function (xhr)

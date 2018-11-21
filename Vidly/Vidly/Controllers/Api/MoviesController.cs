@@ -35,12 +35,15 @@ namespace Vidly.Controllers.API
 		/// GET /api/movies
 		/// </summary>
 		[HttpGet]
-		public IHttpActionResult GetMovies(string query = null)
+		public IHttpActionResult GetMovies(string query = null, bool includeOutOfStock = true)
 		{
 			var movies = this.context.Movies.Include(m => m.Genre);
 
 			if (string.IsNullOrWhiteSpace(query) == false)
 				movies = movies.Where(m => m.Name.Contains(query));
+
+			if (includeOutOfStock == false)
+				movies = movies.Where(m => m.NumberInStock > m.NumberRented);
 
 			return this.Ok(movies.AsEnumerable().Select(Mapper.Map<Movie, MovieDto>));
 		}

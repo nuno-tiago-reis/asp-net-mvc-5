@@ -50,19 +50,19 @@
 				});
 
 			$('#customer').typeahead
-				({
-					minLength: 3,
-					highlight: true
-				},
-				{
-					name: 'customers',
-					display: 'name',
-					source: customers
-				}
-				).on("typeahead:select", function (event, customer)
-				{
-					$('#customer-id').val(customer.id);
-				});
+			({
+				minLength: 3,
+				highlight: true
+			},
+			{
+				name: 'customers',
+				display: 'name',
+				source: customers
+			}
+			).on("typeahead:select", function (event, customer)
+			{
+				$('#customer-id').val(customer.id);
+			});
 
 			var movies = new Bloodhound
 				({
@@ -76,19 +76,19 @@
 				});
 
 			$('#movie').typeahead
-				({
-					minLength: 3,
-					highlight: true
-				},
-				{
-					name: 'movies',
-					display: 'name',
-					source: movies
-				}
-				).on("typeahead:select", function (event, movie)
-				{
-					$('#movie-id').val(movie.id);
-				});
+			({
+				minLength: 3,
+				highlight: true
+			},
+			{
+				name: 'movies',
+				display: 'name',
+				source: movies
+			}
+			).on("typeahead:select", function (event, movie)
+			{
+				$('#movie-id').val(movie.id);
+			});
 		});
 	</script>
 }

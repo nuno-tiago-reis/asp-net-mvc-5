@@ -11,19 +11,19 @@
 	@Html.AntiForgeryToken()
 
 	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control" })
-	@Html.HiddenFor(model => model.MovieIDs, new { id = "movie-id-x", @class = "form-control" })
+	@Html.HiddenFor(model => model.MovieIDs, new { id = "movie-id-x", @class = "form-control", data_rule_validCustomer = true })
 
 	<div class="form-group">
-		@Html.LabelFor(model => model.CustomerName)
+		@Html.Label("Customer Name")
 		<div class="tt-container">
-			@Html.TextBoxFor(model => model.CustomerName, new { id = "customer", @class = "form-control" })
+			@Html.TextBox("Customer Name", null, new { id = "customer", @class = "form-control" })
 		</div>
-		@Html.ValidationMessageFor(model => model.CustomerName)
+		@Html.ValidationMessageFor(model => model.CustomerID)
 	</div>
 	<div class="form-group">
 		@Html.Label("Movie Name")
 		<div class="tt-container">
-			@Html.TextBox("Movie Name", string.Empty, new { id = "movie", @class = "form-control" })
+			@Html.TextBox("Movie Name", null, new { id = "movie", @class = "form-control", data_rule_atLeastOneMovie = true })
 		</div>
 		@Html.ValidationMessageFor(model => model.MovieIDs)
 	</div>
@@ -46,6 +46,16 @@
 			ignore: []
 		});
 
+		$.validator.addMethod("validCustomer", function ()
+		{
+			return $('#customer-id').val() !== "";
+		});
+
+		$.validator.addMethod("atLeastOneMovie", function ()
+		{
+			return $('#movie-id-0').val() != null;
+		});
+
 		$(document).ready(function()
 		{
 			var movieIDs = [];
@@ -63,17 +73,19 @@
 
 			$('#customer').typeahead
 			({
-					minLength: 3,
-					highlight: true
-				},
-				{
-					name: 'customers',
-					display: 'name',
-					source: customers
-				}
+				minLength: 3,
+				highlight: true
+			},
+			{
+				name: 'customers',
+				display: 'name',
+				source: customers
+			}
 			).on("typeahead:select", function(event, customer)
 			{
 				$('#customer-id').val(customer.id);
+				$('#customer-id').valid();
+				$('#customer').valid();
 			});
 
 			var movies = new Bloodhound
@@ -82,21 +94,21 @@
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
 				remote:
 				{
-					url: '/api/movies?query=%QUERY',
+					url: '/api/movies?query=%QUERY&includeOutOfStock=false',
 					wildcard: '%QUERY'
 				}
 			});
 
 			$('#movie').typeahead
 			({
-					minLength: 3,
-					highlight: true
-				},
-				{
-					name: 'movies',
-					display: 'name',
-					source: movies
-				}
+				minLength: 3,
+				highlight: true
+			},
+			{
+				name: 'movies',
+				display: 'name',
+				source: movies
+			}
 			).on("typeahead:select", function(event, movie)
 			{
 				if ($.inArray(movie.id, movieIDs) === -1)
@@ -154,6 +166,9 @@
 				}
 
 				$('#movie').typeahead('val', '');
+
+				$('#movie').valid();
+				$('#movie-id-0').valid();
 			});
 		});
 	</script>

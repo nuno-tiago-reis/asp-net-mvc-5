@@ -217,11 +217,12 @@ namespace Vidly.Controllers
 
 			string warningMessage = string.Empty;
 
-			foreach(int movieID in viewModel.MovieIDs)
+			foreach (int movieID in viewModel.MovieIDs)
 			{
+				// ReSharper disable once PossibleInvalidOperationException
 				var rental = new Rental
 				{
-					CustomerID = viewModel.CustomerID,
+					CustomerID = viewModel.CustomerID.Value,
 					MovieID = movieID,
 					DateRented = DateTime.Now
 				};
