@@ -402,7 +402,6 @@
     <Compile Include="ViewModels\Users\UserFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\Styles\bootstrap-grid.css" />
     <Content Include="Content\Styles\bootstrap-grid.min.css" />
     <Content Include="Content\Styles\bootstrap-lumen.css" />

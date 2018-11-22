@@ -22,34 +22,30 @@
 	{
 		if (Model.RegisteredLogins.Count > 0)
 		{
-			<h3>Registered Logins</h3>
-			<br />
-
-			<table class="table">
+			<h3>Registered</h3>
+			
+			<table class="col-md-12">
 				<tbody>
-					@foreach (var account in Model.RegisteredLogins)
+					@using (Html.BeginForm("RemoveLogin", "Manage"))
 					{
-						<tr>
-							<td>@account.LoginProvider</td>
-							<td>
-								@if (ViewBag.ShowRemoveButton)
-								{
-									using (Html.BeginForm("RemoveLogin", "Manage"))
+						foreach (var account in Model.RegisteredLogins)
+						{
+							@Html.AntiForgeryToken()
+							@Html.Hidden("loginProvider", account.LoginProvider)
+							@Html.Hidden("providerKey", account.ProviderKey)
+							
+							<tr>
+								<td class="col-md-2">
+									<label>@account.LoginProvider</label>
+								</td>
+								<td class="col-md-10">
+									@using (Html.BeginForm("RemoveLogin", "Manage"))
 									{
-										@Html.AntiForgeryToken()
-										<div>
-											@Html.Hidden("loginProvider", account.LoginProvider)
-											@Html.Hidden("providerKey", account.ProviderKey)
-											<input type="submit" class="btn btn-default" value="Remove" title="Remove this @account.LoginProvider login from your account" />
-										</div>
+										<input type="submit" class="btn btn-danger" value="Remove" title="Remove this @account.LoginProvider login from your account" />
 									}
-								}
-								else
-								{
-									@: &nbsp;
-								}
-							</td>
-						</tr>
+								</td>
+							</tr>
+						}
 					}
 				</tbody>
 			</table>
@@ -57,21 +53,28 @@
 
 		if (Model.UnregisteredLogins.Count > 0)
 		{
-			<h3>Unregistered Logins</h3>
-			<br />
-
-			using (Html.BeginForm("AddLogin", "Manage"))
-			{
-				@Html.AntiForgeryToken()
-				<div id="socialLoginList">
-					<p>
-						@foreach (var login in Model.UnregisteredLogins)
+			<h3>Unregistered </h3>
+			
+			<table class="col-md-12">
+				<tbody>
+					@using (Html.BeginForm("AddLogin", "Manage"))
+					{
+						foreach (var login in Model.UnregisteredLogins)
 						{
-							<button type="submit" class="btn btn-default" id="@login.AuthenticationType" name="provider" value="@login.AuthenticationType" title="Log in using your @login.Caption account">@login.AuthenticationType</button>
+							@Html.AntiForgeryToken()
+		
+							<tr>
+								<td class="col-md-2">
+									<label>@login.AuthenticationType</label>
+								</td>
+								<td class="col-md-10">
+									<input type="submit" class="btn btn-success" id="@login.AuthenticationType" name="provider" value="@login.AuthenticationType" title="Log in using your @login.Caption account" />
+								</td>
+							</tr>
 						}
-					</p>
-				</div>
-			}
+					}
+				</tbody>
+			</table>
 		}
 	}
 }

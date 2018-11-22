@@ -30,6 +30,7 @@ textarea
 .field-validation-error
 {
 	color: red;
+	font-weight: bold;
 	text-transform: lowercase;
 }
 
@@ -61,4 +62,11 @@ textarea
 .unconfirmed-contact
 {
 	color: red;
+}
+
+table
+{
+	border-collapse: separate;
+	border-spacing: 10px 5px;
+	float: none !important;
 }
