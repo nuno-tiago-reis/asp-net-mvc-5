@@ -255,3 +255,5 @@ _Pvt_Extensions
 *.sln.iml
 
 Web.Secrets.config
+
+Deploy
