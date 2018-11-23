@@ -289,7 +289,6 @@
     <Compile Include="Dtos\Movies\MovieDto.cs" />
     <Compile Include="Dtos\Rentals\RentalDto.cs" />
     <Compile Include="Dtos\Users\UserDto.cs" />
-    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

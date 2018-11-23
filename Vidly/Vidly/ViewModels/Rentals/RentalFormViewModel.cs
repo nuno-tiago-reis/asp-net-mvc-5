@@ -7,19 +7,11 @@ namespace Vidly.ViewModels
 	{
 		public int? ID { get; set; }
 
-		[Required]
-		public int MovieID { get; set; }
-
 		[Required(ErrorMessage = "No movie was selected.")]
-		[Display(Name = "Movie Name")]
-		public string MovieName { get; set; }
-
-		[Required]
-		public int CustomerID { get; set; }
+		public int? MovieID { get; set; }
 
 		[Required(ErrorMessage = "No customer was selected.")]
-		[Display(Name = "Customer Name")]
-		public string CustomerName { get; set; }
+		public int? CustomerID { get; set; }
 
 		[Display(Name = "Date Rented")]
 		public DateTime? DateRented { get; set; }

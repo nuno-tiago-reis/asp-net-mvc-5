@@ -10,22 +10,22 @@
 	@Html.ValidationSummary(true, "Please fix the following errors")
 	@Html.AntiForgeryToken()
 
-	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control" })
-	@Html.HiddenFor(model => model.MovieID, new { id = "movie-id", @class = "form-control" })
+	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control", data_rule_validCustomer = true })
+	@Html.HiddenFor(model => model.MovieID, new { id = "movie-id", @class = "form-control", data_rule_validMovie = true })
 
 	<div class="form-group">
-		@Html.LabelFor(model => model.CustomerName)
+		@Html.Label("Customer Name")
 		<div class="tt-container">
-			@Html.TextBoxFor(model => model.CustomerName, new { id = "customer", @class = "form-control" })
+			@Html.TextBox("Customer Name", null, new { id = "customer", @class = "form-control", data_rule_validCustomer = true })
 		</div>
-		@Html.ValidationMessageFor(model => model.CustomerName)
+		@Html.ValidationMessageFor(model => model.CustomerID)
 	</div>
 	<div class="form-group">
-		@Html.LabelFor(model => model.MovieName)
+		@Html.Label("Movie Name")
 		<div class="tt-container">
-			@Html.TextBoxFor(model => model.MovieName, new { id = "movie", @class = "form-control" })
+			@Html.TextBox("Movie Name", null, new { id = "movie", @class = "form-control", data_rule_validMovie = true })
 		</div>
-		@Html.ValidationMessageFor(model => model.MovieName)
+		@Html.ValidationMessageFor(model => model.MovieID)
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
@@ -36,59 +36,84 @@
 	@Scripts.Render("~/bundles/jqueryval")
 
 	<script>
+		$.validator.setDefaults
+		({
+			ignore: []
+		});
+
+		$.validator.addMethod("validCustomer", function ()
+		{
+			return $('#customer-id').val() !== "";
+		});
+
+		$.validator.addMethod("validMovie", function ()
+		{
+			return $('#movie-id').val() !== "";
+		});
+
 		$(document).ready(function ()
 		{
 			var customers = new Bloodhound
-				({
-					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-					queryTokenizer: Bloodhound.tokenizers.whitespace,
-					remote:
-					{
-						url: '/api/customers?query=%QUERY',
-						wildcard: '%QUERY'
-					}
-				});
+			({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				remote:
+				{
+					url: '/api/customers?query=%QUERY',
+					wildcard: '%QUERY'
+				}
+			});
 
 			$('#customer').typeahead
 			({
-				minLength: 3,
-				highlight: true
-			},
-			{
-				name: 'customers',
-				display: 'name',
-				source: customers
-			}
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'customers',
+					display: 'name',
+					source: customers
+				}
 			).on("typeahead:select", function (event, customer)
 			{
 				$('#customer-id').val(customer.id);
+				$('#customer-id').valid();
+				$('#customer').valid();
 			});
 
 			var movies = new Bloodhound
-				({
-					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-					queryTokenizer: Bloodhound.tokenizers.whitespace,
-					remote:
-					{
-						url: '/api/movies?query=%QUERY',
-						wildcard: '%QUERY'
-					}
-				});
+			({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				remote:
+				{
+					url: '/api/movies?query=%QUERY',
+					wildcard: '%QUERY'
+				}
+			});
 
 			$('#movie').typeahead
 			({
-				minLength: 3,
-				highlight: true
-			},
-			{
-				name: 'movies',
-				display: 'name',
-				source: movies
-			}
+					minLength: 3,
+					highlight: true
+				},
+				{
+					name: 'movies',
+					display: 'name',
+					source: movies
+				}
 			).on("typeahead:select", function (event, movie)
 			{
 				$('#movie-id').val(movie.id);
+				$('#movie-id').valid();
+				$('#movie').valid();
 			});
 		});
+
+		function validateSelection()
+		{
+			if(source.indexOf($(this).val()) === -1) 
+				alert('Error : element not in list!');
+		}
 	</script>
 }

@@ -140,9 +140,7 @@ namespace Vidly.Controllers
 				var viewModel = new RentalFormViewModel
 				{
 					MovieID = rental.Movie?.ID ?? 0,
-					MovieName = rental.Movie?.Name,
 					CustomerID = rental.Customer?.ID ?? 0,
-					CustomerName = rental.Customer?.Name,
 					DateRented = rental.DateRented,
 					DateReturned = rental.DateReturned
 				};

@@ -10,13 +10,13 @@
 	@Html.ValidationSummary(true, "Please fix the following errors")
 	@Html.AntiForgeryToken()
 
-	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control" })
-	@Html.HiddenFor(model => model.MovieIDs, new { id = "movie-id-x", @class = "form-control", data_rule_validCustomer = true })
+	@Html.HiddenFor(model => model.CustomerID, new { id = "customer-id", @class = "form-control", data_rule_validCustomer = true })
+	@Html.HiddenFor(model => model.MovieIDs, new { id = "movie-id-x", @class = "form-control", data_rule_atLeastOneMovie = true })
 
 	<div class="form-group">
 		@Html.Label("Customer Name")
 		<div class="tt-container">
-			@Html.TextBox("Customer Name", null, new { id = "customer", @class = "form-control" })
+			@Html.TextBox("Customer Name", null, new { id = "customer", @class = "form-control", data_rule_validCustomer = true })
 		</div>
 		@Html.ValidationMessageFor(model => model.CustomerID)
 	</div>
