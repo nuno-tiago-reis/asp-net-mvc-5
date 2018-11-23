@@ -70,3 +70,9 @@ table
 	border-spacing: 10px 5px;
 	float: none !important;
 }
+
+input[type="date"].form-control, input[type="time"].form-control, input[type="datetime-local"].form-control, input[type="month"].form-control
+{
+	line-height: 18px !important;
+
+}

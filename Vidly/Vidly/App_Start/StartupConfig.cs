@@ -123,7 +123,9 @@ namespace Vidly
 				EmailConfirmed = true,
 
 				PhoneNumber = ApplicationUser.AdminPhoneNumber,
-				PhoneNumberConfirmed = true
+				PhoneNumberConfirmed = true,
+
+				FiscalNumber = ApplicationUser.AdminFiscalNumber
 			};
 
 			var result = userManager.Create(admin, ApplicationUser.AdminPassword);

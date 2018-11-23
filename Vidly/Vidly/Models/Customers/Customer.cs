@@ -26,6 +26,7 @@ namespace Vidly.Models
 		/// </summary>
 		[Required]
 		[AgeValidation]
+		[DataType(DataType.Date)]
 		[Display(Name ="Date of Birth")]
 		public DateTime? BirthDate { get; set; }
 

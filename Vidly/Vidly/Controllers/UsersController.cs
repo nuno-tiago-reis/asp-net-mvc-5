@@ -13,7 +13,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 	public sealed class UsersController : BaseController
 	{
 		#region [Properties]
@@ -133,7 +133,6 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("users/create")]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ViewResult Create()
 		{
 			var viewModel = new UserFormViewModel
@@ -151,7 +150,6 @@ namespace Vidly.Controllers
 		/// <param name="id">The user id.</param>
 		[HttpGet]
 		[Route("users/edit/{id}")]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ActionResult Edit(string id)
 		{
 			var user = this.UserManager.FindById(id);
@@ -174,7 +172,6 @@ namespace Vidly.Controllers
 		/// <param name="id">The user id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ActionResult Delete(string id)
 		{
 			var user = this.UserManager.FindById(id);
@@ -197,7 +194,6 @@ namespace Vidly.Controllers
 		/// <param name="userRoles">The role names.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public ActionResult Save(ApplicationUser user, string password, List<string> userRoles)
 		{
 			if (ModelState.IsValid == false)

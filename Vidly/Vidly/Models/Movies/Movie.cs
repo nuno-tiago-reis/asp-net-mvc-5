@@ -26,6 +26,7 @@ namespace Vidly.Models
 		/// </summary>
 		[Required]
 		[ReleaseDateValidation]
+		[DataType(DataType.Date)]
 		[Display(Name = "Release Date")]
 		public DateTime ReleaseDate { get; set; }
 
@@ -45,6 +46,7 @@ namespace Vidly.Models
 		/// Gets or sets the date added.
 		/// </summary>
 		[Required]
+		[DataType(DataType.Date)]
 		[Display(Name = "Date Added")]
 		public DateTime DateAdded { get; set; }
 

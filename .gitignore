@@ -254,6 +254,8 @@ _Pvt_Extensions
 .idea/
 *.sln.iml
 
-Web.Secrets.config
-
+# Vidly
 Deploy
+
+Web.Secrets.AppSettings.config
+Web.Secrets.Connections.config

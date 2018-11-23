@@ -30,7 +30,12 @@ namespace Vidly.Models
 		/// <summary>
 		/// The admin phone number.
 		/// </summary>
-		public const string AdminPhoneNumber = "+351 934323293";
+		public const string AdminPhoneNumber = "+351934323293";
+
+		/// <summary>
+		/// The admin fiscal number.
+		/// </summary>
+		public const string AdminFiscalNumber = "252704550";
 		#endregion
 
 		#region [Properties]

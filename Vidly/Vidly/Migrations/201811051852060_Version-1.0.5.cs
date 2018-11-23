@@ -7,7 +7,7 @@ namespace Vidly.Migrations
 		/// <inheritdoc />
 		public override void Up()
 		{
-			this.AlterColumn("dbo.MembershipTypes", "Name", c => c.String(maxLength: 255));
+			this.AddColumn("dbo.MembershipTypes", "Name", c => c.String(maxLength: 255));
 
 			this.Sql("UPDATE MembershipTypes SET Name = 'Pay as You Go' WHERE ID=1");
 			this.Sql("UPDATE MembershipTypes SET Name = 'Monthly' WHERE ID=2");

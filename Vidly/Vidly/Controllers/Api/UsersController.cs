@@ -14,7 +14,7 @@ using Vidly.Models;
 
 namespace Vidly.Controllers.API
 {
-	[Authorize]
+	[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 	public sealed class UsersController : ApiController
 	{
 		#region [Properties]
@@ -120,7 +120,6 @@ namespace Vidly.Controllers.API
 		/// POST /api/users
 		/// </summary>
 		[HttpPost]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public IHttpActionResult CreateUser(UserDto userDto)
 		{
 			if (this.ModelState.IsValid == false)
@@ -155,7 +154,6 @@ namespace Vidly.Controllers.API
 		/// PUT /api/users/id
 		/// </summary>
 		[HttpPut]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public void UpdateUser(string id, UserDto userDto)
 		{
 			if (this.ModelState.IsValid == false)
@@ -183,7 +181,6 @@ namespace Vidly.Controllers.API
 		/// DELETE /api/users/id
 		/// </summary>
 		[HttpDelete]
-		[Authorize(Roles = ApplicationRoles.CanManageUsers)]
 		public void Delete(string id)
 		{
 			if (this.ModelState.IsValid == false)

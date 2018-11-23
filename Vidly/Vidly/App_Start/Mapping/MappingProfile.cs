@@ -12,23 +12,23 @@ namespace Vidly.App_Start
 		/// </summary>
 		public MappingProfile()
 		{
-			Mapper.CreateMap<Customer, CustomerDto>();
-			Mapper.CreateMap<CustomerDto, Customer>();
+			this.CreateMap<Customer, CustomerDto>();
+			this.CreateMap<CustomerDto, Customer>();
 
-			Mapper.CreateMap<MembershipTypeDto, MembershipType>();
-			Mapper.CreateMap<MembershipType, MembershipTypeDto>();
+			this.CreateMap<MembershipTypeDto, MembershipType>();
+			this.CreateMap<MembershipType, MembershipTypeDto>();
 
-			Mapper.CreateMap<Movie, MovieDto>();
-			Mapper.CreateMap<MovieDto, Movie>();
+			this.CreateMap<Movie, MovieDto>();
+			this.CreateMap<MovieDto, Movie>();
 
-			Mapper.CreateMap<GenreDto, Genre>();
-			Mapper.CreateMap<Genre, GenreDto>();
+			this.CreateMap<GenreDto, Genre>();
+			this.CreateMap<Genre, GenreDto>();
 
-			Mapper.CreateMap<RentalDto, Rental>();
-			Mapper.CreateMap<Rental, RentalDto>();
+			this.CreateMap<RentalDto, Rental>();
+			this.CreateMap<Rental, RentalDto>();
 
-			Mapper.CreateMap<UserDto, ApplicationUser>();
-			Mapper.CreateMap<ApplicationUser, UserDto>();
+			this.CreateMap<UserDto, ApplicationUser>();
+			this.CreateMap<ApplicationUser, UserDto>();
 		}
 	}
 }

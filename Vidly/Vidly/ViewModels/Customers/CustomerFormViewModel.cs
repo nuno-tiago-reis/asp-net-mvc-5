@@ -12,6 +12,5 @@ namespace Vidly.ViewModels
 
 		[Required]
 		public IEnumerable<MembershipType> MembershipTypes { get; set; }
-
 	}
 }

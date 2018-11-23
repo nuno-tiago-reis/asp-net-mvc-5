@@ -119,10 +119,10 @@ table a:not(.btn), .table a:not(.btn)
 {
 	height: 41px;
 	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
 	box-shadow: none;
 	-webkit-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
 	-moz-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
-	-ms-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
 	-o-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
 	border-radius: 10px;
@@ -131,6 +131,7 @@ table a:not(.btn), .table a:not(.btn)
 .form-control:focus
 {
 	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
 	box-shadow: none;
 	border: 2px solid limegreen;
 }
