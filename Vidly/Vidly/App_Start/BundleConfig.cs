@@ -13,6 +13,7 @@ namespace Vidly
 				"~/Scripts/bootbox.js",
 				"~/Scripts/moment.js",
 				"~/Scripts/toastr.js",
+				"~/Scripts/telephone-input.js",
 				"~/Scripts/typeahead.bundle.js",
 				"~/Scripts/datatables/jquery.datatables.js",
 				"~/Scripts/datatables/datatables.bootstrap.js"
@@ -33,8 +34,9 @@ namespace Vidly
 				"~/Content/Styles/bootstrap-lumen.css",
 				"~/Content/Styles/bootstrap-theme.css",
 				"~/Content/DataTables/css/datatables.bootstrap.css",
+				"~/Content/TelephoneInput/css/telephone-input.css",
 				"~/Content/Styles/typeahead.css",
-				"~/content/Styles/toastr.css",
+				"~/Content/Styles/toastr.css",
 				"~/Content/Styles/Site.css"
 			));
 

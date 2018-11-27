@@ -368,6 +368,10 @@
     <Compile Include="Migrations\201811141557346_Version-1.0.18.Designer.cs">
       <DependentUpon>201811141557346_Version-1.0.18.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811261115304_Version-1.0.19.cs" />
+    <Compile Include="Migrations\201811261115304_Version-1.0.19.Designer.cs">
+      <DependentUpon>201811261115304_Version-1.0.19.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationRoles.cs" />
@@ -561,6 +565,8 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\TelephoneInput\images\flags%402x.png" />
+    <Content Include="Content\TelephoneInput\images\flags.png" />
     <Content Include="Content\Styles\bootstrap-grid.css" />
     <Content Include="Content\Styles\bootstrap-grid.min.css" />
     <Content Include="Content\Styles\bootstrap-lumen.css" />
@@ -571,6 +577,8 @@
     <Content Include="Content\Styles\bootstrap-theme.min.css" />
     <Content Include="Content\Styles\bootstrap.css" />
     <Content Include="Content\Styles\bootstrap.min.css" />
+    <Content Include="Content\TelephoneInput\css\telephone-input.css" />
+    <Content Include="Content\TelephoneInput\css\telephone-input.min.css" />
     <Content Include="Content\Styles\typeahead.css" />
     <Content Include="Content\Styles\toastr.css" />
     <Content Include="Content\Styles\toastr.min.css" />
@@ -662,6 +670,7 @@
     <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\telephone-input-utils.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -676,6 +685,8 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\telephone-input.js" />
+    <Content Include="Scripts\telephone-input.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\typeahead.bundle.js" />
@@ -818,6 +829,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811141557346_Version-1.0.18.resx">
       <DependentUpon>201811141557346_Version-1.0.18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811261115304_Version-1.0.19.resx">
+      <DependentUpon>201811261115304_Version-1.0.19.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

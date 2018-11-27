@@ -13,13 +13,13 @@ namespace Vidly.Models
 		public string UserName { get; set; }
 
 		[Required]
-		[EmailAddress]
+		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
 		[Required]
-		[Phone]
-		[Display(Name = "Phone Number (Optional)")]
+		[DataType(DataType.PhoneNumber)]
+		[Display(Name = "Phone Number")]
 		public string PhoneNumber { get; set; }
 
 		[Required]

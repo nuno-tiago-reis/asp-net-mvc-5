@@ -25,86 +25,86 @@
 
 @section scripts
 {
-<script>
-	$(document).ready(function ()
-	{
-		var table = $("#movies").DataTable
-		({
-			ajax:
-			{
-				url: "/api/movies",
-				dataSrc: ""
-			},
-			columns:
-			[
+	<script>
+		$(document).ready(function ()
+		{
+			var table = $("#movies").DataTable
+			({
+				ajax:
 				{
-					render: function (data, type, movie)
-					{
-						return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
-					}
+					url: "/api/movies",
+					dataSrc: ""
 				},
-				{
-					data: "genre.name"
-				},
-				{
-					render: function (data, type, movie)
+				columns:
+				[
 					{
-						return new Date(movie.releaseDate).toLocaleDateString();
-					}
+						render: function (data, type, movie)
+						{
+							return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+						}
+					},
+					{
+						data: "genre.name"
 					},
 					{
 						render: function (data, type, movie)
 						{
-							return new Date(movie.dateAdded).toLocaleDateString();
+							return new Date(movie.releaseDate).toLocaleDateString();
 						}
-					},
-				{
-					data: "numberRented"
-				},
-				{
-					data: "numberInStock"
-				},
-				{
-					render: function (data, type, movie)
-					{
-						return "<button class='btn btn-danger js-delete' data-movie-id='" + movie.id + "'>Delete</button>";
-					}
-				}
-			],
-			"drawCallback": function ()
-			{
-				$('[data-toggle="tooltip"]').tooltip();
-			}
-		});
-
-		$("#movies").on("click", ".js-delete", function ()
-		{
-			var button = $(this);
-
-			bootbox.confirm("Are you sure you want to delete this movie?", function (result)
-			{
-				if (result)
-				{
-					$.ajax
-					({
-						url: "/api/movies/" + button.attr("data-movie-id"),
-						method: "DELETE",
-
-						success: function ()
-						{
-							table.row(button.parents("tr")).remove().draw();
-							toastr.success("Movie successfully deleted.");
 						},
-
-						error: function (xhr)
 						{
-							var error = JSON.parse(xhr.responseText);
-							toastr.error("An error occurred:" + error.message);
+							render: function (data, type, movie)
+							{
+								return new Date(movie.dateAdded).toLocaleDateString();
+							}
+						},
+					{
+						data: "numberRented"
+					},
+					{
+						data: "numberInStock"
+					},
+					{
+						render: function (data, type, movie)
+						{
+							return "<button class='btn btn-danger js-delete' data-movie-id='" + movie.id + "'>Delete</button>";
 						}
-					});
+					}
+				],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
 				}
 			});
+
+			$("#movies").on("click", ".js-delete", function ()
+			{
+				var button = $(this);
+
+				bootbox.confirm("Are you sure you want to delete this movie?", function (result)
+				{
+					if (result)
+					{
+						$.ajax
+						({
+							url: "/api/movies/" + button.attr("data-movie-id"),
+							method: "DELETE",
+
+							success: function ()
+							{
+								table.row(button.parents("tr")).remove().draw();
+								toastr.success("Movie successfully deleted.");
+							},
+
+							error: function (xhr)
+							{
+								var error = JSON.parse(xhr.responseText);
+								toastr.error("An error occurred:" + error.message);
+							}
+						});
+					}
+				});
+			});
 		});
-	});
-</script>
+	</script>
 }

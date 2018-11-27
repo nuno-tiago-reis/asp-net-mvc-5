@@ -26,136 +26,136 @@
 
 @section scripts
 {
-<script>
-	$(document).ready(function ()
-	{
-		var table = $("#rentals").DataTable
-		({
-			ajax:
-			{
-				url: "/api/rentals",
-				dataSrc: ""
-			},
-			columns:
-			[
-				{
-					data: "id"
-				},
-				{
-					data: "movie.name"
-				},
-				{
-					data: "customer.name"
-				},
-				{
-					render: function (data, type, rental)
-					{
-						return moment(rental.dateRented).format('YYYY-MM-DD HH:mm:ss');
-					}
-				},
-				{
-					render: function (data, type, rental)
-					{
-						if(rental.dateReturned != null)
-							return moment(rental.dateReturned).format('YYYY-MM-DD HH:mm:ss');
-
-						return null;
-					}
-				},
-				{
-					render: function (data, type, rental)
-					{
-
-						if (rental.dateReturned == null)
-							return "<button class='btn btn-primary js-return' data-rental-id='" + rental.id + "'>Return</button>";
-						else
-							return "<button disabled='true' data-toggle='tooltip' title='The rental has been returned.' class='btn btn-default js-return' data-rental-id='" + rental.id + "'>Return</button>";
-					}
-				},
-				{
-					render: function (data, type, rental)
-					{
-						return "<button class='btn btn-danger js-delete' data-rental-id='" + rental.id + "'>Delete</button>";
-					}
-				}
-			],
-			"drawCallback": function ()
-			{
-				$('[data-toggle="tooltip"]').tooltip();
-			}
-		});
-
-		$("#rentals").on("click", ".js-return", function ()
+	<script>
+		$(document).ready(function ()
 		{
-			var button = $(this);
-
-			bootbox.confirm("Are you sure you want to return this rental?", function (result)
-			{
-				if (result)
+			var table = $("#rentals").DataTable
+			({
+				ajax:
 				{
-					// ReSharper disable once StringLiteralTypo
-					var dateReturned = moment().format("YYYY-MM-DDTHH:mm:ss");
-
-					$.ajax
-					({
-						url: "/api/rentals/" + button.attr("data-rental-id"),
-						method: "PUT",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify({ id: button.attr("data-rental-id"), dateReturned: dateReturned }),
-
-						success: function ()
+					url: "/api/rentals",
+					dataSrc: ""
+				},
+				columns:
+				[
+					{
+						data: "id"
+					},
+					{
+						data: "movie.name"
+					},
+					{
+						data: "customer.name"
+					},
+					{
+						render: function (data, type, rental)
 						{
-							button.prop('disabled', true);
-							button.attr('data-toggle', 'tooltip');
-							button.attr('title', 'The rental has been returned.');
-
-							var row = table.row(button.parents("tr"));
-
-							var data = row.data();
-							data["dateReturned"] = dateReturned;
-
-							toastr.success("Rental successfully returned.");
-							table.row(row).data(data).draw();
-						},
-
-						error: function (xhr)
-						{
-							var error = JSON.parse(xhr.responseText);
-							toastr.error("An error occurred:" + error.message);
+							return moment(rental.dateRented).format('YYYY-MM-DD HH:mm:ss');
 						}
-					});
+					},
+					{
+						render: function (data, type, rental)
+						{
+							if(rental.dateReturned != null)
+								return moment(rental.dateReturned).format('YYYY-MM-DD HH:mm:ss');
+
+							return null;
+						}
+					},
+					{
+						render: function (data, type, rental)
+						{
+
+							if (rental.dateReturned == null)
+								return "<button class='btn btn-primary js-return' data-rental-id='" + rental.id + "'>Return</button>";
+							else
+								return "<button disabled='true' data-toggle='tooltip' title='The rental has been returned.' class='btn btn-default js-return' data-rental-id='" + rental.id + "'>Return</button>";
+						}
+					},
+					{
+						render: function (data, type, rental)
+						{
+							return "<button class='btn btn-danger js-delete' data-rental-id='" + rental.id + "'>Delete</button>";
+						}
+					}
+				],
+				"drawCallback": function ()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
 				}
 			});
-		});
 
-		$("#rentals").on("click", ".js-delete", function ()
-		{
-			var button = $(this);
-
-			bootbox.confirm("Are you sure you want to delete this rental?", function (result)
+			$("#rentals").on("click", ".js-return", function ()
 			{
-				if (result)
+				var button = $(this);
+
+				bootbox.confirm("Are you sure you want to return this rental?", function (result)
 				{
-					$.ajax
-					({
-						url: "/api/rentals/" + button.attr("data-rental-id"),
-						method: "DELETE",
+					if (result)
+					{
+						// ReSharper disable once StringLiteralTypo
+						var dateReturned = moment().format("YYYY-MM-DDTHH:mm:ss");
 
-						success: function ()
-						{
-							toastr.success("Rental successfully deleted.");
-							table.row(button.parents("tr")).remove().draw();
-						},
+						$.ajax
+						({
+							url: "/api/rentals/" + button.attr("data-rental-id"),
+							method: "PUT",
+							contentType: "application/json; charset=utf-8",
+							data: JSON.stringify({ id: button.attr("data-rental-id"), dateReturned: dateReturned }),
 
-						error: function (xhr)
-						{
-							var error = JSON.parse(xhr.responseText);
-							toastr.error("An error occurred:" + error.message);
-						}
-					});
-				}
+							success: function ()
+							{
+								button.prop('disabled', true);
+								button.attr('data-toggle', 'tooltip');
+								button.attr('title', 'The rental has been returned.');
+
+								var row = table.row(button.parents("tr"));
+
+								var data = row.data();
+								data["dateReturned"] = dateReturned;
+
+								toastr.success("Rental successfully returned.");
+								table.row(row).data(data).draw();
+							},
+
+							error: function (xhr)
+							{
+								var error = JSON.parse(xhr.responseText);
+								toastr.error("An error occurred:" + error.message);
+							}
+						});
+					}
+				});
+			});
+
+			$("#rentals").on("click", ".js-delete", function ()
+			{
+				var button = $(this);
+
+				bootbox.confirm("Are you sure you want to delete this rental?", function (result)
+				{
+					if (result)
+					{
+						$.ajax
+						({
+							url: "/api/rentals/" + button.attr("data-rental-id"),
+							method: "DELETE",
+
+							success: function ()
+							{
+								toastr.success("Rental successfully deleted.");
+								table.row(button.parents("tr")).remove().draw();
+							},
+
+							error: function (xhr)
+							{
+								var error = JSON.parse(xhr.responseText);
+								toastr.error("An error occurred:" + error.message);
+							}
+						});
+					}
+				});
 			});
 		});
-	});
-</script>
+	</script>
 }

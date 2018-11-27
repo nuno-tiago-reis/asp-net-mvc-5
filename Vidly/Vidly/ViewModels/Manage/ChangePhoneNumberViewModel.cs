@@ -8,7 +8,7 @@ namespace Vidly.Models
 	public sealed class ChangePhoneNumberViewModel
 	{
 		[Required]
-		[Phone]
+		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "Phone Number")]
 		public string PhoneNumber { get; set; }
 	}

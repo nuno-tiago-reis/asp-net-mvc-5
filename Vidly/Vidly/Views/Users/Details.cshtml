@@ -12,7 +12,7 @@
 <span class="@(Model.User.EmailConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The email is @(Model.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@Model.User.Email</span>
 
 <h4><b>PhoneNumber </b></h4>
-<span class="@(Model.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@Model.User.PhoneNumber</span>
+<span class="@(Model.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")" data-toggle="tooltip" title="The phone number is @(Model.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed")." id="phone-number">@Model.User.PhoneNumber</span>
 
 <h4><b>Two Factor</b></h4>
 <span class="@(Model.User.TwoFactorEnabled ? "confirmed-contact" : "unconfirmed-contact")"> @(Model.User.LockoutEnabled ? "Enabled" : "Disabled")</span>
@@ -24,3 +24,15 @@
 		<li>@role</li>
 	}
 </ul>
+
+@section scripts
+{
+	<script>
+		var phoneNumber = $("#phone-number");
+
+		phoneNumber.intlTelInput
+		({
+			utilsScript: "../Scripts/telephone-input-utils.js"
+		});
+	</script>
+}

@@ -32,7 +32,7 @@
 					<span data-toggle="tooltip" title="The email is @(viewModel.User.EmailConfirmed ? "confirmed" : "unconfirmed").">@viewModel.User.Email</span>
 				</td>
 				<td class="@(viewModel.User.PhoneNumberConfirmed ? "confirmed-contact" : "unconfirmed-contact")">
-					<span data-toggle="tooltip" title="The phone number is @(viewModel.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed").">@viewModel.User.PhoneNumber</span>
+					<span data-toggle="tooltip" title="The phone number is @(viewModel.User.PhoneNumberConfirmed ? "confirmed" : "unconfirmed")." id="phone-number">@viewModel.User.PhoneNumber</span>
 				</td>
 				<td class="@(viewModel.User.LockoutEndDateUtc == null ? "confirmed-contact" : "unconfirmed-contact")">
 					<span data-toggle="tooltip" title="@(viewModel.User.LockoutEndDateUtc == null ? "Unlocked" : $"Locked until {viewModel.User.LockoutEndDateUtc}").">@(viewModel.User.TwoFactorEnabled ? "Enabled" : "Disabled")</span>
@@ -71,27 +71,31 @@
 					{
 						render: function (data, type, user)
 						{
+							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The email is ";
+
 							if (user.emailConfirmed)
-							{
-								return "<span class='confirmed-contact' data-toggle='tooltip' title='The email is confirmed').>" + user.email + "</span>";
-							}
+								span += "confirmed";
 							else
-							{
-								return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The email is unconfirmed').>" + user.email + "</span>";
-							}
+								span += "unconfirmed";
+
+							span += ("'>" + user.email + "</span>");
+
+							return span;
 						}
 					},
 					{
 						render: function (data, type, user)
 						{
+							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is ";
+
 							if (user.phoneNumberConfirmed)
-							{
-								return "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is confirmed'>" + user.phoneNumber + "</span>";
-							}
+								span += "confirmed";
 							else
-							{
-								return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The phone number is unconfirmed'>" + user.phoneNumber + "</span>";
-							}
+								span += "unconfirmed";
+
+							span += ("'>" + user.phoneNumber + "</span>");
+
+							return span;
 						}
 					},
 					{
@@ -110,10 +114,24 @@
 					{
 						data: "roles"
 					}
-			],
+				],
 				"drawCallback": function ()
 				{
 					$('[data-toggle="tooltip"]').tooltip();
+				},
+				"initComplete": function ()
+				{
+					var phoneNumber = $("#phone-number");
+
+					phoneNumber.telephoneInput
+						({
+							utilsScript: "../Scripts/telephone-input-utils.js"
+						});
+
+					phoneNumber.telephoneInput
+						(
+						"setNumber", $("#phone-number").val()
+						);
 				}
 			});
 		});

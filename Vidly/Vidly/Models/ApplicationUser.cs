@@ -49,7 +49,7 @@ namespace Vidly.Models
 		public override string UserName { get; set; }
 
 		[Required]
-		[EmailAddress]
+		[DataType(DataType.EmailAddress)]
 		[DisplayName("Email")]
 		public override string Email { get; set; }
 
@@ -57,7 +57,8 @@ namespace Vidly.Models
 		[DisplayName("Email Confirmed?")]
 		public override bool EmailConfirmed { get; set; }
 
-		[Phone]
+		[Required]
+		[DataType(DataType.PhoneNumber)]
 		[DisplayName("Phone Number")]
 		public override string PhoneNumber { get; set; }
 
@@ -66,6 +67,7 @@ namespace Vidly.Models
 		public override bool PhoneNumberConfirmed { get; set; }
 
 		[Required]
+		[DataType(DataType.Text)]
 		[DisplayName("Fiscal Number")]
 		public string FiscalNumber { get; set; }
 

@@ -26,9 +26,9 @@
 			
 			<table class="col-md-12">
 				<tbody>
-					@using (Html.BeginForm("RemoveLogin", "Manage"))
+					@foreach (var account in Model.RegisteredLogins)
 					{
-						foreach (var account in Model.RegisteredLogins)
+						using (Html.BeginForm("RemoveLogin", "Manage"))
 						{
 							@Html.AntiForgeryToken()
 							@Html.Hidden("loginProvider", account.LoginProvider)
@@ -57,9 +57,9 @@
 			
 			<table class="col-md-12">
 				<tbody>
-					@using (Html.BeginForm("AddLogin", "Manage"))
+					@foreach (var login in Model.UnregisteredLogins)
 					{
-						foreach (var login in Model.UnregisteredLogins)
+						using (Html.BeginForm("AddLogin", "Manage"))
 						{
 							@Html.AntiForgeryToken()
 		

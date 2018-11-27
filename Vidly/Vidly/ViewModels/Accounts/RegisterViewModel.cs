@@ -13,24 +13,24 @@ namespace Vidly.Models
 		public string UserName { get; set; }
 
 		[Required]
-		[EmailAddress]
+		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
 		[Required]
-		[DataType(DataType.Password)]
-		[Display(Name = "Password")]
-		public string Password { get; set; }
-
-		[Required]
-		[Phone]
+		[DataType(DataType.PhoneNumber)]
 		[Display(Name = "Phone Number")]
 		public string PhoneNumber { get; set; }
 
 		[Required]
 		[DataType(DataType.Text)]
-		[Display(Name = "FiscalNumber")]
+		[Display(Name = "Fiscal Number")]
 		public string FiscalNumber { get; set; }
+
+		[Required]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		public string Password { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]

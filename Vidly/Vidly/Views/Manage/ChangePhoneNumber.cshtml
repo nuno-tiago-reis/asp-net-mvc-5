@@ -4,21 +4,45 @@
 	ViewBag.Title = "Change Phone Number";
 }
 
-@using (Html.BeginForm("ChangePhoneNumber", "Manage", FormMethod.Post))
+@using (Html.BeginForm("ChangePhoneNumber", "Manage", FormMethod.Post, new { role = "form", id = "form" }))
 {
 	@Html.ValidationSummary(true, "Please fix the following errors")
 	@Html.AntiForgeryToken()
 
 	<div class="form-group">
 		@Html.LabelFor(model => model.PhoneNumber)
-		@Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
-		@Html.ValidationMessageFor(model => model.PhoneNumber)
+		@Html.TextBox("phone-number", string.Empty, new { @class = "form-control" })
+		@Html.HiddenFor(m => m.PhoneNumber)
+		@Html.ValidationMessageFor(m => m.PhoneNumber)
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
 }
 
-@section Scripts
+@section scripts
 {
 	@Scripts.Render("~/bundles/jqueryval")
+	
+	<script>
+		$(document).ready(function()
+		{
+			var form = $("#form");
+			var phoneNumber = $("#phone-number");
+			var hiddenPhoneNumber = $("#PhoneNumber");
+
+			phoneNumber.telephoneInput
+			({
+				utilsScript: "../../Scripts/telephone-input-utils.js"
+			});
+
+			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
+
+			form.submit(function()
+			{
+				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
+
+				return true;
+			});
+		});
+	</script>
 }

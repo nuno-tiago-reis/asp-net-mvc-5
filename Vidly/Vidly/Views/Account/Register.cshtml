@@ -4,10 +4,11 @@
 	ViewBag.Title = "Register";
 }
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "register-form" }))
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true, "Please fix the following errors")
+
 	<div class="form-group">
 		@Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
 		<div class="col-md-10">
@@ -39,7 +40,8 @@
 	<div class="form-group">
 		@Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
 		<div class="col-md-10">
-			@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+			@Html.TextBox("phone-number", string.Empty, new { @class = "form-control" })
+			@Html.HiddenFor(m => m.PhoneNumber)
 			@Html.ValidationMessageFor(m => m.PhoneNumber)
 		</div>
 	</div>
@@ -57,7 +59,45 @@
 	</div>
 }
 
-@section Scripts
+@section scripts
 {
 	@Scripts.Render("~/bundles/jqueryval")
+
+	<script>
+		$(document).ready(function()
+		{
+			var form = $("#register-form");
+			var phoneNumber = $("#phone-number");
+			var hiddenPhoneNumber = $("#PhoneNumber");
+
+			phoneNumber.telephoneInput
+			({
+				initialCountry: "auto",
+				geoIpLookup: function(callback)
+				{
+					if ($("#phone-number-extension").val() === "")
+					{
+						jQuery.get("https://ipinfo.io", function() {}, "jsonp").always(function(response)
+						{
+							var countryCode = (response && response.country) ? response.country : "pt";
+							callback(countryCode);
+						});
+					}
+				},
+				utilsScript: "../Scripts/telephone-input-utils.js"
+			});
+
+			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
+
+			//if (hiddenPhoneNumber.val() !== "")
+			//	phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
+
+			form.submit(function()
+			{
+				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
+
+				return true;
+			});
+		});
+	</script>
 }

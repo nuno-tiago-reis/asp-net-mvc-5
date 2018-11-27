@@ -5,7 +5,7 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Save", "Users"))
+@using (Html.BeginForm("Save", "Users", FormMethod.Post, new { role = "form", id = "user-form" }))
 {
 	@Html.ValidationSummary(true, "Please fix the following errors")
 	@Html.AntiForgeryToken()
@@ -58,7 +58,8 @@
 	</div>
 	<div class="form-group">
 		@Html.LabelFor(model => model.User.PhoneNumber)
-		@Html.TextBoxFor(model => model.User.PhoneNumber, new { @class = "form-control" })
+		@Html.TextBox("phone-number", string.Empty, new { @class = "form-control" })
+		@Html.HiddenFor(model => model.User.PhoneNumber)
 		@Html.ValidationMessageFor(model => model.User.PhoneNumber)
 	</div>
 	<div class="checkbox">
@@ -80,7 +81,7 @@
 		{
 			<div class="checkbox">
 				<label>
-					<input type="checkbox" name="@nameof(Model.UserRoles)" value="@role" @(Model.UserRoles != null && Model.UserRoles.Contains(role) ? "checked" : string.Empty)/> @role
+					<input type="checkbox" name="@nameof(Model.UserRoles)" value="@role" @(Model.UserRoles != null && Model.UserRoles.Contains(role) ? "checked" : string.Empty) /> @role
 				</label>
 			</div>
 		}
@@ -92,4 +93,27 @@
 @section scripts
 {
 	@Scripts.Render("~/bundles/jqueryval")
+
+	<script>
+		$(document).ready(function()
+		{
+			var form = $("#user-form");
+			var phoneNumber = $("#phone-number");
+			var hiddenPhoneNumber = $("#User_PhoneNumber");
+
+			phoneNumber.telephoneInput
+			({
+				utilsScript: "../../Scripts/telephone-input-utils.js"
+			});
+
+			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
+
+			form.submit(function()
+			{
+				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
+
+				return true;
+			});
+		});
+	</script>
 }

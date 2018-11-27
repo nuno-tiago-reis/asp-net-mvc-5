@@ -310,7 +310,13 @@ namespace Vidly.Controllers
 				return this.View(model);
 			}
 
-			var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, FiscalNumber = model.FiscalNumber };
+			var user = new ApplicationUser
+			{
+				UserName = model.UserName,
+				Email = model.Email,
+				PhoneNumber = model.PhoneNumber,
+				FiscalNumber = model.FiscalNumber
+			};
 
 			// Create the user
 			var result = await this.UserManager.CreateAsync(user, model.Password);

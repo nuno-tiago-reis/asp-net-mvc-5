@@ -25,109 +25,113 @@
 
 @section scripts
 {
-<script>
-	$(document).ready(function()
-	{
-		var table = $("#users").DataTable
-		({
-			ajax:
-			{
-				url: "/api/users",
-				dataSrc: ""
-			},
-			columns:
-			[
-				{
-					render: function (data, type, user) {
-						return "<a href='/users/edit/" + user.id + "'>" + user.userName + "</a>";
-					}
-				},
-				{
-					data: "fiscalNumber"
-				},
-				{
-					render: function (data, type, user)
-					{
-						if (user.emailConfirmed)
-						{
-							return "<span class='confirmed-contact' data-toggle='tooltip' title='The email is confirmed'>" + user.email + "</span>";
-						}
-						else
-						{
-							return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The email is unconfirmed'>" + user.email + "</span>";
-						}
-					}
-				},
-				{
-					render: function (data, type, user)
-					{
-						if (user.phoneNumberConfirmed)
-						{
-							return "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is confirmed'>" + user.phoneNumber + "</span>";
-						}
-						else
-						{
-							return "<span class='unconfirmed-contact' data-toggle='tooltip' title='The phone number is unconfirmed'>" + user.phoneNumber + "</span>";
-						}
-					}
-				},
-				{
-					render: function (data, type, user)
-					{
-						if (user.twoFactorEnabled)
-						{
-							return "<span class='confirmed-contact'>Enabled</span>";
-						}
-						else
-						{
-							return "<span class='unconfirmed-contact'>Disabled</span>";
-						}
-					}
-				},
-				{
-					data: "roles"
-				},
-				{
-					render: function (data, type, user)
-					{
-						return "<button class='btn btn-danger js-delete' data-user-id='" + user.id + "'>Delete</button>";
-					}
-				}
-			],
-			"drawCallback": function()
-			{
-				$('[data-toggle="tooltip"]').tooltip();
-			}
-		});
-
-		$("#users").on("click", ".js-delete", function()
+	<script>
+		$(document).ready(function()
 		{
-			var button = $(this);
-
-			bootbox.confirm("Are you sure you want to delete this user?", function(result)
-			{
-				if (result)
+			var table = $("#users").DataTable
+			({
+				ajax:
 				{
-					$.ajax
-					({
-						url: "/api/users/" + button.attr("data-user-id"),
-						method: "DELETE",
-
-						success: function()
-						{
-							toastr.success("User successfully deleted.");
-							table.row(button.parents("tr")).remove().draw();
-						},
-
-						error: function(xhr)
-						{
-							var error = JSON.parse(xhr.responseText);
-							toastr.error("An error occurred:" + error.message);
+					url: "/api/users",
+					dataSrc: ""
+				},
+				columns:
+				[
+					{
+						render: function (data, type, user) {
+							return "<a href='/users/edit/" + user.id + "'>" + user.userName + "</a>";
 						}
-					});
+					},
+					{
+						data: "fiscalNumber"
+					},
+					{
+						render: function (data, type, user)
+						{
+							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The email is ";
+
+							if (user.emailConfirmed)
+								span += "confirmed";
+							else
+								span += "unconfirmed";
+
+							span += ("'>" + user.email + "</span>");
+
+							return span;
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is ";
+
+							if (user.phoneNumberConfirmed)
+								span += "confirmed";
+							else
+								span += "unconfirmed";
+
+							span += ("'>" + user.phoneNumber + "</span>");
+
+							return span;
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							if (user.twoFactorEnabled)
+							{
+								return "<span class='confirmed-contact'>Enabled</span>";
+							}
+							else
+							{
+								return "<span class='unconfirmed-contact'>Disabled</span>";
+							}
+						}
+					},
+					{
+						data: "roles"
+					},
+					{
+						render: function (data, type, user)
+						{
+							return "<button class='btn btn-danger js-delete' data-user-id='" + user.id + "'>Delete</button>";
+						}
+					}
+				],
+				"drawCallback": function()
+				{
+					$('[data-toggle="tooltip"]').tooltip();
 				}
 			});
+
+			$("#users").on("click", ".js-delete", function()
+			{
+				var button = $(this);
+
+				bootbox.confirm("Are you sure you want to delete this user?", function(result)
+				{
+					if (result)
+					{
+						$.ajax
+						({
+							url: "/api/users/" + button.attr("data-user-id"),
+							method: "DELETE",
+
+							success: function()
+							{
+								toastr.success("User successfully deleted.");
+								table.row(button.parents("tr")).remove().draw();
+							},
+
+							error: function(xhr)
+							{
+								var error = JSON.parse(xhr.responseText);
+								toastr.error("An error occurred:" + error.message);
+							}
+						});
+					}
+				});
+			});
 		});
-	});
-</script>
+	</script>
 }
