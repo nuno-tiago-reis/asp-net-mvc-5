@@ -17,7 +17,6 @@
 		<br />
 		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangeEmail", "Manage")'" />
 		<br />
-		<br />
 		@if (Model.User.EmailConfirmed == false)
 		{
 			using (Html.BeginForm("ConfirmEmail", "Manage"))
@@ -37,7 +36,6 @@
 		<br />
 		<br />
 		<input type="button" class="btn btn-primary" value="Change" onclick="location.href = '@Url.Action("ChangePhoneNumber", "Manage")'" />
-		<br />
 		<br />
 		@if (Model.User.PhoneNumberConfirmed == false)
 		{

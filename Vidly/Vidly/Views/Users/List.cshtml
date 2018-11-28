@@ -48,7 +48,14 @@
 					{
 						render: function (data, type, user)
 						{
-							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The email is ";
+							var span = "<span class='";
+
+							if (user.emailConfirmed)
+								span += "confirmed-contact";
+							else
+								span += "unconfirmed-contact";
+							
+							span += "' data-toggle='tooltip' title='The email is ";
 
 							if (user.emailConfirmed)
 								span += "confirmed";
@@ -63,7 +70,14 @@
 					{
 						render: function (data, type, user)
 						{
-							var span = "<span class='confirmed-contact' data-toggle='tooltip' title='The phone number is ";
+							var span = "<span class='";
+
+							if (user.phoneNumberConfirmed)
+								span += "confirmed-contact";
+							else
+								span += "unconfirmed-contact";
+
+							span += "' data-toggle='tooltip' title='The phone number is ";
 
 							if (user.phoneNumberConfirmed)
 								span += "confirmed";
