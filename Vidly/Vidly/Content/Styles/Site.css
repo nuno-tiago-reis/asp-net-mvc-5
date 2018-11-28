@@ -64,16 +64,6 @@ textarea
 	color: red;
 }
 
-a.navbar-brand:hover
-{
-	color:black
-}
-
-a.navbar-brand:focus
-{
-	color: black
-}
-
 table
 {
 	border-collapse: separate;
