@@ -602,7 +602,6 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Properties\PublishProfiles\Vidly-Azure-FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Vidly-Azure-WebDeploy.pubxml" />
-    <None Include="Properties\PublishProfiles\Vidly-Folder.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

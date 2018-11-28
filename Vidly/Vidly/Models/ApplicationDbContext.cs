@@ -37,7 +37,7 @@ namespace Vidly.Models
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ApplicationDbContext"/> class.
 		/// </summary>
-		public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
+		public ApplicationDbContext() : base("DefaultConnection")
 		{
 		}
 
