@@ -181,7 +181,7 @@ namespace Vidly.Controllers
 					nameof(Rental.Movie),
 					nameof(Rental.Customer),
 					nameof(Rental.DateRented),
-					nameof(Rental.DateReturned),
+					nameof(Rental.DateReturned)
 				});
 
 				if (result && returned)

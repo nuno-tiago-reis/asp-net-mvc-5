@@ -1,7 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vidly.Models
 {
+	/// <summary>
+	/// The membership type class.
+	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class MembershipType
 	{
 		/// <summary>

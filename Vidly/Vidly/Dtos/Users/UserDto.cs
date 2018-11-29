@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vidly.Dtos
 {
 	/// <summary>
 	/// The user dto class.
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class UserDto
 	{
 		/// <summary>

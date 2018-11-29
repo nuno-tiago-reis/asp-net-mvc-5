@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vidly.Models
 {
 	/// <summary>
 	/// The movie class.
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class Movie
 	{
 		/// <summary>

@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
@@ -16,6 +18,7 @@ using Vidly.Models;
 
 namespace Vidly
 {
+	[UsedImplicitly]
 	public partial class Startup
 	{
 		/// <summary>
@@ -128,16 +131,15 @@ namespace Vidly
 				FiscalNumber = ApplicationUser.AdminFiscalNumber
 			};
 
-			var result = userManager.Create(admin, ApplicationUser.AdminPassword);
-
 			// Add the roles to the user
-			if (result.Succeeded)
-			{
-				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageUsers);
-				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageMovies);
-				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageRentals);
-				userManager.AddToRole(admin.Id, ApplicationRoles.CanManageCustomers);
-			}
+			var result = userManager.Create(admin, ApplicationUser.AdminPassword);
+			if (!result.Succeeded)
+				return;
+
+			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageUsers);
+			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageMovies);
+			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageRentals);
+			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageCustomers);
 		}
 	}
 }

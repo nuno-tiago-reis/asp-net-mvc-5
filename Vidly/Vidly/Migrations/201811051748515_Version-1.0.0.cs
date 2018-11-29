@@ -13,7 +13,7 @@ namespace Vidly.Migrations
 				c => new
 				{
 					ID = c.Int(nullable: false, identity: true),
-					Name = c.String(),
+					Name = c.String()
 				}
 			)
 			.PrimaryKey(t => t.ID);
@@ -24,7 +24,7 @@ namespace Vidly.Migrations
 				c => new
 				{
 					ID = c.Int(nullable: false, identity: true),
-					Name = c.String(),
+					Name = c.String()
 				}
 			)
 			.PrimaryKey(t => t.ID);
@@ -35,7 +35,7 @@ namespace Vidly.Migrations
 				c => new
 				{
 					Id = c.String(nullable: false, maxLength: 128),
-					Name = c.String(nullable: false, maxLength: 256),
+					Name = c.String(nullable: false, maxLength: 256)
 				}
 			)
 			.PrimaryKey(t => t.Id).Index(t => t.Name, unique: true, name: "RoleNameIndex");
@@ -46,7 +46,7 @@ namespace Vidly.Migrations
 				c => new
 				{
 					UserId = c.String(nullable: false, maxLength: 128),
-					RoleId = c.String(nullable: false, maxLength: 128),
+					RoleId = c.String(nullable: false, maxLength: 128)
 				}
 			)
 			.PrimaryKey(t => new { t.UserId, t.RoleId })
@@ -71,7 +71,7 @@ namespace Vidly.Migrations
 					LockoutEndDateUtc = c.DateTime(),
 					LockoutEnabled = c.Boolean(nullable: false),
 					AccessFailedCount = c.Int(nullable: false),
-					UserName = c.String(nullable: false, maxLength: 256),
+					UserName = c.String(nullable: false, maxLength: 256)
 				}
 			)
 			.PrimaryKey(t => t.Id)
@@ -85,7 +85,7 @@ namespace Vidly.Migrations
 					Id = c.Int(nullable: false, identity: true),
 					UserId = c.String(nullable: false, maxLength: 128),
 					ClaimType = c.String(),
-					ClaimValue = c.String(),
+					ClaimValue = c.String()
 				}
 			)
 			.PrimaryKey(t => t.Id)
@@ -99,7 +99,7 @@ namespace Vidly.Migrations
 				{
 					LoginProvider = c.String(nullable: false, maxLength: 128),
 					ProviderKey = c.String(nullable: false, maxLength: 128),
-					UserId = c.String(nullable: false, maxLength: 128),
+					UserId = c.String(nullable: false, maxLength: 128)
 				}
 			)
 			.PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })

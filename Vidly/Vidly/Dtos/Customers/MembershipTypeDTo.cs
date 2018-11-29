@@ -1,5 +1,11 @@
-﻿namespace Vidly.Dtos
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Vidly.Dtos
 {
+	/// <summary>
+	/// The membership type dto class.
+	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class MembershipTypeDto
 	{
 		/// <summary>

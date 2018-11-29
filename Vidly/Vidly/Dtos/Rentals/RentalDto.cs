@@ -1,12 +1,12 @@
 ﻿using System;
-
-using Vidly.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vidly.Dtos
 {
 	/// <summary>
 	/// The rental dto class.
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class RentalDto
 	{
 		/// <summary>
@@ -22,7 +22,7 @@ namespace Vidly.Dtos
 		/// <summary>
 		/// Gets or sets the movie.
 		/// </summary>
-		public Movie Movie { get; set; }
+		public MovieDto Movie { get; set; }
 
 		/// <summary>
 		/// Gets or sets the customer identifier.
@@ -32,7 +32,7 @@ namespace Vidly.Dtos
 		/// <summary>
 		/// Gets or sets the customer.
 		/// </summary>
-		public Customer Customer { get; set; }
+		public CustomerDto Customer { get; set; }
 
 		/// <summary>
 		/// Gets or sets the date rented.

@@ -127,10 +127,10 @@
 					button.innerHTML = "&times;";
 					button.onclick = function()
 					{
-						for (var i = 0; i < movieIDs.length; i++)
+						for (var j = 0; j < movieIDs.length; j++)
 						{
-							if (i > movieIDs.indexOf(movie.id))
-								$("#movie-id-" + i).attr("id", "movie-id-" + (i - 1));
+							if (j > movieIDs.indexOf(movie.id))
+								$("#movie-id-" + j).attr("id", "movie-id-" + (j - 1));
 						}
 
 						movieIDs.splice(movieIDs.indexOf(movie.id), 1);

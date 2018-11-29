@@ -1,5 +1,11 @@
-﻿namespace Vidly.Dtos
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Vidly.Dtos
 {
+	/// <summary>
+	/// The genre dto class.
+	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class GenreDto
 	{
 		/// <summary>

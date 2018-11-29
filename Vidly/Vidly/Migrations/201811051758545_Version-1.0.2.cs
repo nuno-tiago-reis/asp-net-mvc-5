@@ -15,7 +15,7 @@ namespace Vidly.Migrations
 					ID = c.Int(nullable: false, identity: true),
 					SignUpFee = c.Short(nullable: false),
 					DiscountRate = c.Byte(nullable: false),
-					DurationInMonths = c.Byte(nullable: false),
+					DurationInMonths = c.Byte(nullable: false)
 				}
 			)
 			.PrimaryKey(t => t.ID);

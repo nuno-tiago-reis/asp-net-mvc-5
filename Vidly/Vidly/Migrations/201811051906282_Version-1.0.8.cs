@@ -13,7 +13,7 @@ namespace Vidly.Migrations
 				c => new
 				{
 					ID = c.Int(nullable: false, identity: true),
-					Name = c.String(nullable: false, maxLength: 255),
+					Name = c.String(nullable: false, maxLength: 255)
 				}
 			)
 			.PrimaryKey(t => t.ID);

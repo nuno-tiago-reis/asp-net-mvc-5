@@ -9,9 +9,9 @@
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary("", new { @class = "text-danger" })
 
-	@Html.Hidden("provider", @Model.Provider)
-	@Html.Hidden("returnUrl", @Model.ReturnUrl)
-	@Html.Hidden("rememberMe", @Model.RememberMe)
+	@Html.Hidden("provider", Model.Provider)
+	@Html.Hidden("returnUrl", Model.ReturnUrl)
+	@Html.Hidden("rememberMe", Model.RememberMe)
 
 	<div class="form-group">
 		@Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })

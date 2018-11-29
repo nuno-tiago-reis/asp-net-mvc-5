@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Vidly.Dtos
 {
 	/// <summary>
 	/// The movie dto class.
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedMember.Global")]
 	public sealed class MovieDto
 	{
 		/// <summary>

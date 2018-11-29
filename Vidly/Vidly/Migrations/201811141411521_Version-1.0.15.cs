@@ -16,7 +16,7 @@ namespace Vidly.Migrations
 					DateRented = c.DateTime(nullable: false),
 					DateReturned = c.DateTime(),
 					Customer_ID = c.Int(nullable: false),
-					Movie_ID = c.Int(nullable: false),
+					Movie_ID = c.Int(nullable: false)
 				}
 			)
 			.PrimaryKey(t => t.ID)
