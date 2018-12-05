@@ -100,21 +100,21 @@ a, .btn-link
 .btn-default
 {
 	color: #ffffff;
-	background-color: #3CC47C;
+	background-color: lightgray;
 }
 
 	.btn-default:hover:enabled, .btn-default:focus:enabled, .btn-default:active:enabled, .btn-default.active:enabled, .open > .dropdown-toggle.btn-default
 	{
 		margin-top: 0;
 		color: whitesmoke;
-		background-color: #24754A;
+		background-color: darkgrey;
 	}
 
 	.btn-default:disabled, .btn-default:hover:disabled, .btn-default:focus:disabled, .btn-default:active:disabled, .btn-default.active:disabled, .open > .dropdown-toggle.btn-default
 	{
 		margin-top: 0;
 		color: whitesmoke;
-		background-color: darkgray;
+		background-color: black;
 	}
 
 .btn-success

@@ -13,7 +13,6 @@ namespace Vidly
 		/// <param name="app">The application.</param>
 		public void Configuration(IAppBuilder app)
 		{
-			this.ConfigureDatabase();
 			this.ConfigureAuth(app);
 			this.ConfigureUsers();
 		}

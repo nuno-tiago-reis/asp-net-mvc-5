@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 
 using JetBrains.Annotations;
@@ -141,18 +140,6 @@ namespace Vidly
 			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageMovies);
 			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageRentals);
 			userManager.AddToRole(admin.Id, ApplicationRoles.CanManageCustomers);
-		}
-
-		/// <summary>
-		/// Configures the database.
-		/// </summary>
-		private void ConfigureDatabase()
-		{
-			var dataDirectory = Directory.GetParent((string)AppDomain.CurrentDomain.GetData("DataDirectory"));
-			if (dataDirectory == null)
-				return;
-
-			AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(dataDirectory.FullName, "Databases"));
 		}
 	}
 }
