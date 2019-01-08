@@ -30,6 +30,7 @@ namespace Vidly.Models
 		[ReleaseDateValidation]
 		[DataType(DataType.Date)]
 		[Display(Name = "Release Date")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime ReleaseDate { get; set; }
 
 		/// <summary>

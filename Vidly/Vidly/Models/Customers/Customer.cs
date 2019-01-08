@@ -30,6 +30,7 @@ namespace Vidly.Models
 		[AgeValidation]
 		[DataType(DataType.Date)]
 		[Display(Name ="Date of Birth")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? BirthDate { get; set; }
 
 		/// <summary>
