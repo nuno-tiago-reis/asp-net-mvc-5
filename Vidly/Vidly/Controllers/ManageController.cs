@@ -109,13 +109,13 @@ namespace Vidly.Controllers
 		/// GET: /manage/changeemail
 		/// </summary>
 		[HttpGet]
-		public ActionResult ChangeEmail()
+		public async Task<ActionResult> ChangeEmail()
 		{
 			string userId = this.User.Identity.GetUserId();
 
 			var viewModel = new ChangeEmailViewModel
 			{
-				Email = this.UserManager.Users.First(user => user.Id == userId).Email
+				Email = (await this.UserManager.Users.FirstAsync(user => user.Id == userId)).Email
 			};
 
 			return this.View(viewModel);
@@ -181,13 +181,13 @@ namespace Vidly.Controllers
 		/// GET: /manage/changephonenumber
 		/// </summary>
 		[HttpGet]
-		public ActionResult ChangePhoneNumber()
+		public async Task<ActionResult> ChangePhoneNumber()
 		{
 			string userId = this.User.Identity.GetUserId();
 
 			var viewModel = new ChangePhoneNumberViewModel
 			{
-				PhoneNumber = this.UserManager.Users.First(user => user.Id == userId).PhoneNumber
+				PhoneNumber = (await this.UserManager.Users.FirstAsync(user => user.Id == userId)).PhoneNumber
 			};
 
 			return this.View(viewModel);
@@ -232,7 +232,7 @@ namespace Vidly.Controllers
 
 			string userId = this.User.Identity.GetUserId();
 
-			var user = this.UserManager.Users.First(u => u.Id == userId);
+			var user = await this.UserManager.Users.FirstAsync(u => u.Id == userId);
 
 			// Create the confirmation token
 			string token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);

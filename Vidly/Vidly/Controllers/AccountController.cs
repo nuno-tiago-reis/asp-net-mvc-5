@@ -120,7 +120,7 @@ namespace Vidly.Controllers
 			}
 
 			// Check if the email is confirmed
-			if (!UserManager.IsEmailConfirmed(user.Id))
+			if (!await UserManager.IsEmailConfirmedAsync(user.Id))
 			{
 				this.ModelState.AddModelError(string.Empty, @"Invalid login attempt.");
 				return this.View(model);

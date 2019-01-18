@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -90,15 +92,15 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("users")]
-		public ViewResult Index()
+		public async Task<ActionResult> Index()
 		{
 			var viewModels = new List<UserViewModel>();
-			foreach (var user in this.UserManager.Users.ToList())
+			foreach (var user in await this.UserManager.Users.ToListAsync())
 			{
 				viewModels.Add(new UserViewModel
 				{
 					User = user,
-					UserRoles = this.UserManager.GetRoles(user.Id)
+					UserRoles = await this.UserManager.GetRolesAsync(user.Id)
 				});
 			}
 
@@ -113,16 +115,16 @@ namespace Vidly.Controllers
 		/// <param name="id">The user id.</param>
 		[HttpGet]
 		[Route("users/{id}")]
-		public ActionResult Details(string id)
+		public async Task<ActionResult> Details(string id)
 		{
-			var user = this.UserManager.FindById(id);
+			var user = await this.UserManager.FindByIdAsync(id);
 			if (user == null)
 				return this.HttpNotFound();
 
 			var viewModel = new UserViewModel
 			{
 				User = user,
-				UserRoles = this.UserManager.GetRoles(user.Id)
+				UserRoles = await this.UserManager.GetRolesAsync(user.Id)
 			};
 
 			return this.View("Details", viewModel);
@@ -133,12 +135,12 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("users/create")]
-		public ViewResult Create()
+		public async Task<ActionResult> Create()
 		{
 			var viewModel = new UserFormViewModel
 			{
 				User = null,
-				AvailableRoles = this.context.Roles.Select(role => role.Name)
+				AvailableRoles = await this.context.Roles.Select(role => role.Name).ToListAsync()
 			};
 
 			return this.View("Form", viewModel);
@@ -150,17 +152,17 @@ namespace Vidly.Controllers
 		/// <param name="id">The user id.</param>
 		[HttpGet]
 		[Route("users/edit/{id}")]
-		public ActionResult Edit(string id)
+		public async Task<ActionResult> Edit(string id)
 		{
-			var user = this.UserManager.FindById(id);
+			var user = await this.UserManager.FindByIdAsync(id);
 			if (user == null)
 				return this.HttpNotFound();
 
 			var viewModel = new UserFormViewModel
 			{
 				User = user,
-				UserRoles = this.UserManager.GetRoles(user.Id),
-				AvailableRoles = this.context.Roles.Select(role => role.Name)
+				UserRoles = await this.UserManager.GetRolesAsync(user.Id),
+				AvailableRoles = await this.context.Roles.Select(role => role.Name).ToListAsync()
 			};
 
 			return this.View("Form", viewModel);
@@ -172,13 +174,13 @@ namespace Vidly.Controllers
 		/// <param name="id">The user id.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(string id)
+		public async Task<ActionResult> Delete(string id)
 		{
-			var user = this.UserManager.FindById(id);
+			var user = await this.UserManager.FindByIdAsync(id);
 			if (user == null)
 				return this.HttpNotFound();
 
-			this.UserManager.Delete(user);
+			await this.UserManager.DeleteAsync(user);
 
 			this.TempData[MessageKey] = "User deleted successfully.";
 			this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -194,7 +196,7 @@ namespace Vidly.Controllers
 		/// <param name="userRoles">The role names.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Save(ApplicationUser user, string password, List<string> userRoles)
+		public async Task<ActionResult> Save(ApplicationUser user, string password, List<string> userRoles)
 		{
 			if (ModelState.IsValid == false)
 			{
@@ -202,21 +204,21 @@ namespace Vidly.Controllers
 				{
 					User = user,
 					UserRoles = userRoles,
-					AvailableRoles = this.context.Roles.Select(role => role.Name)
+					AvailableRoles = await this.context.Roles.Select(role => role.Name).ToListAsync()
 				};
 
 				return this.View("Form", viewModel);
 			}
 
-			var databaseUser = this.UserManager.FindById(user.Id);
+			var databaseUser = await this.UserManager.FindByIdAsync(user.Id);
 			if (databaseUser == null)
 			{
 				// Create the user
-				var result = this.UserManager.Create(user, password);
+				var result = await this.UserManager.CreateAsync(user, password);
 				if (result.Succeeded == false)
 					return this.HandleError(result);
 
-				databaseUser = this.UserManager.FindById(user.Id);
+				databaseUser = await this.UserManager.FindByIdAsync(user.Id);
 
 				this.TempData[MessageKey] = "User created successfully.";
 				this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -231,7 +233,7 @@ namespace Vidly.Controllers
 				databaseUser.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
 				databaseUser.TwoFactorEnabled = user.TwoFactorEnabled;
 
-				var result = this.UserManager.Update(databaseUser);
+				var result = await this.UserManager.UpdateAsync(databaseUser);
 				if (result.Succeeded == false)
 					return this.HandleError(result);
 
@@ -240,8 +242,8 @@ namespace Vidly.Controllers
 			}
 
 			// Update the roles
-			var roles = this.UserManager.GetRoles(databaseUser.Id).ToArray();
-			this.UserManager.RemoveFromRoles(databaseUser.Id, roles);
+			var roles = await this.UserManager.GetRolesAsync(databaseUser.Id);
+			await this.UserManager.RemoveFromRolesAsync(databaseUser.Id, roles.ToArray());
 
 			if (userRoles != null && userRoles.Count > 0)
 			{
@@ -250,7 +252,7 @@ namespace Vidly.Controllers
 					if (string.IsNullOrWhiteSpace(roleName))
 						continue;
 
-					this.UserManager.AddToRole(databaseUser.Id, roleName);
+					await this.UserManager.AddToRoleAsync(databaseUser.Id, roleName);
 				}
 			}
 

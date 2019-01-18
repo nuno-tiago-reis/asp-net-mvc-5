@@ -1,8 +1,13 @@
 ﻿using System;
-using System.Linq;
-using System.Web.Mvc;
 using System.Data.Entity;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
+using Vidly.Identity;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -16,6 +21,45 @@ namespace Vidly.Controllers
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+		/// <summary>
+		/// The sign in manager field.
+		/// </summary>
+		private ApplicationSignInManager signInManagerField;
+
+		/// <summary>
+		/// The user manager field.
+		/// </summary>
+		private ApplicationUserManager userManagerField;
+
+		/// <summary>
+		/// Gets the sign in manager.
+		/// </summary>
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return this.signInManagerField ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				this.signInManagerField = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the user manager.
+		/// </summary>
+		public ApplicationUserManager UserManager
+		{
+			get
+			{
+				return this.userManagerField ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			}
+			private set
+			{
+				this.userManagerField = value;
+			}
+		}
 		#endregion
 
 		#region [Constructors]
@@ -26,6 +70,18 @@ namespace Vidly.Controllers
 		{
 			this.context = new ApplicationDbContext();
 		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RentalsController" /> class.
+		/// </summary>
+		/// 
+		/// <param name="userManager">The user manager.</param>
+		/// <param name="signInManager">The sign in manager.</param>
+		public RentalsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		{
+			this.UserManager = userManager;
+			this.SignInManager = signInManager;
+		}
 		#endregion
 
 		/// <summary>
@@ -33,9 +89,9 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("rentals")]
-		public ViewResult Index()
+		public async Task<ActionResult> Index()
 		{
-			return this.User.IsInRole(ApplicationRoles.CanManageRentals)
+			return await this.UserManager.IsInRoleAsync(this.HttpContext.User.Identity.GetUserId(), ApplicationRoles.CanManageRentals)
 				? this.View("List")
 				: this.View("ReadOnlyList");
 		}
@@ -46,9 +102,9 @@ namespace Vidly.Controllers
 		/// <param name="id">The rental id.</param>
 		[HttpGet]
 		[Route("rentals/{id}")]
-		public ActionResult Details(int id)
+		public async Task<ActionResult> Details(int id)
 		{
-			var rental = this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefault(r => r.ID == id);
+			var rental = await this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefaultAsync(r => r.ID == id);
 			if (rental == null)
 				return this.HttpNotFound();
 
@@ -61,7 +117,7 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("rentals/create")]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ViewResult Create()
+		public ActionResult Create()
 		{
 			return this.View("Form", new RentalFormViewModel());
 		}
@@ -72,7 +128,7 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("rentals/createmultiple")]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ViewResult CreateMultiple()
+		public ActionResult CreateMultiple()
 		{
 			return this.View("MultipleForm", new MultipleRentalFormViewModel());
 		}
@@ -84,9 +140,9 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("rentals/edit/{id:regex(\\d)}")]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ActionResult Edit(int id)
+		public async Task<ActionResult> Edit(int id)
 		{
-			var rental = this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefault(r => r.ID == id);
+			var rental = await this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefaultAsync(r => r.ID == id);
 			if (rental == null)
 				return this.HttpNotFound();
 
@@ -105,20 +161,20 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ActionResult Delete(int id)
+		public async Task<ActionResult> Delete(int id)
 		{
-			var rental = this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefault(m => m.ID == id);
+			var rental = await this.context.Rentals.Include(r => r.Movie).Include(r => r.Customer).FirstOrDefaultAsync(m => m.ID == id);
 			if (rental == null)
 				return this.HttpNotFound();
 
 			if (rental.DateReturned.HasValue == false)
 			{
-				var databaseMovie = this.context.Movies.First(m => m.ID == rental.Movie.ID);
+				var databaseMovie = await this.context.Movies.FirstAsync(m => m.ID == rental.Movie.ID);
 				databaseMovie.NumberRented--;
 			}
 
 			this.context.Rentals.Remove(rental);
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			this.TempData[MessageKey] = "Rental deleted successfully.";
 			this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -133,7 +189,7 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ActionResult Save(Rental rental)
+		public async Task<ActionResult> Save(Rental rental)
 		{
 			if (ModelState.IsValid == false)
 			{
@@ -152,7 +208,7 @@ namespace Vidly.Controllers
 			{
 				rental.DateRented = DateTime.Now;
 
-				var databaseMovie = this.context.Movies.First(m => m.ID == rental.MovieID);
+				var databaseMovie = await this.context.Movies.FirstAsync(m => m.ID == rental.MovieID);
 				if (databaseMovie.NumberInStock == databaseMovie.NumberRented)
 				{
 					this.TempData[MessageKey] = $"The movie {databaseMovie.Name} is out of stock.";
@@ -170,7 +226,7 @@ namespace Vidly.Controllers
 			}
 			else
 			{
-				var databaseRental = this.context.Rentals.FirstOrDefault(r => r.ID == rental.ID);
+				var databaseRental = await this.context.Rentals.FirstOrDefaultAsync(r => r.ID == rental.ID);
 				if (databaseRental == null)
 					return this.HttpNotFound();
 
@@ -186,7 +242,7 @@ namespace Vidly.Controllers
 
 				if (result && returned)
 				{
-					var databaseMovie = this.context.Movies.First(m => m.ID == rental.MovieID);
+					var databaseMovie = await this.context.Movies.FirstAsync(m => m.ID == rental.MovieID);
 					databaseMovie.NumberRented--;
 				}
 
@@ -194,7 +250,7 @@ namespace Vidly.Controllers
 				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			return this.RedirectToAction("Index", "Rentals");
 		}
@@ -206,7 +262,7 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageRentals)]
-		public ActionResult SaveMultiple(MultipleRentalFormViewModel viewModel)
+		public async Task<ActionResult> SaveMultiple(MultipleRentalFormViewModel viewModel)
 		{
 			if (ModelState.IsValid == false)
 			{
@@ -225,7 +281,7 @@ namespace Vidly.Controllers
 					DateRented = DateTime.Now
 				};
 
-				var databaseMovie = this.context.Movies.First(m => m.ID == rental.MovieID);
+				var databaseMovie = await this.context.Movies.FirstAsync(m => m.ID == rental.MovieID);
 				if (databaseMovie.NumberInStock == databaseMovie.NumberRented)
 				{
 					warningMessage += $"<br>&bull; The movie {databaseMovie.Name} is out of stock.";
@@ -238,7 +294,7 @@ namespace Vidly.Controllers
 				}
 			}
 
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			if (string.IsNullOrWhiteSpace(warningMessage))
 			{

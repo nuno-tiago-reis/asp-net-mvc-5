@@ -1,7 +1,13 @@
 ﻿using System;
-using System.Linq;
+using System.Data.Entity;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
+using Vidly.Identity;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -15,15 +21,67 @@ namespace Vidly.Controllers
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+
+		/// <summary>
+		/// The sign in manager field.
+		/// </summary>
+		private ApplicationSignInManager signInManagerField;
+
+		/// <summary>
+		/// The user manager field.
+		/// </summary>
+		private ApplicationUserManager userManagerField;
+
+		/// <summary>
+		/// Gets the sign in manager.
+		/// </summary>
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return this.signInManagerField ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				this.signInManagerField = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the user manager.
+		/// </summary>
+		public ApplicationUserManager UserManager
+		{
+			get
+			{
+				return this.userManagerField ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			}
+			private set
+			{
+				this.userManagerField = value;
+			}
+		}
 		#endregion
 
 		#region [Constructors]
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Vidly.Controllers.MoviesController" /> class.
+		/// Initializes a new instance of the <see cref="MoviesController" /> class.
 		/// </summary>
 		public MoviesController()
 		{
 			this.context = new ApplicationDbContext();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MoviesController" /> class.
+		/// </summary>
+		/// 
+		/// <param name="userManager">The user manager.</param>
+		/// <param name="signInManager">The sign in manager.</param>
+		public MoviesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		{
+			this.UserManager = userManager;
+			this.SignInManager = signInManager;
 		}
 		#endregion
 
@@ -32,9 +90,9 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("movies")]
-		public ViewResult Index()
+		public async Task<ActionResult> Index()
 		{
-			return this.User.IsInRole(ApplicationRoles.CanManageMovies)
+			return await this.UserManager.IsInRoleAsync(this.HttpContext.User.Identity.GetUserId(), ApplicationRoles.CanManageMovies)
 				? this.View("List")
 				: this.View("ReadOnlyList");
 		}
@@ -45,9 +103,9 @@ namespace Vidly.Controllers
 		/// <param name="id">The movie id.</param>
 		[HttpGet]
 		[Route("movies/{id}")]
-		public ActionResult Details(int id)
+		public async Task<ActionResult> Details(int id)
 		{
-			var movie = this.context.Movies.Include(nameof(Movie.Genre)).FirstOrDefault(m => m.ID == id);
+			var movie = await this.context.Movies.Include(nameof(Movie.Genre)).FirstOrDefaultAsync(m => m.ID == id);
 			if (movie == null)
 				return this.HttpNotFound();
 
@@ -60,11 +118,11 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("movies/create")]
 		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
-		public ViewResult Create()
+		public async Task<ActionResult> Create()
 		{
 			var viewModel = new MovieFormViewModel
 			{
-				Genres = this.context.Genres
+				Genres = await this.context.Genres.ToListAsync()
 			};
 
 			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.Genres)] == null)
@@ -80,16 +138,16 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("movies/edit/{id:regex(\\d)}")]
 		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
-		public ActionResult Edit(int id)
+		public async Task<ActionResult> Edit(int id)
 		{
-			var movie = this.context.Movies.FirstOrDefault(c => c.ID == id);
+			var movie = await this.context.Movies.FirstOrDefaultAsync(c => c.ID == id);
 			if (movie == null)
 				return this.HttpNotFound();
 
 			var viewModel = new MovieFormViewModel
 			{
 				Movie = movie,
-				Genres = this.context.Genres
+				Genres = await this.context.Genres.ToListAsync()
 			};
 
 			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.Genres)] == null)
@@ -105,14 +163,14 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
-		public ActionResult Delete(int id)
+		public async Task<ActionResult> Delete(int id)
 		{
-			var movie = this.context.Movies.FirstOrDefault(m => m.ID == id);
+			var movie = await this.context.Movies.FirstOrDefaultAsync(m => m.ID == id);
 			if (movie == null)
 				return this.HttpNotFound();
 
 			this.context.Movies.Remove(movie);
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			this.TempData[MessageKey] = "Movie deleted successfully.";
 			this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -127,14 +185,14 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageMovies)]
-		public ActionResult Save(Movie movie)
+		public async Task<ActionResult> Save(Movie movie)
 		{
 			if (ModelState.IsValid == false)
 			{
 				var viewModel = new MovieFormViewModel
 				{
 					Movie = movie,
-					Genres = this.context.Genres
+					Genres = await this.context.Genres.ToListAsync()
 				};
 
 				return this.View("Form", viewModel);
@@ -151,7 +209,7 @@ namespace Vidly.Controllers
 			}
 			else
 			{
-				var databaseMovie = this.context.Movies.FirstOrDefault(c => c.ID == movie.ID);
+				var databaseMovie = await this.context.Movies.FirstOrDefaultAsync(c => c.ID == movie.ID);
 				if (databaseMovie == null)
 					return this.HttpNotFound();
 
@@ -168,7 +226,7 @@ namespace Vidly.Controllers
 				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			return this.RedirectToAction("Index", "Movies");
 		}

@@ -1,6 +1,12 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+
+using Vidly.Identity;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -14,6 +20,46 @@ namespace Vidly.Controllers
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
+
+		/// <summary>
+		/// The sign in manager field.
+		/// </summary>
+		private ApplicationSignInManager signInManagerField;
+
+		/// <summary>
+		/// The user manager field.
+		/// </summary>
+		private ApplicationUserManager userManagerField;
+
+		/// <summary>
+		/// Gets the sign in manager.
+		/// </summary>
+		public ApplicationSignInManager SignInManager
+		{
+			get
+			{
+				return this.signInManagerField ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			}
+			private set
+			{
+				this.signInManagerField = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the user manager.
+		/// </summary>
+		public ApplicationUserManager UserManager
+		{
+			get
+			{
+				return this.userManagerField ?? this.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			}
+			private set
+			{
+				this.userManagerField = value;
+			}
+		}
 		#endregion
 
 		#region [Constructors]
@@ -24,6 +70,18 @@ namespace Vidly.Controllers
 		{
 			this.context = new ApplicationDbContext();
 		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CustomersController" /> class.
+		/// </summary>
+		/// 
+		/// <param name="userManager">The user manager.</param>
+		/// <param name="signInManager">The sign in manager.</param>
+		public CustomersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		{
+			this.UserManager = userManager;
+			this.SignInManager = signInManager;
+		}
 		#endregion
 
 		/// <summary>
@@ -31,9 +89,9 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpGet]
 		[Route("customers")]
-		public ViewResult Index()
+		public async Task<ActionResult> Index()
 		{
-			return this.User.IsInRole(ApplicationRoles.CanManageCustomers)
+			return await this.UserManager.IsInRoleAsync(this.HttpContext.User.Identity.GetUserId(), ApplicationRoles.CanManageCustomers)
 				? this.View("List")
 				: this.View("ReadOnlyList");
 		}
@@ -44,10 +102,9 @@ namespace Vidly.Controllers
 		/// <param name="id">The customer id.</param>
 		[HttpGet]
 		[Route("customers/{id}")]
-		public ActionResult Details(int id)
+		public async Task<ActionResult> Details(int id)
 		{
-			var customer = this.context.Customers.Include(nameof(Customer.MembershipType)).FirstOrDefault(c => c.ID == id);
-
+			var customer = await this.context.Customers.Include(nameof(Customer.MembershipType)).FirstOrDefaultAsync(c => c.ID == id);
 			if (customer == null)
 				return this.HttpNotFound();
 
@@ -60,11 +117,11 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("customers/create")]
 		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
-		public ViewResult Create()
+		public async Task<ActionResult> Create()
 		{
 			var viewModel = new CustomerFormViewModel
 			{
-				MembershipTypes = this.context.MembershipTypes
+				MembershipTypes = await this.context.MembershipTypes.ToListAsync()
 			};
 
 			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] == null)
@@ -80,16 +137,16 @@ namespace Vidly.Controllers
 		[HttpGet]
 		[Route("customers/edit/{id:regex(\\d)}")]
 		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
-		public ActionResult Edit(int id)
+		public async Task<ActionResult> Edit(int id)
 		{
-			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
+			var customer = await this.context.Customers.FirstOrDefaultAsync(c => c.ID == id);
 			if (customer == null)
 				return this.HttpNotFound();
 
 			var viewModel = new CustomerFormViewModel
 			{
 				Customer = customer,
-				MembershipTypes = this.context.MembershipTypes
+				MembershipTypes = await this.context.MembershipTypes.ToListAsync()
 			};
 
 			//if (System.Runtime.Caching.MemoryCache.Default[nameof(this.context.MembershipTypes)] == null)
@@ -105,14 +162,14 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
-		public ActionResult Delete(int id)
+		public async Task<ActionResult> Delete(int id)
 		{
-			var customer = this.context.Customers.FirstOrDefault(c => c.ID == id);
+			var customer = await this.context.Customers.FirstOrDefaultAsync(c => c.ID == id);
 			if (customer == null)
 				return this.HttpNotFound();
 
 			this.context.Customers.Remove(customer);
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			this.TempData[MessageKey] = "Customer deleted successfully.";
 			this.TempData[MessageTypeKey] = MessageTypeSuccess;
@@ -127,14 +184,14 @@ namespace Vidly.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = ApplicationRoles.CanManageCustomers)]
-		public ActionResult Save(Customer customer)
+		public async Task<ActionResult> Save(Customer customer)
 		{
 			if (ModelState.IsValid == false)
 			{
 				var viewModel = new CustomerFormViewModel
 				{
 					Customer = customer,
-					MembershipTypes = this.context.MembershipTypes
+					MembershipTypes = await this.context.MembershipTypes.ToListAsync()
 				};
 
 				return this.View("Form", viewModel);
@@ -149,7 +206,7 @@ namespace Vidly.Controllers
 			}
 			else
 			{
-				var databaseCustomer = this.context.Customers.FirstOrDefault(c => c.ID == customer.ID);
+				var databaseCustomer = await this.context.Customers.FirstOrDefaultAsync(c => c.ID == customer.ID);
 				if (databaseCustomer == null)
 					return this.HttpNotFound();
 
@@ -165,7 +222,7 @@ namespace Vidly.Controllers
 				this.TempData[MessageTypeKey] = MessageTypeSuccess;
 			}
 
-			this.context.SaveChanges();
+			await this.context.SaveChangesAsync();
 
 			return this.RedirectToAction("Index", "Customers");
 		}
