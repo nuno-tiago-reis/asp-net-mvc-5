@@ -54,13 +54,13 @@
     <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\Packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
       <HintPath>..\Packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="Glimpse.Ado, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
       <HintPath>..\Packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.AspNet, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
       <HintPath>..\Packages\Glimpse.AspNet.1.9.2\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Glimpse.Core, Version=1.8.6.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
@@ -603,8 +603,6 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <None Include="Properties\PublishProfiles\Vidly-Azure-FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\Vidly-Azure-WebDeploy.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -749,10 +747,10 @@
     <Content Include="Views\Rentals\List.cshtml" />
     <Content Include="Views\Rentals\ReadOnlyList.cshtml" />
     <Content Include="Views\Rentals\MultipleForm.cshtml" />
-    <Content Include="Web.Secrets.AppSettings.config">
+    <Content Include="Web.Secrets.AppSettings.config" Condition="'$(Configuration)' == 'Debug'">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Secrets.Connections.config">
+    <Content Include="Web.Secrets.Connections.config" Condition="'$(Configuration)' == 'Debug'">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
