@@ -53,7 +53,7 @@
 
 		$(document).ready(function ()
 		{
-			var customers = new Bloodhound
+			const customers = new Bloodhound
 			({
 				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -81,7 +81,7 @@
 				$('#customer').valid();
 			});
 
-			var movies = new Bloodhound
+			const movies = new Bloodhound
 			({
 				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,

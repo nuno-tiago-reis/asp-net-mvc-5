@@ -1,6 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 using Microsoft.AspNet.Identity;
 
@@ -41,7 +41,7 @@ namespace Vidly.Identity
 
 			await Task.FromResult(0);
 
-			Debug.WriteLine(message.Body);
+			Console.WriteLine(message.Body);
 		}
 	}
 }

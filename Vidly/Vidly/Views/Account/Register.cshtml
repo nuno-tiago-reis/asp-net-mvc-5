@@ -66,7 +66,7 @@
 	<script>
 		$(document).ready(function()
 		{
-			var form = $("#register-form");
+			const form = $("#register-form");
 			var phoneNumber = $("#phone-number");
 			var hiddenPhoneNumber = $("#PhoneNumber");
 
@@ -79,7 +79,7 @@
 					{
 						jQuery.get("https://ipinfo.io", function() {}, "jsonp").always(function(response)
 						{
-							var countryCode = (response && response.country) ? response.country : "pt";
+							const countryCode = (response && response.country) ? response.country : "pt";
 							callback(countryCode);
 						});
 					}

@@ -39,7 +39,7 @@
 				[
 					{
 						render: function (data, type, user) {
-							return "<a href='/users/edit/" + user.id + "'>" + user.userName + "</a>";
+							return `<a href='/users/edit/${user.id}'>${user.userName}</a>`;
 						}
 					},
 					{
@@ -62,7 +62,7 @@
 							else
 								span += "unconfirmed";
 
-							span += ("'>" + user.email + "</span>");
+							span += (`'>${user.email}</span>`);
 
 							return span;
 						}
@@ -84,7 +84,7 @@
 							else
 								span += "unconfirmed";
 
-							span += ("'>" + user.phoneNumber + "</span>");
+							span += (`'>${user.phoneNumber}</span>`);
 
 							return span;
 						}
@@ -108,7 +108,7 @@
 					{
 						render: function (data, type, user)
 						{
-							return "<button class='btn btn-danger js-delete' data-user-id='" + user.id + "'>Delete</button>";
+							return `<button class='btn btn-danger js-delete' data-user-id='${user.id}'>Delete</button>`;
 						}
 					}
 				],
@@ -128,7 +128,7 @@
 					{
 						$.ajax
 						({
-							url: "/api/users/" + button.attr("data-user-id"),
+							url: `/api/users/${button.attr("data-user-id")}`,
 							method: "DELETE",
 
 							success: function()
@@ -139,8 +139,8 @@
 
 							error: function(xhr)
 							{
-								var error = JSON.parse(xhr.responseText);
-								toastr.error("An error occurred:" + error.message);
+								const error = JSON.parse(xhr.responseText);
+								toastr.error(`An error occurred:${error.message}`);
 							}
 						});
 					}

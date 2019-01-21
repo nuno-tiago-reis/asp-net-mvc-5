@@ -1,6 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 using Microsoft.AspNet.Identity;
 
@@ -33,9 +33,9 @@ namespace Vidly.Identity
 			sendGridMessage.Subject = message.Subject;
 			sendGridMessage.HtmlContent = message.Body;
 
-			var response = await client.SendEmailAsync(sendGridMessage);
+			await client.SendEmailAsync(sendGridMessage);
 
-			Debug.WriteLine(response.Body);
+			Console.WriteLine(message.Body);
 		}
 	}
 }

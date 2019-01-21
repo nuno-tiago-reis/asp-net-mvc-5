@@ -754,9 +754,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />

@@ -62,7 +62,7 @@
 					{
 						render: function (data, type, user)
 						{
-							return "<a href='/users/details/" + user.id + "'>" + user.userName + "</a>";
+							return `<a href='/users/details/${user.id}'>${user.userName}</a>`;
 						}
 					},
 					{
@@ -78,7 +78,7 @@
 							else
 								span += "unconfirmed";
 
-							span += ("'>" + user.email + "</span>");
+							span += (`'>${user.email}</span>`);
 
 							return span;
 						}
@@ -93,7 +93,7 @@
 							else
 								span += "unconfirmed";
 
-							span += ("'>" + user.phoneNumber + "</span>");
+							span += (`'>${user.phoneNumber}</span>`);
 
 							return span;
 						}
@@ -121,7 +121,7 @@
 				},
 				"initComplete": function ()
 				{
-					var phoneNumber = $("#phone-number");
+					const phoneNumber = $("#phone-number");
 
 					phoneNumber.telephoneInput
 						({

@@ -60,7 +60,7 @@
 		{
 			var movieIDs = [];
 
-			var customers = new Bloodhound
+			const customers = new Bloodhound
 			({
 				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -88,7 +88,7 @@
 				$('#customer').valid();
 			});
 
-			var movies = new Bloodhound
+			const movies = new Bloodhound
 			({
 				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -115,22 +115,22 @@
 				{
 					movieIDs.push(movie.id);
 
-					var ul = $("#movie-list");
+					const ul = $("#movie-list");
 
 					var li = document.createElement("li");
 					li.setAttribute("class", "list-group-item");
 
-					var button = document.createElement("button");
+					const button = document.createElement("button");
 					button.setAttribute("id", "movie-list-remove");
 					button.setAttribute("type", "button");
 					button.setAttribute("class", "close");
 					button.innerHTML = "&times;";
 					button.onclick = function()
 					{
-						for (var j = 0; j < movieIDs.length; j++)
+						for (let j = 0; j < movieIDs.length; j++)
 						{
 							if (j > movieIDs.indexOf(movie.id))
-								$("#movie-id-" + j).attr("id", "movie-id-" + (j - 1));
+								$(`#movie-id-${j}`).attr("id", `movie-id-${j - 1}`);
 						}
 
 						movieIDs.splice(movieIDs.indexOf(movie.id), 1);
@@ -145,14 +145,14 @@
 					};
 
 
-					var input = $("#movie-id-x").clone();
-					input.attr("id", "movie-id-" + (movieIDs.length - 1));
+					const input = $("#movie-id-x").clone();
+					input.attr("id", `movie-id-${movieIDs.length - 1}`);
 					input.prop("disabled", false);
 					input.val(movie.id);
 
-					for (var i = 0; i < movieIDs.length; i++)
+					for (let i = 0; i < movieIDs.length; i++)
 					{
-						$("#movie-id-" + i).val(movieIDs[i]);
+						$(`#movie-id-${i}`).val(movieIDs[i]);
 					}
 
 					li.appendChild(input[0]);
