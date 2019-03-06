@@ -1,8 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>44349</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://127.0.0.1:44349</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,7 +30,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vidly</RootNamespace>
     <AssemblyName>Vidly</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -27,111 +42,143 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TypeScriptExperimentalDecorators>True</TypeScriptExperimentalDecorators>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
     <TypeScriptEmitDecoratorMetadata>True</TypeScriptEmitDecoratorMetadata>
+    <TypeScriptExperimentalDecorators>True</TypeScriptExperimentalDecorators>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TypeScriptExperimentalDecorators>True</TypeScriptExperimentalDecorators>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
     <TypeScriptEmitDecoratorMetadata>True</TypeScriptEmitDecoratorMetadata>
+    <TypeScriptExperimentalDecorators>True</TypeScriptExperimentalDecorators>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\Packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
+    <Reference Condition="'$(Configuration)' == 'Debug'" Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Ado, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
-      <HintPath>..\Packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.AspNet, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
-      <HintPath>..\Packages\Glimpse.AspNet.1.9.2\lib\net45\Glimpse.AspNet.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core, Version=1.8.6.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
-      <HintPath>..\Packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\Packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.EF6, Version=1.6.5.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
-      <HintPath>..\Packages\Glimpse.EF6.1.6.5\lib\net45\Glimpse.EF6.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL" Condition="'$(Configuration)' == 'Debug'">
-      <HintPath>..\Packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\Packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.DependencyCollector.2.8.1\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.8.1\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.8.1\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.Web.2.8.1\lib\net45\Microsoft.AI.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.WindowsServer.2.8.1\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.ApplicationInsights.2.8.1\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.TelemetryCorrelation.1.0.4\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.TelemetryCorrelation.1.0.5\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.IdentityModel.JsonWebTokens.5.3.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.IdentityModel.JsonWebTokens.5.4.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.IdentityModel.Logging.5.3.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.IdentityModel.Logging.5.4.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.IdentityModel.Tokens.5.3.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.IdentityModel.Tokens.5.4.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="SendGrid, Version=9.10.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
       <HintPath>..\Packages\Sendgrid.9.10.0\lib\net452\SendGrid.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\Packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\System.IdentityModel.Tokens.Jwt.5.3.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\System.IdentityModel.Tokens.Jwt.5.4.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\Packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -149,149 +196,84 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\Packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.Owin, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Owin.5.2.6\lib\net45\System.Web.Http.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.6\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="Twilio, Version=5.22.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Packages\Twilio.5.22.0\lib\net451\Twilio.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Twilio, Version=5.27.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Packages\Twilio.5.27.0\lib\net451\Twilio.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
-      <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
-      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Owin">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.0\lib\net451\Microsoft.Owin.Security.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.0\lib\net451\Microsoft.Owin.Security.Google.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Twitter">
-      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.0\lib\net451\Microsoft.Owin.Security.Twitter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
-      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.0\lib\net451\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.Agent.Intercept">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\Identity\EmailService.cs" />
-    <Compile Include="App_Start\Identity\SmsService.cs" />
-    <Compile Include="App_Start\Identity\ApplicationUserManager.cs" />
-    <Compile Include="App_Start\Identity\ApplicationSignInManager.cs" />
-    <Compile Include="App_Start\Mapping\MappingProfile.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Session\CookieTempDataProvider.cs" />
-    <Compile Include="App_Start\StartupConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="AppStart\BundleConfig.cs" />
+    <Compile Include="AppStart\FilterConfig.cs" />
+    <Compile Include="AppStart\Identity\ApplicationSignInManager.cs" />
+    <Compile Include="AppStart\Identity\ApplicationUserManager.cs" />
+    <Compile Include="AppStart\Identity\EmailService.cs" />
+    <Compile Include="AppStart\Identity\SmsService.cs" />
+    <Compile Include="AppStart\Mapping\MappingProfile.cs" />
+    <Compile Include="AppStart\RouteConfig.cs" />
+    <Compile Include="AppStart\Session\CookieTempDataProvider.cs" />
+    <Compile Include="AppStart\StartupConfig.cs" />
+    <Compile Include="AppStart\WebApiConfig.cs" />
+    <Compile Include="Contracts\Customers\CustomerDto.cs" />
+    <Compile Include="Contracts\Customers\MembershipTypeDTo.cs" />
+    <Compile Include="Contracts\Movies\GenreDto.cs" />
+    <Compile Include="Contracts\Movies\MovieDto.cs" />
+    <Compile Include="Contracts\Rentals\RentalDto.cs" />
+    <Compile Include="Contracts\Users\UserDto.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Api\RentalsController.cs" />
-    <Compile Include="Controllers\Api\MoviesController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
+    <Compile Include="Controllers\Api\MoviesController.cs" />
+    <Compile Include="Controllers\Api\RentalsController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\RentalsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Controllers\MoviesController.cs" />
-    <Compile Include="Dtos\Customers\CustomerDto.cs" />
-    <Compile Include="Dtos\Movies\GenreDto.cs" />
-    <Compile Include="Dtos\Customers\MembershipTypeDTo.cs" />
-    <Compile Include="Dtos\Movies\MovieDto.cs" />
-    <Compile Include="Dtos\Rentals\RentalDto.cs" />
-    <Compile Include="Dtos\Users\UserDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -378,321 +360,235 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationRoles.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Customers\AgeValidationAttribute.cs" />
+    <Compile Include="Models\Customers\Customer.cs" />
+    <Compile Include="Models\Customers\MembershipType.cs" />
+    <Compile Include="Models\Movies\Genre.cs" />
+    <Compile Include="Models\Movies\Movie.cs" />
     <Compile Include="Models\Movies\NumberRentedValidationAttribute.cs" />
     <Compile Include="Models\Movies\ReleaseDateValidationAttribute.cs" />
-    <Compile Include="Models\Rentals\ReturnedDateValidationAttribute.cs" />
     <Compile Include="Models\Rentals\Rental.cs" />
-    <Compile Include="ViewModels\Accounts\SendCodeViewModel.cs" />
-    <Compile Include="ViewModels\Accounts\VerifyCodeViewModel.cs" />
+    <Compile Include="Models\Rentals\ReturnedDateValidationAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Utility\Extensions.cs" />
     <Compile Include="ViewModels\Accounts\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\Accounts\ExternalLoginListViewModel.cs" />
     <Compile Include="ViewModels\Accounts\ForgotPasswordViewModel.cs" />
-    <Compile Include="ViewModels\Accounts\ResetPasswordViewModel.cs" />
-    <Compile Include="ViewModels\Accounts\RegisterViewModel.cs" />
     <Compile Include="ViewModels\Accounts\LoginViewModel.cs" />
-    <Compile Include="Models\Customers\AgeValidationAttribute.cs" />
-    <Compile Include="Models\Customers\Customer.cs" />
-    <Compile Include="Models\Movies\Genre.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="ViewModels\Accounts\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\SendCodeViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\VerifyCodeViewModel.cs" />
+    <Compile Include="ViewModels\Customers\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\Manage\ChangeEmailViewModel.cs" />
     <Compile Include="ViewModels\Manage\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\Manage\ChangePhoneNumberViewModel.cs" />
     <Compile Include="ViewModels\Manage\ExternalLoginsViewModel.cs" />
     <Compile Include="ViewModels\Manage\IndexViewModel.cs" />
-    <Compile Include="Models\Customers\MembershipType.cs" />
-    <Compile Include="Models\Movies\Movie.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Movies\MovieFormViewModel.cs" />
-    <Compile Include="ViewModels\Customers\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\Rentals\MultipleRentalFormViewModel.cs" />
     <Compile Include="ViewModels\Rentals\RentalFormViewModel.cs" />
-    <Compile Include="ViewModels\Users\UserViewModel.cs" />
     <Compile Include="ViewModels\Users\UserFormViewModel.cs" />
+    <Compile Include="ViewModels\Users\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
-    <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\autoFill.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\autoFill.dataTables.css" />
-    <Content Include="Content\DataTables\css\autoFill.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\autoFill.foundation.css" />
-    <Content Include="Content\DataTables\css\autoFill.foundation.min.css" />
-    <Content Include="Content\DataTables\css\autoFill.jqueryui.css" />
-    <Content Include="Content\DataTables\css\autoFill.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\autoFill.semanticui.css" />
-    <Content Include="Content\DataTables\css\autoFill.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\buttons.bootstrap.css" />
-    <Content Include="Content\DataTables\css\buttons.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\buttons.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\buttons.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\buttons.dataTables.css" />
-    <Content Include="Content\DataTables\css\buttons.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\buttons.foundation.css" />
-    <Content Include="Content\DataTables\css\buttons.foundation.min.css" />
-    <Content Include="Content\DataTables\css\buttons.jqueryui.css" />
-    <Content Include="Content\DataTables\css\buttons.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\buttons.semanticui.css" />
-    <Content Include="Content\DataTables\css\buttons.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.bootstrap.css" />
-    <Content Include="Content\DataTables\css\colReorder.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\colReorder.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.dataTables.css" />
-    <Content Include="Content\DataTables\css\colReorder.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.foundation.css" />
-    <Content Include="Content\DataTables\css\colReorder.foundation.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.jqueryui.css" />
-    <Content Include="Content\DataTables\css\colReorder.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\colReorder.semanticui.css" />
-    <Content Include="Content\DataTables\css\colReorder.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.bootstrap.css" />
-    <Content Include="Content\DataTables\css\dataTables.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.foundation.css" />
-    <Content Include="Content\DataTables\css\dataTables.foundation.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.jqueryui.css" />
-    <Content Include="Content\DataTables\css\dataTables.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.material.css" />
-    <Content Include="Content\DataTables\css\dataTables.material.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.semanticui.css" />
-    <Content Include="Content\DataTables\css\dataTables.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\dataTables.uikit.css" />
-    <Content Include="Content\DataTables\css\dataTables.uikit.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.dataTables.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.foundation.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.foundation.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.semanticui.css" />
-    <Content Include="Content\DataTables\css\fixedColumns.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.dataTables.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.foundation.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.foundation.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.semanticui.css" />
-    <Content Include="Content\DataTables\css\fixedHeader.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\jquery.dataTables.css" />
-    <Content Include="Content\DataTables\css\jquery.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\jquery.dataTables_themeroller.css" />
-    <Content Include="Content\DataTables\css\keyTable.bootstrap.css" />
-    <Content Include="Content\DataTables\css\keyTable.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\keyTable.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\keyTable.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\keyTable.dataTables.css" />
-    <Content Include="Content\DataTables\css\keyTable.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\keyTable.foundation.css" />
-    <Content Include="Content\DataTables\css\keyTable.foundation.min.css" />
-    <Content Include="Content\DataTables\css\keyTable.jqueryui.css" />
-    <Content Include="Content\DataTables\css\keyTable.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\keyTable.semanticui.css" />
-    <Content Include="Content\DataTables\css\keyTable.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\responsive.bootstrap.css" />
-    <Content Include="Content\DataTables\css\responsive.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\responsive.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\responsive.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\responsive.dataTables.css" />
-    <Content Include="Content\DataTables\css\responsive.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\responsive.foundation.css" />
-    <Content Include="Content\DataTables\css\responsive.foundation.min.css" />
-    <Content Include="Content\DataTables\css\responsive.jqueryui.css" />
-    <Content Include="Content\DataTables\css\responsive.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\responsive.semanticui.css" />
-    <Content Include="Content\DataTables\css\responsive.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.bootstrap.css" />
-    <Content Include="Content\DataTables\css\rowGroup.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\rowGroup.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.dataTables.css" />
-    <Content Include="Content\DataTables\css\rowGroup.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.foundation.css" />
-    <Content Include="Content\DataTables\css\rowGroup.foundation.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.jqueryui.css" />
-    <Content Include="Content\DataTables\css\rowGroup.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\rowGroup.semanticui.css" />
-    <Content Include="Content\DataTables\css\rowGroup.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.bootstrap.css" />
-    <Content Include="Content\DataTables\css\rowReorder.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.dataTables.css" />
-    <Content Include="Content\DataTables\css\rowReorder.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.foundation.css" />
-    <Content Include="Content\DataTables\css\rowReorder.foundation.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.jqueryui.css" />
-    <Content Include="Content\DataTables\css\rowReorder.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\rowReorder.semanticui.css" />
-    <Content Include="Content\DataTables\css\rowReorder.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\scroller.bootstrap.css" />
-    <Content Include="Content\DataTables\css\scroller.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\scroller.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\scroller.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\scroller.dataTables.css" />
-    <Content Include="Content\DataTables\css\scroller.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\scroller.foundation.css" />
-    <Content Include="Content\DataTables\css\scroller.foundation.min.css" />
-    <Content Include="Content\DataTables\css\scroller.jqueryui.css" />
-    <Content Include="Content\DataTables\css\scroller.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\scroller.semanticui.css" />
-    <Content Include="Content\DataTables\css\scroller.semanticui.min.css" />
-    <Content Include="Content\DataTables\css\select.bootstrap.css" />
-    <Content Include="Content\DataTables\css\select.bootstrap.min.css" />
-    <Content Include="Content\DataTables\css\select.bootstrap4.css" />
-    <Content Include="Content\DataTables\css\select.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\css\select.dataTables.css" />
-    <Content Include="Content\DataTables\css\select.dataTables.min.css" />
-    <Content Include="Content\DataTables\css\select.foundation.css" />
-    <Content Include="Content\DataTables\css\select.foundation.min.css" />
-    <Content Include="Content\DataTables\css\select.jqueryui.css" />
-    <Content Include="Content\DataTables\css\select.jqueryui.min.css" />
-    <Content Include="Content\DataTables\css\select.semanticui.css" />
-    <Content Include="Content\DataTables\css\select.semanticui.min.css" />
-    <Content Include="Content\DataTables\images\details_close.png" />
-    <Content Include="Content\DataTables\images\details_open.png" />
-    <Content Include="Content\DataTables\images\sort_asc.png" />
-    <Content Include="Content\DataTables\images\sort_asc_disabled.png" />
-    <Content Include="Content\DataTables\images\sort_both.png" />
-    <Content Include="Content\DataTables\images\sort_desc.png" />
-    <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
-    <Content Include="Content\DataTables\swf\flashExport.swf" />
-    <Content Include="Content\TelephoneInput\images\flags%402x.png" />
-    <Content Include="Content\TelephoneInput\images\flags.png" />
-    <Content Include="Content\Styles\bootstrap-grid.css" />
-    <Content Include="Content\Styles\bootstrap-grid.min.css" />
-    <Content Include="Content\Styles\bootstrap-lumen.css" />
-    <Content Include="Content\Styles\bootstrap-lumen.min.css" />
-    <Content Include="Content\Styles\bootstrap-reboot.css" />
-    <Content Include="Content\Styles\bootstrap-reboot.min.css" />
-    <Content Include="Content\Styles\bootstrap-theme.css" />
-    <Content Include="Content\Styles\bootstrap-theme.min.css" />
-    <Content Include="Content\Styles\bootstrap.css" />
-    <Content Include="Content\Styles\bootstrap.min.css" />
-    <Content Include="Content\TelephoneInput\css\telephone-input.css" />
-    <Content Include="Content\TelephoneInput\css\telephone-input.min.css" />
-    <Content Include="Content\Styles\typeahead.css" />
-    <Content Include="Content\Styles\toastr.css" />
-    <Content Include="Content\Styles\toastr.min.css" />
-    <Content Include="favicon.ico" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="Content\Styles\Site.css" />
-    <Content Include="Scripts\bloodhound.js" />
-    <Content Include="Scripts\bloodhound.min.js" />
-    <Content Include="Scripts\bootbox.js" />
-    <Content Include="Scripts\bootbox.min.js" />
-    <Content Include="Content\Styles\bootstrap-grid.css.map" />
-    <Content Include="Content\Styles\bootstrap-grid.min.css.map" />
-    <Content Include="Content\Styles\bootstrap-reboot.css.map" />
-    <Content Include="Content\Styles\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\Styles\toastr.scss" />
-    <Content Include="Content\Styles\toastr.less" />
     <Content Include="404.html" />
-    <Content Include="Content\DataTables\css\semanticui.scss" />
-    <Content Include="Content\DataTables\css\mixins.scss" />
-    <Content Include="Content\DataTables\css\common.scss" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
-    <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
-    <Content Include="Scripts\DataTables\autoFill.foundation.js" />
-    <Content Include="Scripts\DataTables\autoFill.foundation.min.js" />
-    <Content Include="Scripts\DataTables\autoFill.jqueryui.js" />
-    <Content Include="Scripts\DataTables\autoFill.jqueryui.min.js" />
-    <Content Include="Scripts\DataTables\buttons.bootstrap.js" />
-    <Content Include="Scripts\DataTables\buttons.bootstrap.min.js" />
-    <Content Include="Scripts\DataTables\buttons.bootstrap4.js" />
-    <Content Include="Scripts\DataTables\buttons.bootstrap4.min.js" />
-    <Content Include="Scripts\DataTables\buttons.colVis.js" />
-    <Content Include="Scripts\DataTables\buttons.colVis.min.js" />
-    <Content Include="Scripts\DataTables\buttons.flash.js" />
-    <Content Include="Scripts\DataTables\buttons.flash.min.js" />
-    <Content Include="Scripts\DataTables\buttons.foundation.js" />
-    <Content Include="Scripts\DataTables\buttons.foundation.min.js" />
-    <Content Include="Scripts\DataTables\buttons.html5.js" />
-    <Content Include="Scripts\DataTables\buttons.html5.min.js" />
-    <Content Include="Scripts\DataTables\buttons.jqueryui.js" />
-    <Content Include="Scripts\DataTables\buttons.jqueryui.min.js" />
-    <Content Include="Scripts\DataTables\buttons.print.js" />
-    <Content Include="Scripts\DataTables\buttons.print.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
-    <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
-    <Content Include="Scripts\DataTables\dataTables.bootstrap.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.bootstrap4.js" />
-    <Content Include="Scripts\DataTables\dataTables.bootstrap4.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.buttons.js" />
-    <Content Include="Scripts\DataTables\dataTables.buttons.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.colReorder.js" />
-    <Content Include="Scripts\DataTables\dataTables.colReorder.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.fixedColumns.js" />
-    <Content Include="Scripts\DataTables\dataTables.fixedColumns.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.fixedHeader.js" />
-    <Content Include="Scripts\DataTables\dataTables.fixedHeader.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.foundation.js" />
-    <Content Include="Scripts\DataTables\dataTables.foundation.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.jqueryui.js" />
-    <Content Include="Scripts\DataTables\dataTables.jqueryui.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.keyTable.js" />
-    <Content Include="Scripts\DataTables\dataTables.keyTable.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.material.js" />
-    <Content Include="Scripts\DataTables\dataTables.material.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.responsive.js" />
-    <Content Include="Scripts\DataTables\dataTables.responsive.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.rowReorder.js" />
-    <Content Include="Scripts\DataTables\dataTables.rowReorder.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.scroller.js" />
-    <Content Include="Scripts\DataTables\dataTables.scroller.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.select.js" />
-    <Content Include="Scripts\DataTables\dataTables.select.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.semanticui.js" />
-    <Content Include="Scripts\DataTables\dataTables.semanticui.min.js" />
-    <Content Include="Scripts\DataTables\dataTables.uikit.js" />
-    <Content Include="Scripts\DataTables\dataTables.uikit.min.js" />
-    <Content Include="Scripts\DataTables\jquery.dataTables.js" />
-    <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
-    <Content Include="Scripts\DataTables\responsive.bootstrap.js" />
-    <Content Include="Scripts\DataTables\responsive.bootstrap.min.js" />
-    <Content Include="Scripts\DataTables\responsive.foundation.js" />
-    <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
-    <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
-    <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
-    <Content Include="Scripts\telephone-input-utils.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\telephone-input.js" />
-    <Content Include="Scripts\telephone-input.min.js" />
-    <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
-    <Content Include="Scripts\typeahead.bundle.js" />
-    <Content Include="Scripts\typeahead.bundle.min.js" />
-    <Content Include="Scripts\typeahead.jquery.js" />
-    <Content Include="Scripts\typeahead.jquery.min.js" />
+    <Content Include="BundleConfig.json" />
+    <Content Include="Content\Libraries\alertify\build\alertify.js" />
+    <Content Include="Content\Libraries\alertify\build\alertify.min.js" />
+    <Content Include="Content\Libraries\alertify\build\css\alertify.css" />
+    <Content Include="Content\Libraries\alertify\build\css\alertify.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\bootstrap.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\bootstrap.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\bootstrap.rtl.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\bootstrap.rtl.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\default.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\default.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\default.rtl.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\default.rtl.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\semantic.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\semantic.min.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\semantic.rtl.css" />
+    <Content Include="Content\Libraries\alertify\build\css\themes\semantic.rtl.min.css" />
+    <Content Include="Content\Libraries\bootbox\js\bootbox.js" />
+    <Content Include="Content\Libraries\bootbox\js\bootbox.min.js" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.js.map" />
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap4.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.foundation.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.foundation.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.jqueryui.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.jqueryui.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.material.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.material.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.semanticui.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.semanticui.min.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.uikit.css" />
+    <Content Include="Content\Libraries\datatables\css\dataTables.uikit.min.css" />
+    <Content Include="Content\Libraries\datatables\css\jquery.dataTables.css" />
+    <Content Include="Content\Libraries\datatables\css\jquery.dataTables.min.css" />
+    <Content Include="Content\Libraries\datatables\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\Libraries\datatables\images\sort_asc.png" />
+    <Content Include="Content\Libraries\datatables\images\sort_asc_disabled.png" />
+    <Content Include="Content\Libraries\datatables\images\sort_both.png" />
+    <Content Include="Content\Libraries\datatables\images\sort_desc.png" />
+    <Content Include="Content\Libraries\datatables\images\sort_desc_disabled.png" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.bootstrap.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.bootstrap.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.bootstrap4.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.dataTables.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.dataTables.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.foundation.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.foundation.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.jqueryui.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.jqueryui.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.material.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.material.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.semanticui.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.semanticui.min.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.uikit.js" />
+    <Content Include="Content\Libraries\datatables\js\dataTables.uikit.min.js" />
+    <Content Include="Content\Libraries\datatables\js\jquery.dataTables.js" />
+    <Content Include="Content\Libraries\datatables\js\jquery.dataTables.min.js" />
+    <Content Include="Content\Libraries\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\Libraries\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Content\Libraries\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\Libraries\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\Libraries\intl-tel-input\css\intlTelInput.css" />
+    <Content Include="Content\Libraries\intl-tel-input\css\intlTelInput.min.css">
+      <DependentUpon>intlTelInput.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Libraries\intl-tel-input\img\flags%402x.png" />
+    <Content Include="Content\Libraries\intl-tel-input\img\flags.png" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.min.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput-jquery.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput-jquery.min.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\utils.js" />
+    <Content Include="Content\Libraries\jquery\js\jquery.js" />
+    <Content Include="Content\Libraries\jquery\js\jquery.min.js" />
+    <Content Include="Content\Libraries\jquery\js\jquery.min.map" />
+    <Content Include="Content\Libraries\jquery-validate\js\jquery.validate.js" />
+    <Content Include="Content\Libraries\jquery-validate\js\jquery.validate.min.js" />
+    <Content Include="Content\Libraries\jquery-validation-unobtrusive\js\jquery.validate.unobtrusive.js" />
+    <Content Include="Content\Libraries\jquery-validation-unobtrusive\js\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\Libraries\modernizr\js\modernizr.js" />
+    <Content Include="Content\Libraries\modernizr\js\modernizr.min.js" />
+    <Content Include="Content\Libraries\moment\js\moment.js" />
+    <Content Include="Content\Libraries\moment\js\moment.min.js" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.js" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.js.map" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.min.js" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.min.js.map" />
+    <Content Include="Content\Libraries\tempus-dominus\css\tempusdominus-bootstrap-4.css" />
+    <Content Include="Content\Libraries\tempus-dominus\css\tempusdominus-bootstrap-4.min.css" />
+    <Content Include="Content\Libraries\tempus-dominus\js\tempusdominus-bootstrap-4.js" />
+    <Content Include="Content\Libraries\tempus-dominus\js\tempusdominus-bootstrap-4.min.js" />
+    <Content Include="Content\Libraries\typeahead\js\bloodhound.js" />
+    <Content Include="Content\Libraries\typeahead\js\bloodhound.min.js" />
+    <Content Include="Content\Libraries\typeahead\js\typeahead.jquery.js" />
+    <Content Include="Content\Libraries\typeahead\js\typeahead.jquery.min.js" />
+    <Content Include="Content\Static\css\bootstrap-lumen.css" />
+    <Content Include="Content\Static\css\bootstrap-lumen.min.css">
+      <DependentUpon>bootstrap-lumen.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\css\bootstrap-theme.css" />
+    <Content Include="Content\Static\css\bootstrap-theme.min.css">
+      <DependentUpon>bootstrap-theme.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\css\site.css" />
+    <Content Include="Content\Static\css\site.min.css">
+      <DependentUpon>site.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\css\typeahead.css" />
+    <Content Include="Content\Static\css\typeahead.min.css">
+      <DependentUpon>typeahead.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\Static\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\Static\js\alerts.js" />
+    <Content Include="Content\Static\js\alerts.min.js">
+      <DependentUpon>alerts.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\index.js" />
+    <Content Include="Content\Static\js\index.min.js">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\phonenumber.js" />
+    <Content Include="Content\Static\js\phonenumber.min.js">
+      <DependentUpon>phonenumber.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\typeahead.js" />
+    <Content Include="Content\Static\js\typeahead.min.js">
+      <DependentUpon>typeahead.js</DependentUpon>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="LibMan.json" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ConfirmPhoneNumber.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterConfirmation.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Form.cshtml" />
+    <Content Include="Views\Customers\List.cshtml" />
+    <Content Include="Views\Customers\ReadOnlyList.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Manage\ChangeEmail.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\ChangePhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ExternalLogins.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Movies\Details.cshtml" />
+    <Content Include="Views\Movies\Form.cshtml" />
+    <Content Include="Views\Movies\List.cshtml" />
+    <Content Include="Views\Movies\ReadOnlyList.cshtml" />
+    <Content Include="Views\Rentals\Details.cshtml" />
+    <Content Include="Views\Rentals\Form.cshtml" />
+    <Content Include="Views\Rentals\List.cshtml" />
+    <Content Include="Views\Rentals\MultipleForm.cshtml" />
+    <Content Include="Views\Rentals\ReadOnlyList.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Form.cshtml" />
+    <Content Include="Views\Users\List.cshtml" />
+    <Content Include="Views\Users\ReadOnlyList.cshtml" />
+    <Content Include="Views\Web.config" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -703,72 +599,12 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ExternalLogins.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Customers\List.cshtml" />
-    <Content Include="Views\Movies\List.cshtml" />
-    <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\Customers\Form.cshtml" />
-    <Content Include="Views\Movies\Form.cshtml" />
-    <Content Include="Views\Account\RegisterConfirmation.cshtml" />
-    <Content Include="Views\Users\Form.cshtml" />
-    <Content Include="Views\Users\List.cshtml" />
-    <Content Include="Views\Customers\ReadOnlyList.cshtml" />
-    <Content Include="Views\Movies\ReadOnlyList.cshtml" />
-    <Content Include="Views\Users\ReadOnlyList.cshtml" />
-    <Content Include="Views\Movies\Details.cshtml" />
-    <Content Include="Views\Customers\Details.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Manage\ChangePhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangeEmail.cshtml" />
-    <Content Include="Views\Account\ConfirmPhoneNumber.cshtml" />
-    <Content Include="Views\Rentals\Details.cshtml" />
-    <Content Include="Views\Rentals\Form.cshtml" />
-    <Content Include="Views\Rentals\List.cshtml" />
-    <Content Include="Views\Rentals\ReadOnlyList.cshtml" />
-    <Content Include="Views\Rentals\MultipleForm.cshtml" />
-    <Content Include="Web.Secrets.AppSettings.config" Condition="'$(Configuration)' == 'Debug'">
+    <Content Condition="'$(Configuration)' == 'Debug'" Include="Web.Secrets.AppSettings.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Secrets.Connections.config" Condition="'$(Configuration)' == 'Debug'">
+    <Content Condition="'$(Configuration)' == 'Debug'" Include="Web.Secrets.Connections.config">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\Styles\bootstrap.min.css.map" />
-    <Content Include="Content\Styles\bootstrap.css.map" />
-    <Content Include="Content\Styles\bootstrap-theme.min.css.map" />
-    <Content Include="Content\Styles\bootstrap-theme.css.map" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811051748515_Version-1.0.0.resx">
@@ -833,57 +669,27 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <None Include="Packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Testing|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56136</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://127.0.0.1:44391</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+  <Import Project="..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\Packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets" Condition="Exists('..\Packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" />
+  <Target BeforeTargets="PrepareForBuild" Name="EnsureNuGetPackageBuildImports">
+    <Error Condition="!Exists('..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\Packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\Packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets'))" />
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\Packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-	   Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'" Name="MvcBuildViews">
+    <AspNetCompiler PhysicalPath="$(WebProjectOutputDir)" VirtualPath="temp" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>

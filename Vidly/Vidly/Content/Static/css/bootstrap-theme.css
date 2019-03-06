@@ -1,0 +1,194 @@
+﻿body
+{
+	color: #52656B;
+}
+
+h1, .h1, h2, .h2, h3, .h3
+{
+	margin-bottom: 30px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+{
+	color: #3B4B50;
+}
+
+h2, .h2
+{
+	font-size: 25px;
+}
+
+.body-content
+{
+	padding-top: 20px;
+}
+
+.navbar-dark
+{
+	background-color: #3CC47C;
+	border-color: #1E392A;
+	color: #fff;
+}
+
+	.navbar-dark .navbar-nav > li > a
+	{
+		color: #fff;
+		border-bottom: 3px solid transparent;
+		transition: border-bottom ease-in-out .15s;
+	}
+
+		.navbar-dark .navbar-nav > li > a:hover, .navbar-dark .navbar-nav > li > a:focus
+		{
+			font-weight: bolder;
+			border-bottom: 3px solid #fff;
+			color: #fff;
+		}
+
+	.navbar-dark .navbar-brand
+	{
+		color: white;
+		background-color: transparent;
+		border-bottom: 3px solid transparent;
+		transition: border-bottom ease-in-out .15s;
+	}
+
+		.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus
+		{
+			font-weight: bolder;
+			border-bottom: 3px solid #fff;
+			color: #fff;
+		}
+
+a, .btn-link
+{
+	color: #09A7E4;
+}
+
+.btn
+{
+	border: 0;
+	padding: 10px 25px;
+	min-width: 125px;
+	border-radius: 10px;
+	text-transform: none;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.btn-primary
+{
+	color: #ffffff;
+	background-color: #3CC47C;
+}
+
+	.btn-primary:hover:enabled, .btn-primary:focus:enabled, .btn-primary:active:enabled, .btn-primary.active:enabled, .open > .dropdown-toggle.btn-primary
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: #24754A;
+	}
+
+	.btn-primary:disabled, .btn-primary:hover:disabled, .btn-primary:focus:disabled, .btn-primary:active:disabled, .btn-primary.active:disabled, .open > .dropdown-toggle.btn-primary
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: darkgray;
+	}
+
+.btn-default
+{
+	color: #ffffff;
+	background-color: lightgray;
+}
+
+	.btn-default:hover:enabled, .btn-default:focus:enabled, .btn-default:active:enabled, .btn-default.active:enabled, .open > .dropdown-toggle.btn-default
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: darkgrey;
+	}
+
+	.btn-default:disabled, .btn-default:hover:disabled, .btn-default:focus:disabled, .btn-default:active:disabled, .btn-default.active:disabled, .open > .dropdown-toggle.btn-default
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: black;
+	}
+
+.btn-success
+{
+	color: #ffffff;
+	background-color: #3CC47C;
+}
+
+	.btn-success:hover:enabled, .btn-success:focus:enabled, .btn-success:active:enabled, .btn-success.active:enabled, .open > .dropdown-toggle.btn-success
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: #24754A;
+	}
+
+	.btn-success:disabled, .btn-success:hover:disabled, .btn-success:focus:disabled, .btn-success:active:disabled, .btn-success.active:disabled, .open > .dropdown-toggle.btn-success
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: darkgray;
+	}
+
+.btn-danger
+{
+	color: #ffffff;
+	background-color: red;
+}
+
+	.btn-danger:hover:enabled, .btn-danger:focus:enabled, .btn-danger:active:enabled, .btn-danger.active:enabled, .open > .dropdown-toggle.btn-danger
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: darkred;
+	}
+
+	.btn-danger:disabled, .btn-danger:hover:disabled, .btn-danger:focus:disabled, .btn-danger:active:disabled, .btn-danger.active:disabled, .open > .dropdown-toggle.btn-danger
+	{
+		margin-top: 0;
+		color: whitesmoke;
+		background-color: darkgray;
+	}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus
+{
+	color: #ffffff;
+	background-color: #52656B;
+	border-color: #52656B;
+}
+
+.pagination > li > a, .pager > li > a, .pagination > li > span, .pager > li > span
+{
+	text-transform: none;
+}
+
+table a:not(.btn), .table a:not(.btn)
+{
+	text-decoration: none;
+}
+
+.form-control
+{
+	height: 41px;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+	-moz-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+	border-radius: 10px;
+}
+
+	.form-control:focus
+	{
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+		border: 2px solid #3CC47C;
+	}

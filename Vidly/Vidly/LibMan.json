@@ -1,0 +1,209 @@
+{
+	"version": "1.0",
+	"defaultProvider": "cdnjs",
+	"libraries":
+	[
+		{
+			"provider": "unpkg",
+			"library": "alertifyjs@1.11.2",
+			"destination": "Content/Libraries/alertify/",
+			"files":
+			[
+				"build/alertify.min.js",
+				"build/alertify.js",
+				"build/css/alertify.min.css",
+				"build/css/alertify.css",
+				"build/css/themes/bootstrap.css",
+				"build/css/themes/bootstrap.min.css",
+				"build/css/themes/bootstrap.rtl.css",
+				"build/css/themes/bootstrap.rtl.min.css",
+				"build/css/themes/default.css",
+				"build/css/themes/default.min.css",
+				"build/css/themes/default.rtl.css",
+				"build/css/themes/default.rtl.min.css",
+				"build/css/themes/semantic.css",
+				"build/css/themes/semantic.min.css",
+				"build/css/themes/semantic.rtl.css",
+				"build/css/themes/semantic.rtl.min.css"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "bootbox.js@4.4.0",
+			"destination": "Content/Libraries/bootbox/js",
+			"files":
+			[
+				"bootbox.min.js",
+				"bootbox.js"
+			]
+		},
+		{
+			"library": "twitter-bootstrap@4.3.1",
+			"destination": "Content/Libraries/bootstrap/",
+			"files":
+			[
+				"js/bootstrap.min.js",
+				"js/bootstrap.min.js.map",
+				"js/bootstrap.js",
+				"js/bootstrap.js.map",
+				"css/bootstrap.min.css.map",
+				"css/bootstrap.min.css",
+				"css/bootstrap.css.map",
+				"css/bootstrap.css"
+			]
+		},
+		{
+			"library": "datatables@1.10.19",
+			"destination": "Content/Libraries/datatables/",
+			"files":
+			[
+				"js/jquery.dataTables.min.js",
+				"css/dataTables.bootstrap.css",
+				"css/dataTables.bootstrap.min.css",
+				"css/dataTables.bootstrap4.css",
+				"css/dataTables.bootstrap4.min.css",
+				"css/dataTables.foundation.css",
+				"css/dataTables.foundation.min.css",
+				"css/dataTables.jqueryui.css",
+				"css/dataTables.jqueryui.min.css",
+				"css/dataTables.material.css",
+				"css/dataTables.material.min.css",
+				"css/dataTables.semanticui.css",
+				"css/dataTables.semanticui.min.css",
+				"css/dataTables.uikit.css",
+				"css/dataTables.uikit.min.css",
+				"css/jquery.dataTables.css",
+				"css/jquery.dataTables.min.css",
+				"css/jquery.dataTables_themeroller.css",
+				"images/sort_asc.png",
+				"images/sort_asc_disabled.png",
+				"images/sort_both.png",
+				"images/sort_desc.png",
+				"images/sort_desc_disabled.png",
+				"js/dataTables.bootstrap.js",
+				"js/dataTables.bootstrap.min.js",
+				"js/dataTables.bootstrap4.js",
+				"js/dataTables.bootstrap4.min.js",
+				"js/dataTables.dataTables.js",
+				"js/dataTables.dataTables.min.js",
+				"js/dataTables.foundation.js",
+				"js/dataTables.foundation.min.js",
+				"js/dataTables.jqueryui.js",
+				"js/dataTables.jqueryui.min.js",
+				"js/dataTables.material.js",
+				"js/dataTables.material.min.js",
+				"js/dataTables.semanticui.js",
+				"js/dataTables.semanticui.min.js",
+				"js/dataTables.uikit.js",
+				"js/dataTables.uikit.min.js",
+				"js/jquery.dataTables.js"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "font-awesome@4.7.0",
+			"destination": "Content/Libraries/font-awesome/",
+			"files":
+			[
+				"css/font-awesome.css",
+				"css/font-awesome.css.map",
+				"css/font-awesome.min.css",
+				"fonts/fontawesome-webfont.eot",
+				"fonts/fontawesome-webfont.svg",
+				"fonts/fontawesome-webfont.ttf",
+				"fonts/fontawesome-webfont.woff",
+				"fonts/fontawesome-webfont.woff2",
+				"fonts/FontAwesome.otf"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery@3.3.1",
+			"destination": "Content/Libraries/jquery/js/",
+			"files":
+			[
+				"jquery.js",
+				"jquery.min.js",
+				"jquery.min.map"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery-validate@1.19.0",
+			"destination": "Content/Libraries/jquery-validate/js/",
+			"files":
+			[
+				"jquery.validate.js",
+				"jquery.validate.min.js"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery-validation-unobtrusive@3.2.11",
+			"destination": "Content/Libraries/jquery-validation-unobtrusive/js/",
+			"files":
+			[
+				"jquery.validate.unobtrusive.js",
+				"jquery.validate.unobtrusive.min.js"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "modernizr@2.8.3",
+			"destination": "Content/Libraries/modernizr/js/",
+			"files":
+			[
+				"modernizr.min.js",
+				"modernizr.js"
+			]
+		},
+		{
+			"library": "moment.js@2.24.0",
+			"destination": "Content/Libraries/moment/js/",
+			"files":
+			[
+				"moment.min.js",
+				"moment.js"
+			]
+		},
+		{
+			"library": "tempusdominus-bootstrap-4@5.1.2",
+			"destination": "Content/Libraries/tempus-dominus/",
+			"files":
+			[
+				"js/tempusdominus-bootstrap-4.js",
+				"js/tempusdominus-bootstrap-4.min.js",
+				"css/tempusdominus-bootstrap-4.css",
+				"css/tempusdominus-bootstrap-4.min.css"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "intl-tel-input@15.0.1",
+			"destination": "Content/Libraries/intl-tel-input/"
+		},
+		{
+			"provider": "cdnjs",
+			"library": "corejs-typeahead@1.2.1",
+			"destination": "Content/Libraries/typeahead/js/",
+			"files":
+			[
+				"bloodhound.min.js",
+				"bloodhound.js",
+				"typeahead.jquery.js",
+				"typeahead.jquery.min.js"
+			]
+		},
+		{
+			"library": "popper.js@1.14.7",
+			"destination": "Content/Libraries/popper/js/",
+			"files":
+			[
+				"umd/popper.js",
+				"umd/popper.js.map",
+				"umd/popper.min.js",
+				"umd/popper.min.js.map"
+			]
+		}
+	]
+}

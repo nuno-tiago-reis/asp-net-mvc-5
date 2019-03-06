@@ -10,10 +10,14 @@
 	@Html.AntiForgeryToken()
 
 	<div class="form-group">
-		@Html.LabelFor(model => model.PhoneNumber)
-		@Html.TextBox("phone-number", string.Empty, new { @class = "form-control" })
-		@Html.HiddenFor(m => m.PhoneNumber)
-		@Html.ValidationMessageFor(m => m.PhoneNumber)
+		@Html.LabelFor(m => m.PhoneNumber)
+		<div class="col-md-12 p-0">
+			@Html.TextBox("phone-number", this.Model?.PhoneNumber ?? string.Empty, new { @class = "form-control", data_val_required = "The Phone Number field is required." })
+			@Html.HiddenFor(m => m.PhoneNumber)
+		</div>
+		<div class="col-md-12 p-0">
+			@Html.ValidationMessageFor(m => m.PhoneNumber)
+		</div>
 	</div>
 
 	<button type="submit" class="btn btn-primary">Save</button>
@@ -21,28 +25,12 @@
 
 @section scripts
 {
-	@Scripts.Render("~/bundles/jqueryval")
-	
+	<script src="/Content/Static/js/phonenumber.min.js"></script>
 	<script>
-		$(document).ready(function()
+		$(document).ready(function ()
 		{
-			const form = $("#form");
-			var phoneNumber = $("#phone-number");
-			var hiddenPhoneNumber = $("#PhoneNumber");
-
-			phoneNumber.telephoneInput
-			({
-				utilsScript: "../../Scripts/telephone-input-utils.js"
-			});
-
-			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
-
-			form.submit(function()
-			{
-				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
-
-				return true;
-			});
+			// Initialize the input
+			phoneNumberModule.initializePhoneNumberInput('phone-number', 'PhoneNumber');
 		});
 	</script>
 }

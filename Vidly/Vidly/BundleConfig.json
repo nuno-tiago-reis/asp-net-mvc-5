@@ -1,0 +1,65 @@
+[
+	{
+		"outputFileName": "Content/Static/css/bootstrap-lumen.min.css",
+		"inputFiles":
+		[
+			"Content/Static/css/bootstrap-lumen.css"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/css/bootstrap-theme.min.css",
+		"inputFiles":
+		[
+			"Content/Static/css/bootstrap-theme.css"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/css/site.min.css",
+		"inputFiles":
+		[
+			"Content/Static/css/site.css"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/css/typeahead.min.css",
+		"inputFiles":
+		[
+			"Content/Static/css/typeahead.css"
+		]
+	},
+	{
+		"outputFileName": "Content/Libraries/intl-tel-input/css/intlTelInput.min.css",
+		"inputFiles":
+		[
+			"Content/Libraries/intl-tel-input/css/intlTelInput.css"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/alerts.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/alerts.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/typeahead.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/typeahead.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/index.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/index.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/phonenumber.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/phonenumber.js"
+		]
+	}
+]

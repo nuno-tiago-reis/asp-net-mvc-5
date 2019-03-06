@@ -1,26 +1,57 @@
-﻿@using Vidly.Models
+﻿@using Microsoft.AspNet.Identity
+@using Vidly.Models
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+@{
+	string controller = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="navbar navbar-dark navbar-expand-md mb-2">
 	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			@Html.ActionLink("Vidly", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li>@Html.ActionLink("Rentals", "Index", "Rentals")</li>
-				<li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-				<li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-				@if (this.User.IsInRole(ApplicationRoles.CanManageUsers))
-				{
-					<li>@Html.ActionLink("Users", "Index", "Users")</li>
-				}
+		@Html.ActionLink("Vidly", "Index", "Home", null, new { @class = $"navbar-brand {(controller == "Home" ? "nav-item-active" : "")}" })
+		<ul class="navbar-nav mr-auto">
+			<li class="@($"nav-item {(controller == "Rentals" ? "nav-item-active" : "")}")">
+				@Html.ActionLink("Rentals", "Index", "Rentals", null, new { @class="nav-link"})
+			</li>
+			<li class="@($"nav-item {(controller == "Movies" ? "nav-item-active" : "")}")">
+				@Html.ActionLink("Movies", "Index", "Movies", null, new { @class = "nav-link" })
+			</li>
+			<li class="@($"nav-item {(controller == "Customers" ? "nav-item-active" : "")}")">
+				@Html.ActionLink("Customers", "Index", "Customers", null, new { @class = "nav-link" })
+			</li>
+			@if (this.User.IsInRole(ApplicationRoles.CanManageUsers))
+			{
+				<li class="@($"nav-item {(controller == "Users" ? "nav-item-active" : "")}")">
+					@Html.ActionLink("Users", "Index", "Users", null, new { @class = "nav-link" })
+				</li>
+			}
+		</ul>
+		@if (this.Request.IsAuthenticated)
+		{
+			using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+			{
+				@Html.AntiForgeryToken()
+
+				<ul class="navbar-nav float-right">
+					<li class="nav-item w-auto">
+						@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", null, new { title = "Manage", @class = "nav-link w-auto" })
+					</li>
+					@* ReSharper disable once Html.IdNotResolved *@
+					<li class="nav-item w-auto">
+						<a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+					</li>
+				</ul>
+			}
+		}
+		else
+		{
+			<ul class="navbar-nav float-right">
+				<li class="nav-item w-auto">
+					@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link w-auto" })
+				</li>
+				<li class="nav-item w-auto">
+					@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link w-auto" })
+				</li>
 			</ul>
-			@Html.Partial("_LoginPartial")
-		</div>
+		}
 	</div>
 </div>

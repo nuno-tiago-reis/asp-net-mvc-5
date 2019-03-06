@@ -5,9 +5,6 @@
 *.userosscache
 *.sln.docstates
 
-# User-specific Files (MonoDevelop/Xamarin Studio)
-*.userprefs
-
 # Build Results
 
 [Dd]ebug/
@@ -35,52 +32,6 @@ bld/
 *.VisualState.xml
 TestResult.xml
 
-# Build Results of an ATL Project
-
-[Dd]ebugPS/
-[Rr]eleasePS/
-dlldata.c
-
-# DNX
-
-project.lock.json
-artifacts/
-
-*_i.c
-*_p.c
-*_i.h
-*.ilk
-*.meta
-*.obj
-*.pch
-*.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*.log
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.svclog
-*.scc
-
-# Visual C++ Cache Files
-
-ipch/
-*.aps
-*.ncb
-*.opendb
-*.opensdf
-*.sdf
-*.cachefile
-
 # Visual Studio Profiler
 
 *.psess
@@ -88,53 +39,15 @@ ipch/
 *.vspx
 *.sap
 
-# Guidance Automation Toolkit
-
-*.gpState
-
 # ReSharper is a Coding Add-in
 
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# JustCode is a Coding Add-in
-
-.JustCode
-
-# TeamCity is a Build Add-in
-
-_TeamCity*
-
-# DotCover is a Code Coverage Tool
-
-*.dotCover
-
-# NCrunch
-
-_NCrunch_*
-.*crunch*.local.xml
-nCrunchTemp_*
-
-# MightyMoose
-
-*.mm.*
-AutoTest.Net/
-
 # Installshield Output Folder
 
 [Ee]xpress/
-
-# DocProject is a Documentation Generator Add-in
-
-DocProject/buildhelp/
-DocProject/Help/*.HxT
-DocProject/Help/*.HxC
-DocProject/Help/*.hhc
-DocProject/Help/*.hhk
-DocProject/Help/*.hhp
-DocProject/Help/Html2
-DocProject/Help/html
 
 # Click-Once Directory
 
@@ -155,6 +68,8 @@ publish/
 
 **/packages/*
 !**/packages/build/
+**/Packages/*
+!**/Packages/build/
 
 # NuGet v3's project.json files produces more ignoreable files
 
@@ -213,21 +128,11 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
-# Business Intelligence Projects
-
-*.rdl.data
-*.bim.layout
-*.bim_*.settings
-
-# Microsoft Fakes
-
-FakesAssemblies/
-
 # GhostDoc Plugin Setting File
 
 *.GhostDoc.xml
 
-# Node.js Tools for Visual Studio
+# Node.JS Tools for Visual Studio
 
 .ntvs_analysis.dat
 
@@ -248,9 +153,47 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
+# Angular
+
+# Angular Output
+/dist
+/tmp
+/out-tsc
+
+# Angular Dependencies
+
+/node_modules
+
+# Angular Profiling Files
+chrome-profiler-events.json
+speed-measure-plugin.json
+
+# Angular Misc
+
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+
+/**/.vscode
+
 # Vidly
+
 Deploy
 
-/Vidly/Vidly/settings.json
+*.min.*
+**/Content/Libraries
+
 Web.Secrets.AppSettings.config
 Web.Secrets.Connections.config

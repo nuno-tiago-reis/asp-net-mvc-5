@@ -8,7 +8,7 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
-using Vidly.Dtos;
+using Vidly.Contracts;
 using Vidly.Identity;
 using Vidly.Models;
 

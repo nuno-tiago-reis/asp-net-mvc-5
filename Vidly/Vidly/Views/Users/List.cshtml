@@ -25,127 +25,92 @@
 
 @section scripts
 {
+	<script src="/Content/Static/js/index.min.js"></script>
+	<script src="/Content/Static/js/alerts.min.js"></script>
 	<script>
-		$(document).ready(function()
+		$(document).ready(function ()
 		{
-			var table = $("#users").DataTable
-			({
-				ajax:
+			const columns =
+			[
 				{
-					url: "/api/users",
-					dataSrc: ""
+					render: function (data, type, user)
+					{
+						return `<a href='/users/edit/${user.id}'>${user.userName}</a>`;
+					}
 				},
-				columns:
-				[
+				{
+					data: "fiscalNumber"
+				},
+				{
+					render: function (data, type, user)
 					{
-						render: function (data, type, user) {
-							return `<a href='/users/edit/${user.id}'>${user.userName}</a>`;
-						}
-					},
+						var span = "<span class='";
+
+						if (user.emailConfirmed)
+							span += "confirmed-contact";
+						else
+							span += "unconfirmed-contact";
+
+						span += "' data-toggle='tooltip' title='The email is ";
+
+						if (user.emailConfirmed)
+							span += "confirmed";
+						else
+							span += "unconfirmed";
+
+						span += (`'>${user.email}</span>`);
+
+						return span;
+					}
+				},
+				{
+					render: function (data, type, user)
 					{
-						data: "fiscalNumber"
-					},
+						var span = "<span class='";
+
+						if (user.phoneNumberConfirmed)
+							span += "confirmed-contact";
+						else
+							span += "unconfirmed-contact";
+
+						span += "' data-toggle='tooltip' title='The phone number is ";
+
+						if (user.phoneNumberConfirmed)
+							span += "confirmed";
+						else
+							span += "unconfirmed";
+
+						span += (`'>${user.phoneNumber}</span>`);
+
+						return span;
+					}
+				},
+				{
+					render: function (data, type, user)
 					{
-						render: function (data, type, user)
+						if (user.twoFactorEnabled)
 						{
-							var span = "<span class='";
-
-							if (user.emailConfirmed)
-								span += "confirmed-contact";
-							else
-								span += "unconfirmed-contact";
-							
-							span += "' data-toggle='tooltip' title='The email is ";
-
-							if (user.emailConfirmed)
-								span += "confirmed";
-							else
-								span += "unconfirmed";
-
-							span += (`'>${user.email}</span>`);
-
-							return span;
+							return "<span class='confirmed-contact'>Enabled</span>";
 						}
-					},
-					{
-						render: function (data, type, user)
+						else
 						{
-							var span = "<span class='";
-
-							if (user.phoneNumberConfirmed)
-								span += "confirmed-contact";
-							else
-								span += "unconfirmed-contact";
-
-							span += "' data-toggle='tooltip' title='The phone number is ";
-
-							if (user.phoneNumberConfirmed)
-								span += "confirmed";
-							else
-								span += "unconfirmed";
-
-							span += (`'>${user.phoneNumber}</span>`);
-
-							return span;
-						}
-					},
-					{
-						render: function (data, type, user)
-						{
-							if (user.twoFactorEnabled)
-							{
-								return "<span class='confirmed-contact'>Enabled</span>";
-							}
-							else
-							{
-								return "<span class='unconfirmed-contact'>Disabled</span>";
-							}
-						}
-					},
-					{
-						data: "roles"
-					},
-					{
-						render: function (data, type, user)
-						{
-							return `<button class='btn btn-danger js-delete' data-user-id='${user.id}'>Delete</button>`;
+							return "<span class='unconfirmed-contact'>Disabled</span>";
 						}
 					}
-				],
-				"drawCallback": function()
+				},
 				{
-					$('[data-toggle="tooltip"]').tooltip();
+					data: "roles"
+				},
+				{
+					render: function (data, type, user)
+					{
+						return `<button class='btn btn-danger js-delete' data-user-id='${user.id}'>Delete</button>`;
+					}
 				}
-			});
+			];
 
-			$("#users").on("click", ".js-delete", function()
-			{
-				var button = $(this);
-
-				bootbox.confirm("Are you sure you want to delete this user?", function(result)
-				{
-					if (result)
-					{
-						$.ajax
-						({
-							url: `/api/users/${button.attr("data-user-id")}`,
-							method: "DELETE",
-
-							success: function()
-							{
-								toastr.success("User successfully deleted.");
-								table.row(button.parents("tr")).remove().draw();
-							},
-
-							error: function(xhr)
-							{
-								const error = JSON.parse(xhr.responseText);
-								toastr.error(`An error occurred:${error.message}`);
-							}
-						});
-					}
-				});
-			});
+			// Initialize the table
+			indexModule.initializeIndex('user', 'User', '/api/users/', columns);
 		});
 	</script>
 }

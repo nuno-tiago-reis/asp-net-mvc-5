@@ -7,29 +7,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title</title>
 
-	@Styles.Render("~/content/css")
-	@Scripts.Render("~/bundles/lib")
-	@Scripts.Render("~/bundles/modernizr")
+	@Styles.Render("~/bundles/css")
+	@RenderSection("styles", required: false)
 </head>
 <body>
+
 	@Html.Partial("_NavBar")
 
-	<div class="container body-content">
-		<h2>@ViewBag.Title</h2>
-		<hr />
-
-		@RenderBody()
-
-		<hr/>
-		<footer>
-			<p>&copy; @DateTime.Now.Year - Vidly</p>
-		</footer>
+	<div class="body">
+		<div class="container body-content">
+			<h2>@ViewBag.Title</h2>
+			<hr />
+			@RenderBody()
+		</div>
 	</div>
 
+	@Html.Partial("_Footer")
+
+	@Scripts.Render("~/bundles/js")
 	@RenderSection("scripts", required: false)
 
 	<script>
-
 		$(document).ready(function()
 		{
 			@{
@@ -40,15 +38,15 @@
 				{
 					if ((string)messageType == BaseController.MessageTypeSuccess)
 					{
-						<text>toastr.success('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
+						<text>alertify.success('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
 					}
 					if ((string)messageType == BaseController.MessageTypeWarning)
 					{
-						<text>toastr.warning('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
+						<text>alertify.warning('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
 					}
 					if ((string)messageType == BaseController.MessageTypeError)
 					{
-						<text>toastr.error('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
+						<text>alertify.error('@Html.Raw(message)', { closeButton: true, allowHtml: true });</text>
 					}
 				}
 			}

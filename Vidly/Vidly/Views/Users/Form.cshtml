@@ -57,10 +57,14 @@
 		</label>
 	</div>
 	<div class="form-group">
-		@Html.LabelFor(model => model.User.PhoneNumber)
-		@Html.TextBox("phone-number", string.Empty, new { @class = "form-control" })
-		@Html.HiddenFor(model => model.User.PhoneNumber)
-		@Html.ValidationMessageFor(model => model.User.PhoneNumber)
+		@Html.LabelFor(m => m.User.PhoneNumber)
+		<div class="col-md-12 p-0">
+			@Html.TextBox("phone-number", this.Model?.User?.PhoneNumber ?? string.Empty, new { @class = "form-control", data_val_required = "The Phone Number field is required." })
+			@Html.HiddenFor(m => m.User.PhoneNumber)
+		</div>
+		<div class="col-md-12 p-0">
+			@Html.ValidationMessageFor(m => m.User.PhoneNumber)
+		</div>
 	</div>
 	<div class="checkbox">
 		<label>
@@ -92,28 +96,12 @@
 
 @section scripts
 {
-	@Scripts.Render("~/bundles/jqueryval")
-
+	<script src="/Content/Static/js/phonenumber.min.js"></script>
 	<script>
-		$(document).ready(function()
+		$(document).ready(function ()
 		{
-			const form = $("#user-form");
-			var phoneNumber = $("#phone-number");
-			var hiddenPhoneNumber = $("#User_PhoneNumber");
-
-			phoneNumber.telephoneInput
-			({
-				utilsScript: "../../Scripts/telephone-input-utils.js"
-			});
-
-			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
-
-			form.submit(function()
-			{
-				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
-
-				return true;
-			});
+			// Initialize the input
+			phoneNumberModule.initializePhoneNumberInput('phone-number', 'User.PhoneNumber');
 		});
 	</script>
 }

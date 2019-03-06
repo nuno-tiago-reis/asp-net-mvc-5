@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Data.Entity;
 
-using Vidly.Dtos;
+using Vidly.Contracts;
 using Vidly.Models;
 
 namespace Vidly.Controllers.API

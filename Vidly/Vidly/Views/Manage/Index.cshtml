@@ -24,7 +24,7 @@
 				@Html.AntiForgeryToken()
 				<div>
 					@Html.Hidden("Email", Model.User.Email, new { @class = "form-control" })
-					<input type="submit" class="btn btn-primary" value="Confirm" />
+					<input type="submit" class="btn btn-primary mt-2" value="Confirm" />
 				</div>
 			}
 		}
@@ -44,7 +44,7 @@
 				@Html.AntiForgeryToken()
 				<div>
 					@Html.Hidden("PhoneNumber", Model.User.PhoneNumber, new { @class = "form-control" })
-					<input type="submit" class="btn btn-primary" value="Confirm" />
+					<input type="submit" class="btn btn-primary mt-2" value="Confirm" />
 				</div>
 			}
 		}
