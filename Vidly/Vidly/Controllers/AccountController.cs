@@ -328,14 +328,14 @@ namespace Vidly.Controllers
 
 			// Create the confirmation token
 			string token = await this.UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, protocol: Request.Url?.Scheme);
+			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, this.Request.Url?.Scheme);
 
 			// Send the confirmation email
 			await this.UserManager.SendEmailAsync(user.Id, "Confirm your email", "Please confirm your email by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 			// Create the confirmation token
 			token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);
-			callbackUrl = this.Url.Action("ConfirmPhoneNumber", "Account", new { userId = user.Id, phoneNumber = user.PhoneNumber, token }, protocol: Request.Url?.Scheme);
+			callbackUrl = this.Url.Action("ConfirmPhoneNumber", "Account", new { userId = user.Id, phoneNumber = user.PhoneNumber, token }, this.Request.Url?.Scheme);
 
 			// Send the confirmation sms
 			await this.UserManager.SendSmsAsync(user.Id, "Please confirm your phone number by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -492,7 +492,7 @@ namespace Vidly.Controllers
 
 			// Create the confirmation token
 			string token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-			string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token }, protocol: Request.Url?.Scheme);
+			string callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token }, this.Request.Url?.Scheme);
 
 			// Send the confirmation email
 			await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -578,7 +578,7 @@ namespace Vidly.Controllers
 			// If a user enters incorrect codes for a specified amount of time then the user account 
 			// will be locked out for a specified amount of time. 
 			// You can configure the account lockout settings in IdentityConfig
-			var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+			var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
 
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (result)
@@ -684,18 +684,8 @@ namespace Vidly.Controllers
 			/// </summary>
 			/// <param name="provider">The provider.</param>
 			/// <param name="redirectUri">The redirect URI.</param>
-			public ChallengeResult(string provider, string redirectUri)
-				: this(provider, redirectUri, null)
-			{
-			}
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="ChallengeResult"/> class.
-			/// </summary>
-			/// <param name="provider">The provider.</param>
-			/// <param name="redirectUri">The redirect URI.</param>
 			/// <param name="userId">The user identifier.</param>
-			public ChallengeResult(string provider, string redirectUri, string userId)
+			public ChallengeResult(string provider, string redirectUri, string userId = null)
 			{
 				this.LoginProvider = provider;
 				this.RedirectUri = redirectUri;

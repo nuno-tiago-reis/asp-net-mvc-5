@@ -42,6 +42,13 @@
 		]
 	},
 	{
+		"outputFileName": "Content/Static/js/forms.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/forms.js"
+		]
+	},
+	{
 		"outputFileName": "Content/Static/js/typeahead.min.js",
 		"inputFiles":
 		[
@@ -60,6 +67,27 @@
 		"inputFiles":
 		[
 			"Content/Static/js/phonenumber.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/Rentals/form.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/Rentals/form.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/Rentals/list.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/Rentals/list.js"
+		]
+	},
+	{
+		"outputFileName": "Content/Static/js/Rentals/multiple-form.min.js",
+		"inputFiles":
+		[
+			"Content/Static/js/Rentals/multiple-form.js"
 		]
 	}
 ]

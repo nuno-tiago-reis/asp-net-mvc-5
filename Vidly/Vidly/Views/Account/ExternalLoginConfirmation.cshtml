@@ -45,28 +45,13 @@
 
 @section scripts
 {
-	@Scripts.Render("~/bundles/jqueryval")
-	
+	<script src="/Content/Static/js/phonenumber.min.js"></script>
 	<script>
-		$(document).ready(function()
+		/* global jQuery: false, $: false */
+		$(document).ready(function ()
 		{
-			const form = $("#form");
-			var phoneNumber = $("#phone-number");
-			var hiddenPhoneNumber = $("#PhoneNumber");
-
-			phoneNumber.telephoneInput
-			({
-				utilsScript: "../../Scripts/telephone-input-utils.js"
-			});
-
-			phoneNumber.telephoneInput("setNumber", hiddenPhoneNumber.val());
-
-			form.submit(function()
-			{
-				hiddenPhoneNumber.val(phoneNumber.telephoneInput("getNumber"));
-
-				return true;
-			});
+			// Initialize the input
+			phoneNumberModule.initializePhoneNumberInput('phone-number', 'PhoneNumber');
 		});
 	</script>
 }

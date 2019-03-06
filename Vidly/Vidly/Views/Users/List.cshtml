@@ -28,86 +28,87 @@
 	<script src="/Content/Static/js/index.min.js"></script>
 	<script src="/Content/Static/js/alerts.min.js"></script>
 	<script>
+		/* global jQuery: false, $: false */
 		$(document).ready(function ()
 		{
 			const columns =
-			[
-				{
-					render: function (data, type, user)
+				[
 					{
-						return `<a href='/users/edit/${user.id}'>${user.userName}</a>`;
-					}
-				},
-				{
-					data: "fiscalNumber"
-				},
-				{
-					render: function (data, type, user)
-					{
-						var span = "<span class='";
-
-						if (user.emailConfirmed)
-							span += "confirmed-contact";
-						else
-							span += "unconfirmed-contact";
-
-						span += "' data-toggle='tooltip' title='The email is ";
-
-						if (user.emailConfirmed)
-							span += "confirmed";
-						else
-							span += "unconfirmed";
-
-						span += (`'>${user.email}</span>`);
-
-						return span;
-					}
-				},
-				{
-					render: function (data, type, user)
-					{
-						var span = "<span class='";
-
-						if (user.phoneNumberConfirmed)
-							span += "confirmed-contact";
-						else
-							span += "unconfirmed-contact";
-
-						span += "' data-toggle='tooltip' title='The phone number is ";
-
-						if (user.phoneNumberConfirmed)
-							span += "confirmed";
-						else
-							span += "unconfirmed";
-
-						span += (`'>${user.phoneNumber}</span>`);
-
-						return span;
-					}
-				},
-				{
-					render: function (data, type, user)
-					{
-						if (user.twoFactorEnabled)
+						render: function (data, type, user)
 						{
-							return "<span class='confirmed-contact'>Enabled</span>";
+							return `<a href='/users/edit/${user.id}'>${user.userName}</a>`;
 						}
-						else
-						{
-							return "<span class='unconfirmed-contact'>Disabled</span>";
-						}
-					}
-				},
-				{
-					data: "roles"
-				},
-				{
-					render: function (data, type, user)
+					},
 					{
-						return `<button class='btn btn-danger js-delete' data-user-id='${user.id}'>Delete</button>`;
+						data: "fiscalNumber"
+					},
+					{
+						render: function (data, type, user)
+						{
+							var span = "<span class='";
+
+							if (user.emailConfirmed)
+								span += "confirmed-contact";
+							else
+								span += "unconfirmed-contact";
+
+							span += "' data-toggle='tooltip' title='The email is ";
+
+							if (user.emailConfirmed)
+								span += "confirmed";
+							else
+								span += "unconfirmed";
+
+							span += (`'>${user.email}</span>`);
+
+							return span;
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							var span = "<span class='";
+
+							if (user.phoneNumberConfirmed)
+								span += "confirmed-contact";
+							else
+								span += "unconfirmed-contact";
+
+							span += "' data-toggle='tooltip' title='The phone number is ";
+
+							if (user.phoneNumberConfirmed)
+								span += "confirmed";
+							else
+								span += "unconfirmed";
+
+							span += (`'>${user.phoneNumber}</span>`);
+
+							return span;
+						}
+					},
+					{
+						render: function (data, type, user)
+						{
+							if (user.twoFactorEnabled)
+							{
+								return "<span class='confirmed-contact'>Enabled</span>";
+							}
+							else
+							{
+								return "<span class='unconfirmed-contact'>Disabled</span>";
+							}
+						}
+					},
+					{
+						data: "roles"
+					},
+					{
+						render: function (data, type, user)
+						{
+							return `<button class='btn btn-danger js-delete' data-user-id='${user.id}'>Delete</button>`;
+						}
 					}
-				}
-			];
+				];
 
 			// Initialize the table
 			indexModule.initializeIndex('user', 'User', '/api/users/', columns);

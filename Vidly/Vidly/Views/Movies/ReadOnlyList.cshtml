@@ -19,17 +19,12 @@
 
 @section scripts
 {
+	<script src="/Content/Static/js/index.min.js"></script>
 	<script>
+		/* global jQuery: false, $: false */
 		$(document).ready(function ()
 		{
-			$("#movies").DataTable
-			({
-				ajax:
-				{
-					url: "/api/movies",
-					dataSrc: ""
-				},
-				columns:
+			const columns =
 				[
 					{
 						render: function (data, type, movie)
@@ -52,12 +47,10 @@
 					{
 						data: "numberInStock"
 					}
-				],
-				"drawCallback": function ()
-				{
-					$('[data-toggle="tooltip"]').tooltip();
-				}
-			});
+				];
+
+			// Initialize the table
+			indexModule.initializeIndex('movie', 'Movie', '/api/movies/', columns);
 		});
 	</script>
 }

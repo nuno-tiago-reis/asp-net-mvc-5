@@ -12,12 +12,12 @@ namespace Vidly.Models
 		/// <summary>
 		/// The unknown membership type id.
 		/// </summary>
-		public static readonly byte Unknown = 0;
+		public const byte Unknown = 0;
 
 		/// <summary>
 		/// The pay as you go membership type id.
 		/// </summary>
-		public static readonly byte PayAsYouGo = 1;
+		public const byte PayAsYouGo = 1;
 
 		/// <summary>
 		/// Gets or sets the identifier.

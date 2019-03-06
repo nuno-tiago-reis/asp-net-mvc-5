@@ -415,13 +415,9 @@
     <Content Include="Content\Libraries\bootbox\js\bootbox.js" />
     <Content Include="Content\Libraries\bootbox\js\bootbox.min.js" />
     <Content Include="Content\Libraries\bootstrap\css\bootstrap.css" />
-    <Content Include="Content\Libraries\bootstrap\css\bootstrap.css.map" />
     <Content Include="Content\Libraries\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Content\Libraries\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Content\Libraries\bootstrap\js\bootstrap.js" />
-    <Content Include="Content\Libraries\bootstrap\js\bootstrap.js.map" />
     <Content Include="Content\Libraries\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\Libraries\bootstrap\js\bootstrap.min.js.map" />
     <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap.css" />
     <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap.min.css" />
     <Content Include="Content\Libraries\datatables\css\dataTables.bootstrap4.css" />
@@ -463,40 +459,28 @@
     <Content Include="Content\Libraries\datatables\js\jquery.dataTables.js" />
     <Content Include="Content\Libraries\datatables\js\jquery.dataTables.min.js" />
     <Content Include="Content\Libraries\font-awesome\css\font-awesome.css" />
-    <Content Include="Content\Libraries\font-awesome\css\font-awesome.css.map" />
     <Content Include="Content\Libraries\font-awesome\css\font-awesome.min.css" />
-    <Content Include="Content\Libraries\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\Libraries\intl-tel-input\css\intlTelInput.css" />
-    <Content Include="Content\Libraries\intl-tel-input\css\intlTelInput.min.css">
-      <DependentUpon>intlTelInput.css</DependentUpon>
-    </Content>
     <Content Include="Content\Libraries\intl-tel-input\img\flags%402x.png" />
     <Content Include="Content\Libraries\intl-tel-input\img\flags.png" />
-    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.js" />
-    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.min.js" />
     <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput-jquery.js" />
     <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput-jquery.min.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.js" />
+    <Content Include="Content\Libraries\intl-tel-input\js\intlTelInput.min.js" />
     <Content Include="Content\Libraries\intl-tel-input\js\utils.js" />
-    <Content Include="Content\Libraries\jquery\js\jquery.js" />
-    <Content Include="Content\Libraries\jquery\js\jquery.min.js" />
-    <Content Include="Content\Libraries\jquery\js\jquery.min.map" />
     <Content Include="Content\Libraries\jquery-validate\js\jquery.validate.js" />
     <Content Include="Content\Libraries\jquery-validate\js\jquery.validate.min.js" />
     <Content Include="Content\Libraries\jquery-validation-unobtrusive\js\jquery.validate.unobtrusive.js" />
     <Content Include="Content\Libraries\jquery-validation-unobtrusive\js\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\Libraries\jquery\js\jquery.js" />
+    <Content Include="Content\Libraries\jquery\js\jquery.min.js" />
     <Content Include="Content\Libraries\modernizr\js\modernizr.js" />
     <Content Include="Content\Libraries\modernizr\js\modernizr.min.js" />
     <Content Include="Content\Libraries\moment\js\moment.js" />
     <Content Include="Content\Libraries\moment\js\moment.min.js" />
     <Content Include="Content\Libraries\popper\js\umd\popper.js" />
-    <Content Include="Content\Libraries\popper\js\umd\popper.js.map" />
     <Content Include="Content\Libraries\popper\js\umd\popper.min.js" />
-    <Content Include="Content\Libraries\popper\js\umd\popper.min.js.map" />
     <Content Include="Content\Libraries\tempus-dominus\css\tempusdominus-bootstrap-4.css" />
     <Content Include="Content\Libraries\tempus-dominus\css\tempusdominus-bootstrap-4.min.css" />
     <Content Include="Content\Libraries\tempus-dominus\js\tempusdominus-bootstrap-4.js" />
@@ -537,6 +521,18 @@
     <Content Include="Content\Static\js\phonenumber.js" />
     <Content Include="Content\Static\js\phonenumber.min.js">
       <DependentUpon>phonenumber.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\Rentals\form.min.js">
+      <DependentUpon>form.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\Rentals\list.min.js">
+      <DependentUpon>list.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Static\js\Rentals\multiple-form.js" />
+    <Content Include="Content\Static\js\Rentals\form.js" />
+    <Content Include="Content\Static\js\Rentals\list.js" />
+    <Content Include="Content\Static\js\Rentals\multiple-form.min.js">
+      <DependentUpon>multiple-form.js</DependentUpon>
     </Content>
     <Content Include="Content\Static\js\typeahead.js" />
     <Content Include="Content\Static\js\typeahead.min.js">
@@ -669,6 +665,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Content\Libraries\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Content\Libraries\bootstrap\js\bootstrap.js.map" />
+    <Content Include="Content\Libraries\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\Libraries\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\Libraries\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\Libraries\jquery\js\jquery.min.map" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.js.map" />
+    <Content Include="Content\Libraries\popper\js\umd\popper.min.js.map" />
     <None Include="Packages.config" />
   </ItemGroup>
   <PropertyGroup>

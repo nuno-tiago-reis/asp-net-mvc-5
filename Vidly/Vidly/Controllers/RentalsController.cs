@@ -21,30 +21,11 @@ namespace Vidly.Controllers
 		/// The context.
 		/// </summary>
 		private readonly ApplicationDbContext context;
-		/// <summary>
-		/// The sign in manager field.
-		/// </summary>
-		private ApplicationSignInManager signInManagerField;
 
 		/// <summary>
 		/// The user manager field.
 		/// </summary>
 		private ApplicationUserManager userManagerField;
-
-		/// <summary>
-		/// Gets the sign in manager.
-		/// </summary>
-		public ApplicationSignInManager SignInManager
-		{
-			get
-			{
-				return this.signInManagerField ?? this.HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-			}
-			private set
-			{
-				this.signInManagerField = value;
-			}
-		}
 
 		/// <summary>
 		/// Gets the user manager.
@@ -76,11 +57,9 @@ namespace Vidly.Controllers
 		/// </summary>
 		/// 
 		/// <param name="userManager">The user manager.</param>
-		/// <param name="signInManager">The sign in manager.</param>
-		public RentalsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		public RentalsController(ApplicationUserManager userManager) : this()
 		{
 			this.UserManager = userManager;
-			this.SignInManager = signInManager;
 		}
 		#endregion
 

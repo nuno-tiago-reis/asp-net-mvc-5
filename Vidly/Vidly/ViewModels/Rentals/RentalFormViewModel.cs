@@ -5,8 +5,6 @@ namespace Vidly.ViewModels
 {
 	public sealed class RentalFormViewModel
 	{
-		public int? ID { get; set; }
-
 		[Required(ErrorMessage = "No movie was selected.")]
 		public int? MovieID { get; set; }
 

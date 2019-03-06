@@ -22,7 +22,7 @@ var indexModule = (function()
 	 * @param {any} entityApi
 	 * @param {any} entityColumns
 	 */
-	function initializeIndex(entityName, capitalizedEntityName, entityApi, entityColumns)
+	function initializeIndex(entityName, capitalizedEntityName, entityApi, entityColumns, completeFunction = null)
 	{
 		const entityTable = $(`#${entityName}s`);
 
@@ -34,10 +34,11 @@ var indexModule = (function()
 				dataSrc: ''
 			},
 			columns: entityColumns,
+			'initComplete': completeFunction,
 			'drawCallback': function ()
 			{
 				$('[data-toggle="tooltip"]').tooltip();
-			}
+			},
 		});
 
 		entityTable.on('click', '.js-delete', function ()

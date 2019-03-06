@@ -37,9 +37,9 @@
 		@Html.EditorFor(model => model.Customer.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
 		@Html.ValidationMessageFor(model => model.Customer.BirthDate)
 	</div>
-	<div class="checkbox">
+	<div>
 		<label>
-			@Html.CheckBoxFor(model => model.Customer.IsSubscribedToNewsletter, new { @class = "checkbox" }) Subscribe To Newsletter?
+			@Html.CheckBoxFor(model => model.Customer.IsSubscribedToNewsletter) Subscribe To Newsletter?
 		</label>
 	</div>
 

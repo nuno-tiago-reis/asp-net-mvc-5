@@ -18,21 +18,15 @@
 
 @section scripts
 {
+	<script src="/Content/Static/js/index.min.js"></script>
 	<script>
-
-		$(document).ready(function()
+		/* global jQuery: false, $: false */
+		$(document).ready(function ()
 		{
-			$("#rentals").DataTable
-			({
-				ajax:
-				{
-					url: "/api/rentals",
-					dataSrc: ""
-				},
-				columns:
+			const columns =
 				[
 					{
-						render: function(data, type, rental)
+						render: function (data, type, rental)
 						{
 							return `<a href='/rentals/details/${rental.id}'>${rental.id}</a>`;
 						}
@@ -44,13 +38,13 @@
 						data: "customer.name"
 					},
 					{
-						render: function(data, type, rental)
+						render: function (data, type, rental)
 						{
 							return new Date(rental.dateRented).toLocaleDateString();
 						}
 					},
 					{
-						render: function(data, type, rental)
+						render: function (data, type, rental)
 						{
 							if (rental.dateReturned != null)
 								return new Date(rental.dateReturned).toLocaleDateString();
@@ -58,12 +52,10 @@
 							return null;
 						}
 					}
-				],
-				"drawCallback": function ()
-				{
-					$('[data-toggle="tooltip"]').tooltip();
-				}
-			});
+				];
+
+			// Initialize the table
+			indexModule.initializeIndex('rental', 'Rental', '/api/rentals/', columns);
 		});
 	</script>
 }

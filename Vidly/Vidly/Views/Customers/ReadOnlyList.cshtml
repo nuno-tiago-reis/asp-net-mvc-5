@@ -16,17 +16,12 @@
 
 @section scripts
 {
+	<script src="/Content/Static/js/index.min.js"></script>
 	<script>
+		/* global jQuery: false, $: false */
 		$(document).ready(function ()
 		{
-			$("#customers").DataTable
-			({
-				ajax:
-				{
-					url: "/api/customers",
-					dataSrc: ""
-				},
-				columns:
+			const columns =
 				[
 					{
 						render: function (data, type, customer)
@@ -40,12 +35,10 @@
 					{
 						data: "membershipType.discountRate"
 					}
-				],
-				"drawCallback": function ()
-				{
-					$('[data-toggle="tooltip"]').tooltip();
-				}
-			});
+				];
+
+			// Initialize the table
+			indexModule.initializeIndex('customer', 'Customer', '/api/customers/', columns);
 		});
 	</script>
 }

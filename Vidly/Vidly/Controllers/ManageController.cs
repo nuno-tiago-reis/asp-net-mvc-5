@@ -153,7 +153,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ConfirmEmail(string email)
+		public async Task<ActionResult> ConfirmEmail()
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -164,7 +164,7 @@ namespace Vidly.Controllers
 
 			// Create the confirmation token
 			string token = await this.UserManager.GenerateEmailConfirmationTokenAsync(userId);
-			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId, token }, protocol: Request.Url?.Scheme);
+			string callbackUrl = this.Url.Action("ConfirmEmail", "Account", new { userId, token }, this.Request.Url?.Scheme);
 
 			// Send the confirmation email
 			await this.UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -223,7 +223,7 @@ namespace Vidly.Controllers
 		/// </summary>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ConfirmPhoneNumber(string phoneNumber)
+		public async Task<ActionResult> ConfirmPhoneNumber()
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -236,7 +236,7 @@ namespace Vidly.Controllers
 
 			// Create the confirmation token
 			string token = await this.UserManager.GenerateChangePhoneNumberTokenAsync(user.Id, user.PhoneNumber);
-			string callbackUrl = this.Url.Action("ConfirmPhoneNumber", "Account", new { userId = user.Id, phoneNumber = user.PhoneNumber, token }, protocol: Request.Url?.Scheme);
+			string callbackUrl = this.Url.Action("ConfirmPhoneNumber", "Account", new { userId = user.Id, phoneNumber = user.PhoneNumber, token }, this.Request.Url?.Scheme);
 
 			// Send the confirmation sms
 			await this.UserManager.SendSmsAsync(user.Id, "Please confirm your phone number by clicking <a href=\"" + callbackUrl + "\">here</a>");

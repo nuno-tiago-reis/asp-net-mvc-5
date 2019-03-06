@@ -24,29 +24,9 @@ namespace Vidly.Controllers.API
 		private readonly ApplicationDbContext context;
 
 		/// <summary>
-		/// The sign in manager field.
-		/// </summary>
-		private ApplicationSignInManager signInManagerField;
-
-		/// <summary>
 		/// The user manager field.
 		/// </summary>
 		private ApplicationUserManager userManagerField;
-
-		/// <summary>
-		/// Gets the sign in manager.
-		/// </summary>
-		public ApplicationSignInManager SignInManager
-		{
-			get
-			{
-				return this.signInManagerField ?? this.Request.GetOwinContext().Get<ApplicationSignInManager>();
-			}
-			private set
-			{
-				this.signInManagerField = value;
-			}
-		}
 
 		/// <summary>
 		/// Gets the user manager.
@@ -78,11 +58,9 @@ namespace Vidly.Controllers.API
 		/// </summary>
 		/// 
 		/// <param name="userManager">The user manager.</param>
-		/// <param name="signInManager">The sign in manager.</param>
-		public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
+		public UsersController(ApplicationUserManager userManager) : this()
 		{
 			this.UserManager = userManager;
-			this.SignInManager = signInManager;
 		}
 		#endregion
 
@@ -163,12 +141,12 @@ namespace Vidly.Controllers.API
 			if (user == null)
 				throw new HttpResponseException(HttpStatusCode.NotFound);
 
-			user.FiscalNumber = user.FiscalNumber;
-			user.Email = user.Email;
-			user.EmailConfirmed = user.EmailConfirmed;
-			user.PhoneNumber = user.PhoneNumber;
-			user.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
-			user.TwoFactorEnabled = user.TwoFactorEnabled;
+			user.FiscalNumber = userDto.FiscalNumber;
+			user.Email = userDto.Email;
+			user.EmailConfirmed = userDto.EmailConfirmed;
+			user.PhoneNumber = userDto.PhoneNumber;
+			user.PhoneNumberConfirmed = userDto.PhoneNumberConfirmed;
+			user.TwoFactorEnabled = userDto.TwoFactorEnabled;
 
 			var result = this.UserManager.Update(user);
 			if (result.Succeeded == false)

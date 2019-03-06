@@ -51,9 +51,9 @@
 		@Html.TextBoxFor(model => model.User.Email, new { @class = "form-control" })
 		@Html.ValidationMessageFor(model => model.User.Email)
 	</div>
-	<div class="checkbox">
+	<div>
 		<label>
-			@Html.CheckBoxFor(model => model.User.EmailConfirmed, new { @class = "checkbox" }) Email Confirmed?
+			@Html.CheckBoxFor(model => model.User.EmailConfirmed) Email Confirmed?
 		</label>
 	</div>
 	<div class="form-group">
@@ -66,16 +66,16 @@
 			@Html.ValidationMessageFor(m => m.User.PhoneNumber)
 		</div>
 	</div>
-	<div class="checkbox">
+	<div>
 		<label>
-			@Html.CheckBoxFor(model => model.User.PhoneNumberConfirmed, new { @class = "checkbox" }) Phone Confirmed?
+			@Html.CheckBoxFor(model => model.User.PhoneNumberConfirmed) Phone Confirmed?
 		</label>
 	</div>
 
 	<h4><b>Authentication</b></h4>
-	<div class="checkbox">
+	<div>
 		<label>
-			@Html.CheckBoxFor(model => model.User.TwoFactorEnabled, new { @class = "checkbox" }) Two Factor Enabled?
+			@Html.CheckBoxFor(model => model.User.TwoFactorEnabled) Two Factor Enabled?
 		</label>
 	</div>
 
@@ -83,7 +83,7 @@
 	<div class="form-group">
 		@foreach (string role in Model.AvailableRoles)
 		{
-			<div class="checkbox">
+			<div>
 				<label>
 					<input type="checkbox" name="@nameof(Model.UserRoles)" value="@role" @(Model.UserRoles != null && Model.UserRoles.Contains(role) ? "checked" : string.Empty) /> @role
 				</label>
@@ -98,6 +98,7 @@
 {
 	<script src="/Content/Static/js/phonenumber.min.js"></script>
 	<script>
+		/* global jQuery: false, $: false */
 		$(document).ready(function ()
 		{
 			// Initialize the input

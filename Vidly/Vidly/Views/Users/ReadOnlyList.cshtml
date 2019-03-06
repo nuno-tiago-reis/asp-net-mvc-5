@@ -47,17 +47,13 @@
 
 @section scripts
 {
+	<script src="/Content/Static/js/index.min.js"></script>
+	<script src="/Content/Static/js/phonenumber.min.js"></script>
 	<script>
+		/* global jQuery: false, $: false */
 		$(document).ready(function ()
 		{
-			$("#users").DataTable
-			({
-				ajax:
-				{
-					url: "/api/users",
-					dataSrc: ""
-				},
-				columns:
+			const columns =
 				[
 					{
 						render: function (data, type, user)
@@ -114,26 +110,15 @@
 					{
 						data: "roles"
 					}
-				],
-				"drawCallback": function ()
-				{
-					$('[data-toggle="tooltip"]').tooltip();
-				},
-				"initComplete": function ()
-				{
-					const phoneNumber = $("#phone-number");
+				];
 
-					phoneNumber.telephoneInput
-						({
-							utilsScript: "../Scripts/telephone-input-utils.js"
-						});
+			const completeFunction = function ()
+			{
+				phoneNumberModule.initializePhoneNumberInput('phone-number');
+			}
 
-					phoneNumber.telephoneInput
-						(
-						"setNumber", $("#phone-number").val()
-						);
-				}
-			});
+			// Initialize the table
+			indexModule.initializeIndex('user', 'User', '/api/users/', columns, completeFunction);
 		});
 	</script>
 }
